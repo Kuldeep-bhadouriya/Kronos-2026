@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react"
 import Navbar from "@/components/Navbar"
 import { useEffect, useRef } from "react"

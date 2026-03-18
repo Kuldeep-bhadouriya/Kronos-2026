@@ -1,15 +1,17 @@
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 let userConfig = undefined
 try {
-  userConfig = await import('./v0-user-next.config')
-} catch (e) {
+  userConfig = await import('./user-next.config')
+} catch {
   // ignore error
 }
 
+const projectRoot = dirname(fileURLToPath(import.meta.url))
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -20,6 +22,9 @@ const nextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+  },
+  turbopack: {
+    root: projectRoot,
   },
 }
 

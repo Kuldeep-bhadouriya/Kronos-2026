@@ -1,6 +1,6 @@
 "use client";
 import VideoPlayer from "@/components/videoPlayer";
-import { useEffect, useState, useRef, Suspense } from "react";
+import { useEffect, useMemo, useRef, useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -140,22 +140,24 @@ const particleData = [
 
 export default function KronosTechFest() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [countdown, setCountdown] = useState({
-    days: 42,
-    hours: 18,
-    minutes: 24,
-    seconds: 56,
-  });
   const [activeSection, setActiveSection] = useState("hero");
-  const sectionRefs = {
-    hero: useRef(null),
-    about: useRef(null),
-    events: useRef(null),
-    speakers: useRef(null),
-    schedule: useRef(null),
-    sponsors: useRef(null),
-  };
+  const heroRef = useRef<HTMLElement | null>(null);
+  const aboutRef = useRef<HTMLElement | null>(null);
+  const eventsRef = useRef<HTMLElement | null>(null);
+  const speakersRef = useRef<HTMLElement | null>(null);
+  const scheduleRef = useRef<HTMLElement | null>(null);
+  const sponsorsRef = useRef<HTMLElement | null>(null);
+  const sectionRefs = useMemo(
+    () => ({
+      hero: heroRef,
+      about: aboutRef,
+      events: eventsRef,
+      speakers: speakersRef,
+      schedule: scheduleRef,
+      sponsors: sponsorsRef,
+    }),
+    []
+  );
 
   // Handle scroll events
   useEffect(() => {
@@ -184,7 +186,7 @@ export default function KronosTechFest() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [sectionRefs]);
 
   // Countdown timer
 

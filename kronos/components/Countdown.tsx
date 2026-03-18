@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-export default function Countdown() {
-  const targetDate = new Date("2025-04-25T00:00:00Z").getTime(); // Target date in UTC
+const TARGET_DATE = new Date("2025-04-25T00:00:00Z").getTime();
 
-  const calculateTimeLeft = () => {
+export default function Countdown() {
+  const calculateTimeLeft = useCallback(() => {
     const now = new Date().getTime();
-    const difference = targetDate - now;
+    const difference = TARGET_DATE - now;
 
     if (difference <= 0) {
       return { days: 0, hours: 0, minutes: 0, seconds: 0 };
@@ -20,7 +20,7 @@ export default function Countdown() {
     const seconds = Math.floor((difference / 1000) % 60);
 
     return { days, hours, minutes, seconds };
-  };
+  }, []);
 
   const [countdown, setCountdown] = useState(calculateTimeLeft);
 
@@ -30,7 +30,7 @@ export default function Countdown() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [calculateTimeLeft]);
 
   return (
     <section className="relative z-10 py-10">
