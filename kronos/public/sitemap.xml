@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Homepage: Main entry point for ITM Kronos event -->
+  <url>
+    <loc>https://www.itmkronos.com/</loc>
+    <lastmod>2025-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <!-- Optional: Alternate language versions if your site supports them -->
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.itmkronos.com/" />
+  </url>
+
+  <!-- About: Info about ITM Kronos event -->
+  <url>
+    <loc>https://www.itmkronos.com/about</loc>
+    <lastmod>2025-04-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Events: Core event page, high priority for visibility -->
+  <url>
+    <loc>https://www.itmkronos.com/events</loc>
+    <lastmod>2025-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Contact: For attendees to reach out -->
+  <url>
+    <loc>https://www.itmkronos.com/contact</loc>
+    <lastmod>2025-04-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Schedule: Event timeline, key for attendees -->
+  <url>
+    <loc>https://www.itmkronos.com/schedule</loc>
+    <lastmod>2025-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Team: Organizers or key people, adds credibility -->
+  <url>
+    <loc>https://www.itmkronos.com/team</loc>
+    <lastmod>2025-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Developers: Possibly for tech credits or event app info -->
+  <url>
+    <loc>https://www.itmkronos.com/developers</loc>
+    <lastmod>2025-04-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
