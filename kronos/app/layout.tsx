@@ -18,9 +18,9 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata: Metadata = {
-  title: "Kronos by Kuldeep",
-  description: "Official Kronos 2026 website crafted by Kuldeep.",
-  generator: "Kronos by Kuldeep",
+  title: "Kronos 2026",
+  description: "Official Kronos 2026 website",
+  generator: "Kronos 2026",
 };
 
 export default function RootLayout({
