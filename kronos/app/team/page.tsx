@@ -52,8 +52,8 @@ export default function TeamPage() {
       alphaSpeed: number;
 
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * canvas!.width;
+        this.y = Math.random() * canvas!.height;
         this.size = Math.random() * 3 + 0.5;
         this.speedX = (Math.random() - 0.5) * 0.3;
         this.speedY = (Math.random() - 0.5) * 0.3;
@@ -76,10 +76,10 @@ export default function TeamPage() {
         this.y += this.speedY;
 
         // Bounce off edges
-        if (this.x > canvas.width || this.x < 0) {
+        if (this.x > canvas!.width || this.x < 0) {
           this.speedX = -this.speedX;
         }
-        if (this.y > canvas.height || this.y < 0) {
+        if (this.y > canvas!.height || this.y < 0) {
           this.speedY = -this.speedY;
         }
 
@@ -198,10 +198,10 @@ export default function TeamPage() {
     ],
   };
   const president: TeamMember = {
-    name: "Utkarsh Mishra",
+    name: "Harsh Singh Sengar",
     role: "President",
-    image: "/president.jpg",
-    bio: "As the President of Kronos Tech Fest 2025, Utkarsh Mishra stands at the forefront of innovation, leadership, and student-driven excellence. A final-year student with a deep passion for technology and event management, he has played a pivotal role in transforming Kronos into one of the most dynamic and impactful tech festivals.",
+    image: "/2026 Team/Harsh_Singh_Sengar_President.jpeg",
+    bio: "As the President of Kronos Tech Fest 2025, Harsh Singh Sengar stands at the forefront of innovation, leadership, and student-driven excellence. A final-year student with a deep passion for technology and event management, he has played a pivotal role in transforming Kronos into one of the most dynamic and impactful tech festivals.",
     email: "kronos@itmgoi.in",
     achievements: [
       "Spearheaded the planning and execution of the largest edition of Kronos Tech Fest.",
@@ -215,10 +215,10 @@ export default function TeamPage() {
   };
 
   const secretary: TeamMember = {
-    name: "Chetan Bhargav",
+    name: "Arpit Verma",
     role: "Secretary",
-    image: "/secretary.jpg",
-    bio: "As the Secretary of Kronos Tech Fest 2025, Chetan Bhargav plays a crucial role in ensuring the seamless execution of one of the most prestigious tech festivals. A final-year student with exceptional organizational skills and a passion for technology, he has been instrumental in coordinating various aspects of the fest, from event planning to team management.",
+    image: "/2026 Team/Arpit_Verma_Secretary.jpeg",
+    bio: "As the Secretary of Kronos Tech Fest 2025, Arpit Verma plays a crucial role in ensuring the seamless execution of one of the most prestigious tech festivals. A final-year student with exceptional organizational skills and a passion for technology, he has been instrumental in coordinating various aspects of the fest, from event planning to team management.",
     email: "kronos@itmgoi.in",
     achievements: [
       "Led the coordination of multiple events, ensuring flawless execution.",
@@ -248,7 +248,7 @@ export default function TeamPage() {
         {
           name: "Vedant Pisal",
           role: "Co-coordinator",
-          image: `tech-vedant.jpg`,
+          image: `/tech-vedant.jpg`,
         },
       ],
     },
@@ -261,23 +261,23 @@ export default function TeamPage() {
       },
       coCoordinators: [
         {
-          name: "Ashhad rehman khan",
+          name: "Rohit Gujar",
           role: "Co-coordinator",
-          image: `nontech-ashad.jpg`,
+          image: `/2026 Team/Rohit_Gujar_Non_Tech_Co-Coordinator.jpg`,
         },
         {
           name: "Milan Sharma",
           role: "Co-coordinator",
-          image: `WhatsApp Image 2025-03-27 at 1.52.37 PM.jpeg`,
+          image: `/WhatsApp Image 2025-03-27 at 1.52.37 PM.jpeg`,
         },
       ],
     },
     {
       name: "HR",
       coordinator: {
-        name: "Surbhi Tiwari",
+        name: "Nihal Soni",
         role: "Coordinator",
-        image: `/hr.jpg`,
+        image: `/2026 Team/Nihal_Soni_HR.jpeg`,
       },
       coCoordinators: [
         {
@@ -295,9 +295,9 @@ export default function TeamPage() {
     {
       name: "PR/Media",
       coordinator: {
-        name: "Vaishnavi Bhadauria",
+        name: "Somya Rajawat",
         role: "Coordinator ",
-        image: `/pr & media.jpg`,
+        image: `/2026 Team/Somya_Rajawat_PR_Coordinator.png`,
       },
       coCoordinators: [
         {
@@ -315,9 +315,9 @@ export default function TeamPage() {
     {
       name: "Logistics",
       coordinator: {
-        name: "Harsh Singh Sengar",
+        name: "Yash Chaturvedi",
         role: "Coordinator ",
-        image: `/logistics.png`,
+        image: `/2026 Team/Yash_Chaturvedi_Logistics.jpeg`,
       },
       coCoordinators: [
         {
@@ -335,9 +335,9 @@ export default function TeamPage() {
     {
       name: "Design/Creative",
       coordinator: {
-        name: "Sanidhya Tiwari",
+        name: "Krishna Verma",
         role: "Coordinator ",
-        image: `Design.jpg`,
+        image: `/2026 Team/Krishna_Verma_Designing_Head.jpeg`,
       },
       coCoordinators: [
         {
@@ -415,20 +415,20 @@ export default function TeamPage() {
     {
       name: "Discipline",
       coordinator: {
-        name: "Harsh Pratap Singh Chauhan",
+        name: "Aryan Shrivastava",
         role: "Coordinator",
-        image: `/discipline.jpg`,
+        image: `/2026 Team/Aryan_Shrivastava_Discipline_Coordinator.png`,
       },
       coCoordinators: [
         {
           name: "Rohit Gupta",
           role: "Co-coordinator",
-          image: `WhatsApp Image 2025-03-27 at 4.09.50 PM.jpeg`,
+          image: `/WhatsApp Image 2025-03-27 at 4.09.50 PM.jpeg`,
         },
         {
           name: "Naman Mishra",
           role: "Co-coordinator",
-          image: `WhatsApp Image 2025-03-27 at 4.09.51 PM.jpeg`,
+          image: `/WhatsApp Image 2025-03-27 at 4.09.51 PM.jpeg`,
         },
       ],
     },
