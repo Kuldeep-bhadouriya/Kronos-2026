@@ -3,12 +3,84 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, ChevronRight, ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Calendar, MapPin, ChevronRight, ArrowRight, Clock3 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Countdown from "@/components/Countdown";
 import PosterSlider from "@/components/posterSlider";
 import Hyperspeed from "@/components/Hyperspeed";
 import { hyperspeedPresets } from "@/components/HyperSpeedPresets";
+import { CardStack, type CardStackItem } from "@/components/card-stack";
+import { preEvents, mainEvents } from "@/lib/data";
+import type { Event } from "@/lib/types";
+
+const pastCelebrities: CardStackItem[] = [
+  {
+    id: "piyush-mishra",
+    title: "Piyush Mishra",
+    description: "Indian actor, singer, lyricist, playwright, musician, and screenwriter.",
+    imageSrc: "/piyushmishra.jpg",
+    tag: "Actor and Singer",
+  },
+  {
+    id: "ankit-tiwari",
+    title: "Ankit Tiwari",
+    description: "Indian playback singer, live performer, music director, and composer.",
+    imageSrc: "/ankit-tiwari.jpg",
+    tag: "Playback Singer",
+  },
+  {
+    id: "papon",
+    title: "Papon",
+    description: "Indian playback singer and composer from Assam.",
+    imageSrc: "/Papon.jpg",
+    tag: "Singer and Composer",
+  },
+  {
+    id: "jubin-nautiyal",
+    title: "Jubin Nautiyal",
+    description: "Indian playback singer and live performer.",
+    imageSrc: "/jubnialnutial.jpg",
+    tag: "Playback Singer",
+  },
+  {
+    id: "kunal-bojewar",
+    title: "Kunal Bojewar",
+    description: "Singer, composer, and power-packed live performer.",
+    imageSrc: "/kunal.jpg",
+    tag: "Singer",
+  },
+  {
+    id: "arijit-singh",
+    title: "Arijit Singh",
+    description: "Indian playback singer known for iconic Bollywood vocals.",
+    imageSrc: "/Arijit-Singh.png",
+    tag: "Playback Singer",
+  },
+  {
+    id: "neeti-mohan",
+    title: "Neeti Mohan",
+    description: "Indian singer with hits across major film soundtracks.",
+    imageSrc: "/neeti-mohan.jpg",
+    tag: "Singer",
+  },
+  {
+    id: "kk",
+    title: "KK",
+    description: "Legendary Indian playback singer remembered for timeless songs.",
+    imageSrc: "/kk.jpg",
+    tag: "Playback Singer",
+  },
+  {
+    id: "shilpa-rao",
+    title: "Shilpa Rao",
+    description: "Indian singer known for soulful Hindi tracks.",
+    imageSrc: "/shilpa-rao.jpg",
+    tag: "Singer",
+  },
+];
 
 export default function KronosTechFest() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -67,6 +139,30 @@ export default function KronosTechFest() {
     }),
     [isMobileView]
   );
+
+  const featuredEvents = useMemo(
+    () =>
+      [preEvents[0], preEvents[2], mainEvents[0]].filter(
+        (event): event is Event => Boolean(event)
+      ),
+    []
+  );
+
+  const getEventTime = (event: Event) => {
+    if (event.timing) return event.timing;
+    if (event.startTime && event.endTime) return `${event.startTime} - ${event.endTime}`;
+    if (event.startTime) return event.startTime;
+    return "Time TBD";
+  };
+
+  const getDescriptionPreview = (description: string) => {
+    return (
+      description
+        .split("\n")
+        .map((line) => line.trim())
+        .find(Boolean) || "Event details will be announced soon."
+    );
+  };
 
   // Handle scroll events
   useEffect(() => {
@@ -287,91 +383,85 @@ export default function KronosTechFest() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "HOLI PARTY",
-                desc: "Engage in thought-provoking discussions on the ethical implications of advanced AI systems.",
-                badge: "PRE EVENT",
-                badgeColor: "bg-purple-600/90",
-                day: "Day 1",
-                time: "MARCH 09, 2025",
-                image: "/holiparty.jpeg", // Unique image for this event
-              },
-              {
-                title: "BEYOND THE LENS",
-                desc: "Explore how nature's designs can inspire technological innovation. This interdisciplinary forum brings together experts.",
-                badge: "MAIN EVENT",
-                badgeColor: "bg-pink-600/90",
-                day: "Day 2",
-                time: "APRIL 01, 2025",
-                image: "/beyondthelens.jpeg", // Unique image for this event
-              },
-              {
-                title: "AD-MAD",
-                desc: "Envision the societal implications of emerging technologies in this forward-thinking symposium.",
-                badge: "MAIN EVENT",
-                badgeColor: "bg-purple-600/90",
-                day: "Day 3",
-                time: "APRIL 07, 2025",
-                image: "/admad.jpeg", // Unique image for this event
-              },
-            ].map((event, index) => (
-              <div
-                key={index}
-                className="group bg-gradient-to-b from-gray-900 to-gray-800 border border-purple-500/20 rounded-xl overflow-hidden hover:border-purple-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-purple-500/10 animate-fade-in-up"
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {featuredEvents.map((event, index) => (
+              <Card
+                key={`${event.id}-${event.title}`}
+                className="group relative h-full overflow-hidden rounded-2xl border-purple-500/20 bg-slate-900/45 shadow-xl backdrop-blur-md transition-all duration-300 hover:border-purple-400/50 hover:shadow-purple-500/20 animate-fade-in-up"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative aspect-[16/9] overflow-hidden">
                   <Image
-                    src={event.image} // Use the unique image here
+                    src={event.image || "/placeholder.svg"}
                     alt={event.title}
-                    width={500}
-                    height={300}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/50 to-transparent" />
 
-                  {/* HUD elements */}
-                  <div className="absolute inset-0 border border-purple-500/0 group-hover:border-purple-500/30 transition-all duration-500"></div>
-                  <div className="absolute top-4 right-4 w-16 h-16 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="w-full h-full border-t-2 border-r-2 border-purple-500/50 rounded-tr-lg"></div>
-                  </div>
-                  <div className="absolute bottom-4 left-4 w-16 h-16 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="w-full h-full border-b-2 border-l-2 border-purple-500/50 rounded-bl-lg"></div>
+                  <div className="absolute bottom-3 left-3 flex flex-wrap gap-2">
+                    <Badge className="border-purple-400/40 bg-purple-500/20 text-purple-100">
+                      {event.id.startsWith("PRE") ? "Pre-Event" : "Main Event"}
+                    </Badge>
+                    <Badge variant="secondary" className="bg-slate-950/60 text-slate-100">
+                      {event.category === "tech" ? "Tech" : "Non-Tech"}
+                    </Badge>
                   </div>
 
-                  <div
-                    className={`absolute bottom-4 left-4 ${event.badgeColor} text-white text-xs font-medium px-2 py-1 rounded event-badge`}
-                  >
-                    {event.badge}
-                  </div>
                 </div>
-                <div className="p-6 relative">
-                  {/* Tech scan lines */}
-                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(147,112,219,0.03)_50%)] bg-[length:100%_4px] pointer-events-none"></div>
 
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-purple-500 transition-colors duration-300 event-title">
-                    {event.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm mb-4">{event.desc}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4 text-purple-500" />
-                      <span className="event-date">{event.time}</span>
+                <div className="flex flex-col gap-4 p-5">
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold leading-tight tracking-tight text-slate-100 transition-colors group-hover:text-purple-300">
+                      {event.title}
+                    </h3>
+                    <p className="line-clamp-2 text-sm text-slate-300/85">
+                      {getDescriptionPreview(event.description)}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2 text-xs text-slate-300/80 sm:grid-cols-2">
+                    <div className="inline-flex items-center gap-2">
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>{event.date}</span>
+                    </div>
+                    <div className="inline-flex items-center gap-2">
+                      <Clock3 className="w-3.5 h-3.5" />
+                      <span>{getEventTime(event)}</span>
                     </div>
                   </div>
-                  <Link href="/events">
-                    <Button
-                      variant="outline"
-                      className="w-full border-purple-500/30 text-white hover:bg-purple-950/30 group-hover:border-purple-500/70 transition-all duration-300"
-                    >
-                      Learn More
-                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Button>
-                  </Link>
+
+                  <div className="flex items-center justify-between border-t border-slate-700/70 pt-4">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <Avatar className="size-8 border border-slate-600/70">
+                        <AvatarImage src={event.coordinator.avatar} alt={event.coordinator.name} />
+                        <AvatarFallback>
+                          {event.coordinator.name
+                            .split(" ")
+                            .map((part) => part[0])
+                            .join("")
+                            .slice(0, 2)
+                            .toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="min-w-0 text-xs">
+                        <p className="truncate font-medium text-slate-100">{event.coordinator.name}</p>
+                        <p className="truncate text-slate-400">{event.venue}</p>
+                      </div>
+                    </div>
+
+                    <Link href="/events">
+                      <Button
+                        variant="outline"
+                        className="border-purple-500/40 text-white hover:bg-purple-950/30"
+                      >
+                        View
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
           <div className="text-center mt-12 animate-fade-in animation-delay-500">
@@ -407,105 +497,22 @@ export default function KronosTechFest() {
             </p>
           </div>
 
-          <div
-            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6`}
-          >
-            {[
-              {
-                name: "Piyush Mishra",
-                role: "Indian Actor and Singer",
-                bio: "Piyush Mishra is an Indian actor, singer, lyricist, playwright, musician, and screenwriter",
-                image: "/piyushmishra.jpg",
-              },
-              {
-                name: "Ankit Tiwari",
-                role: "Indian playback singer",
-                bio: "Ankit Tiwari is an Indian playback singer, live performer, music director, composer.",
-                image: "/ankit-tiwari.jpg",
-              },
-              {
-                name: "Papon",
-                role: "Indian playback singer and composer",
-                bio: "Angaraag Mahanta, known by his stagename Papon, is an Indian playback singer and composer from Assam.",
-                image: "/Papon.jpg",
-              },
-              {
-                name: "Jubin Nautiyal",
-                role: "Indian playback singer",
-                bio: "Jubin Nautiyal is an Indian playback singer and live performer.",
-                image: "/jubnialnutial.jpg",
-              },
-              {
-                name: "Kunal Bojewar",
-                role: "Singer",
-                bio: "Kunal Bojewar, is an intense Singer, Composer and a power-packed Performer.",
-                image: "/kunal.jpg",
-              },
-              {
-                name: "Arijit Singh",
-                role: "Indian playback singer",
-                bio: "Arijit Singh is an Indian playback singer.",
-                image: "/Arijit-Singh.png",
-              },
-              {
-                name: "Neeti Mohan",
-                role: "Indian Singer",
-                bio: "Neeti Mohan Sharma is an Indian singer.",
-                image: "/neeti-mohan.jpg",
-              },
-              {
-                name: "KK",
-                role: "Indian Playback Singer",
-                bio: "Krishnakumar Kunnath, popularly known as KK, was an Indian playback singer.",
-                image: "/kk.jpg",
-              },
-              {
-                name: "Shilpa Rao",
-                role: "Indian Singer",
-                bio: "Shilpa Rao is an Indian singer who primarily records songs in Hindi language.",
-                image: "/shilpa-rao.jpg",
-              },
-            ].map((speaker, index) => (
-              <div
-                key={index}
-                className="group bg-gradient-to-b from-gray-900 to-gray-800 border border-purple-500/20 rounded-xl overflow-hidden hover:border-purple-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-purple-500/10 animate-fade-in-up"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="relative h-64 overflow-hidden">
-                  {/* HUD elements */}
-                  <div className="absolute inset-0 z-20 border border-purple-500/0 group-hover:border-purple-500/30 transition-all duration-500"></div>
-                  <div className="absolute top-4 right-4 z-20 w-16 h-16 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="w-full h-full border-t-2 border-r-2 border-purple-500/50 rounded-tr-lg"></div>
-                  </div>
-                  <div className="absolute bottom-4 left-4 z-20 w-16 h-16 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="w-full h-full border-b-2 border-l-2 border-purple-500/50 rounded-bl-lg"></div>
-                  </div>
-
-                  {/* Tech scan lines */}
-                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(147,112,219,0.05)_50%)] bg-[length:100%_4px] z-10 pointer-events-none"></div>
-
-                  <Image
-                    src={speaker.image}
-                    alt={speaker.name}
-                    width={500}
-                    height={500}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-                </div>
-                <div className="p-6 relative">
-                  {/* Tech scan lines */}
-                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(147,112,219,0.03)_50%)] bg-[length:100%_4px] pointer-events-none"></div>
-
-                  <h3 className="text-xl font-bold group-hover:text-purple-500 transition-colors duration-300">
-                    {speaker.name}
-                  </h3>
-                  <p className="text-purple-500 text-sm mb-2">{speaker.role}</p>
-                  <p className="text-gray-400 text-sm">{speaker.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <CardStack
+            items={pastCelebrities}
+            cardHeight={360}
+            cardWidth={560}
+            maxVisible={5}
+            overlap={0.56}
+            spreadDeg={44}
+            depthPx={160}
+            activeScale={1.04}
+            inactiveScale={0.9}
+            activeLiftPx={28}
+            autoAdvance
+            intervalMs={3200}
+            pauseOnHover
+            className="mx-auto"
+          />
         </div>
         </section>
 

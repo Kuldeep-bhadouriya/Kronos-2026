@@ -1061,20 +1061,25 @@ class App {
         resolutionScale: 1
       })
     );
-
-    const smaaPass = new EffectPass(
-      this.camera,
-      new SMAAEffect({
-        preset: SMAAPreset.MEDIUM
-      })
-    );
     this.renderPass.renderToScreen = false;
-    this.bloomPass.renderToScreen = false;
-    smaaPass.renderToScreen = true;
-
     this.composer.addPass(this.renderPass);
+    this.bloomPass.renderToScreen = true;
     this.composer.addPass(this.bloomPass);
-    this.composer.addPass(smaaPass);
+
+    // Some runtimes can fail to initialize SMAA internals; keep rendering functional without it.
+    try {
+      const smaaPass = new EffectPass(
+        this.camera,
+        new SMAAEffect({
+          preset: SMAAPreset.MEDIUM
+        })
+      );
+      this.bloomPass.renderToScreen = false;
+      smaaPass.renderToScreen = true;
+      this.composer.addPass(smaaPass);
+    } catch (error) {
+      console.warn('Hyperspeed: SMAA disabled due to initialization failure.', error);
+    }
   }
 
   loadAssets(): Promise<void> {

@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 import type { Event } from "@/lib/types";
 import CoordinatorCard from "@/components/coordinator-card";
 
@@ -17,7 +19,18 @@ export default function EventDetail({
   onClose,
   activeSection,
 }: EventDetailProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const accentColor = activeSection === "pre-event" ? "blue" : "red";
+
+  useEffect(() => {
+    setIsMounted(true);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
 
   // Function to preserve line breaks in description
   const formatDescription = (description: string) => {
@@ -29,13 +42,17 @@ export default function EventDetail({
     ));
   };
 
-  return (
+  if (!isMounted) {
+    return null;
+  }
+
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+      className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md sm:items-center"
       onClick={onClose}
     >
       <motion.div
@@ -43,9 +60,9 @@ export default function EventDetail({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className={`bg-slate-900/90 backdrop-blur-md rounded-lg overflow-hidden w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-slate-800 shadow-[0_0_30px_rgba(${
+        className={`my-4 w-full max-w-4xl overflow-y-auto overflow-x-hidden rounded-lg border border-slate-800 bg-slate-900/90 backdrop-blur-md shadow-[0_0_30px_rgba(${ 
           accentColor === "blue" ? "59,130,246" : "239,68,68"
-        },0.2)]`}
+        },0.2)] sm:max-h-[90vh] sm:my-0`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Interface elements */}
@@ -265,6 +282,7 @@ export default function EventDetail({
         {/* EVENT_ID: {event.id} */}
         {/* </div> */}
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }
