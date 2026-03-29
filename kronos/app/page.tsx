@@ -9,9 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, MapPin, ChevronRight, ArrowRight, Clock3 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Countdown from "@/components/Countdown";
-import PosterSlider from "@/components/posterSlider";
-import Hyperspeed from "@/components/Hyperspeed";
-import { hyperspeedPresets } from "@/components/HyperSpeedPresets";
+import Hyperspeed, { type HyperspeedOptions } from "@/components/Hyperspeed";
 import { CardStack, type CardStackItem } from "@/components/card-stack";
 import { preEvents, mainEvents } from "@/lib/data";
 import type { Event } from "@/lib/types";
@@ -83,7 +81,6 @@ const pastCelebrities: CardStackItem[] = [
 ];
 
 export default function KronosTechFest() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [isMobileView, setIsMobileView] = useState(false);
   const heroRef = useRef<HTMLElement | null>(null);
@@ -114,21 +111,17 @@ export default function KronosTechFest() {
     return () => mediaQuery.removeEventListener("change", updateView);
   }, []);
 
-  const homeHyperspeedEffect = useMemo(
+  const homeHyperspeedEffect = useMemo<Partial<HyperspeedOptions>>(
     () => ({
-      ...hyperspeedPresets.one,
       roadWidth: isMobileView ? 7 : 10,
       lanesPerRoad: isMobileView ? 2 : 3,
       fov: isMobileView ? 105 : 95,
       speedUp: isMobileView ? 2.2 : 3,
-      movingAwaySpeed: isMobileView
-        ? ([65, 95] as [number, number])
-        : ([95, 125] as [number, number]),
-      movingCloserSpeed: isMobileView
-        ? ([-125, -170] as [number, number])
-        : ([-185, -245] as [number, number]),
+      movingAwaySpeed: isMobileView ? [65, 95] : [95, 125],
+      movingCloserSpeed: isMobileView ? [-125, -170] : [-185, -245],
       colors: {
-        ...hyperspeedPresets.one.colors,
+        roadColor: 0x080808,
+        islandColor: 0x0a0a0a,
         background: 0x04030a,
         shoulderLines: 0x2f2a42,
         brokenLines: 0x2f2a42,
@@ -167,12 +160,11 @@ export default function KronosTechFest() {
   // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-
       // Determine active section
       const scrollPosition = window.scrollY + 100;
+      const sections = Object.keys(sectionRefs) as Array<keyof typeof sectionRefs>;
 
-      for (const section in sectionRefs) {
+      for (const section of sections) {
         const element = sectionRefs[section].current;
         if (element) {
           const offsetTop = element.offsetTop;
@@ -195,50 +187,6 @@ export default function KronosTechFest() {
 
   // Countdown timer
 
-  function AutomaticImageSlider() {
-    const images = [
-      "/slider-6.jpg",
-      "/slider-1.jpg",
-      "/slider-2.jpg",
-      "/slider-3.jpg",
-      "/slider-4.jpg",
-      "/slider-5.jpg",
-      // Add more image paths as needed
-    ];
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 3000); // Change image every 3 seconds
-
-      return () => clearInterval(interval);
-    }, [images.length]);
-
-    return (
-      <div className="relative w-full h-[300px] md:h-[500px] sm:h-[300px]">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          >
-            <Image
-              src={image || "/placeholder.svg"}
-              alt={`Slider image ${index + 1}`}
-              width={1920}
-              height={1080}
-              className="w-full h-full object-cover"
-              priority
-            />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen text-white overflow-hidden relative isolate">
       {/* Animated background */}
@@ -253,7 +201,7 @@ export default function KronosTechFest() {
       <div className="relative z-10">
 
         {/* Navbar */}
-        <Navbar isScrolled={isScrolled} activeSection={activeSection} />
+        <Navbar activeSection={activeSection} />
 
         {/* Hero Section */}
         <section
@@ -262,8 +210,8 @@ export default function KronosTechFest() {
         className="relative z-10 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden min-h-screen flex items-center"
       >
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="md:w-1/2 space-y-6 animate-fade-in-up">
+          <div className="flex flex-col">
+            <div className="max-w-3xl space-y-6 animate-fade-in-up">
               <div className="inline-block px-3 py-1 rounded-full bg-purple-900/20 border border-purple-500/30 text-purple-500 text-xs font-medium backdrop-blur-sm">
                 TECH FEST 2025
               </div>
@@ -303,32 +251,6 @@ export default function KronosTechFest() {
                 </Button> */}
               </div>
             </div>
-            <div className="md:w-1/2 mt-10 md:mt-0 relative animate-fade-in-up animation-delay-300">
-              <div className="relative w-full h-[400px] md:h-[500px]">
-                {/* Arc reactor inspired design with updated colors */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border-4 border-purple-500/20 animate-spin-slow"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full border border-pink-500/20 animate-spin-slow-reverse"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border-2 border-purple-500/10 animate-spin-slow"></div>
-
-                {/* Glowing effects */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-lg blur-xl animate-pulse-slow"></div>
-
-                <div className="relative z-10 w-full h-full rounded-lg border border-purple-500/30 overflow-hidden group transition-all duration-500 hover:border-purple-500/70 hover:shadow-lg hover:shadow-purple-500/20">
-                  {/* Replace with this automatic slider implementation */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-purple-900/30 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                  {/* Tech scan lines */}
-                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(147,112,219,0.05)_50%)] bg-[length:100%_4px] z-10 pointer-events-none"></div>
-
-                  {/* Automatic Image Slider */}
-                  <AutomaticImageSlider />
-                </div>
-
-                {/* Decorative elements */}
-                <div className="absolute -bottom-5 -right-5 w-32 h-32 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full blur-xl opacity-50 animate-pulse-slow"></div>
-                <div className="absolute -top-5 -left-5 w-24 h-24 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full blur-xl opacity-30 animate-pulse-slow animation-delay-500"></div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -343,25 +265,6 @@ export default function KronosTechFest() {
 
         {/* Countdown Timer */}
         <Countdown />
-
-        {/* Poster Slider Section */}
-        <section id="posters" className="relative z-10 main-h-screen py-10">
-        <div className="container mx-auto px-4 h-full">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
-              Watch Our Featured Posts
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mt-4">
-              Posts and trailers from our ongoing events.
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <div className=" w-full h-full md:w-3/4 lg:w-1/2">
-              <PosterSlider />
-            </div>
-          </div>
-        </div>
-        </section>
 
         {/* Events Section */}
         <section

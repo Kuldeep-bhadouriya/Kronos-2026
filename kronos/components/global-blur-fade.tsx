@@ -12,9 +12,11 @@ interface GlobalBlurFadeProps {
 export default function GlobalBlurFade({ children }: GlobalBlurFadeProps) {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
+  const normalizedPathname = pathname !== "/" ? pathname.replace(/\/$/, "") : pathname;
+  const disableBlurFadeRoutes = new Set(["/", "/about", "/schedule", "/team", "/developers"]);
 
-  // Keep home route free from transform/filter wrappers so fixed canvas backgrounds render correctly.
-  if (shouldReduceMotion || pathname === "/") {
+  // Keep fixed-background routes free from transform/filter wrappers so fixed canvas backgrounds and navbar layering render correctly.
+  if (shouldReduceMotion || disableBlurFadeRoutes.has(normalizedPathname)) {
     return <>{children}</>;
   }
 

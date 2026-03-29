@@ -61,7 +61,7 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
         scrolled
           ? "bg-black/80 backdrop-blur-md py-2 shadow-lg shadow-purple-500/10 glow-border"
           : "bg-transparent py-4"
@@ -177,3 +177,4 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
     </header>
   );
 }
+

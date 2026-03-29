@@ -137,7 +137,7 @@ const DeveloperTeam: React.FC = () => {
         <h2 className="section-title">Developers Team</h2>
 
         <div className="team-container">
-          <div className="team-row">
+          {/* <div className="team-row">
             <div className="team-member">
               <div className="member-photo-container">
                 <img
@@ -248,7 +248,7 @@ const DeveloperTeam: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="team-row">
             <div className="team-member">
@@ -284,82 +284,6 @@ const DeveloperTeam: React.FC = () => {
               </div>
             </div>
 
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="WhatsApp Image 2025-03-21 at 15.58.53_acbf2200.jpg"
-                  alt="Sarthak Bandil"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Sarthak Bandil</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a
-                    href="https://github.com/Titan1123L"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/sarthak-bandil-05b553292"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/titan_.dev"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="IMG_20250321_161000[1].jpg"
-                  alt="Hansika Lalwani"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Hansika Lalwani</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a
-                    href="https://github.com/hansikalalwani19"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/hansika-lalwani-9559252a2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/_hansika_lalwani_?igsh=MTV0cDA0azUzMWVqYw=="
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="team-row">
             <div className="team-member">
               <div className="member-photo-container">
                 <img

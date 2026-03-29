@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useRef } from "react"
 import { cn } from "@/lib/utils"
+import { homeLikeHyperspeedEffect } from "@/lib/hyperspeed"
 import { Card } from "@/components/ui/card"
 import Navbar from "@/components/Navbar"
+import Hyperspeed from "@/components/Hyperspeed"
 
 const events = [
   {
@@ -224,7 +226,6 @@ export default function Home() {
   const [isChangingCategory, setIsChangingCategory] = useState(false)
   const [animatedEvents, setAnimatedEvents] = useState<number[]>([])
   const timelineRef = useRef<HTMLDivElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   // Handle category change with animation
   const handleCategoryChange = (category: string) => {
@@ -268,157 +269,18 @@ export default function Home() {
     }
   }
 
-  // Canvas background animation (similar to team page)
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    // Set canvas dimensions
-    const setCanvasDimensions = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
-    setCanvasDimensions()
-    window.addEventListener("resize", setCanvasDimensions)
-
-    // Particle class
-    class Particle {
-      x: number
-      y: number
-      size: number
-      speedX: number
-      speedY: number
-      color: string
-      alpha: number
-      alphaSpeed: number
-
-      constructor() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
-        this.size = Math.random() * 3 + 0.5
-        this.speedX = (Math.random() - 0.5) * 0.3
-        this.speedY = (Math.random() - 0.5) * 0.3
-        this.color = this.getRandomColor()
-        this.alpha = Math.random() * 0.5 + 0.1
-        this.alphaSpeed = Math.random() * 0.01 + 0.005
-      }
-
-      getRandomColor() {
-        const colors = [
-          "rgba(168, 85, 247, 0.7)", // Purple
-          "rgba(236, 72, 153, 0.7)", // Pink
-          "rgba(255, 255, 255, 0.7)", // White
-        ]
-        return colors[Math.floor(Math.random() * colors.length)]
-      }
-
-      update() {
-        this.x += this.speedX
-        this.y += this.speedY
-
-        // Bounce off edges
-        if (this.x > canvas.width || this.x < 0) {
-          this.speedX = -this.speedX
-        }
-        if (this.y > canvas.height || this.y < 0) {
-          this.speedY = -this.speedY
-        }
-
-        // Pulsate alpha
-        this.alpha += this.alphaSpeed
-        if (this.alpha > 0.7 || this.alpha < 0.1) {
-          this.alphaSpeed = -this.alphaSpeed
-        }
-      }
-
-      draw() {
-        if (!ctx) return
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-        ctx.fillStyle = this.color.replace("0.7", this.alpha.toString())
-        ctx.fill()
-      }
-    }
-
-    // Create particles
-    const particlesArray: Particle[] = []
-    const numberOfParticles = Math.min(100, Math.floor((window.innerWidth * window.innerHeight) / 10000))
-
-    for (let i = 0; i < numberOfParticles; i++) {
-      particlesArray.push(new Particle())
-    }
-
-    // Connect particles with lines
-    function connect() {
-      if (!ctx) return
-      const maxDistance = 150
-      for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-          const dx = particlesArray[a].x - particlesArray[b].x
-          const dy = particlesArray[a].y - particlesArray[b].y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance < maxDistance) {
-            const opacity = 1 - distance / maxDistance
-            ctx.strokeStyle = `rgba(168, 85, 247, ${opacity * 0.2})`
-            ctx.lineWidth = 1
-            ctx.beginPath()
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y)
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y)
-            ctx.stroke()
-          }
-        }
-      }
-    }
-
-    // Animation loop
-    function animate() {
-      if (!ctx || !canvas) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      // Draw gradient background
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-      gradient.addColorStop(0, "rgba(10, 10, 20, 1)")
-      gradient.addColorStop(1, "rgba(0, 0, 0, 1)")
-      ctx.fillStyle = gradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      // Update and draw particles
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update()
-        particlesArray[i].draw()
-      }
-
-      connect()
-      requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    return () => {
-      window.removeEventListener("resize", setCanvasDimensions)
-    }
-  }, [])
-
   return (
     <>
-      <Navbar />
-      <main className="min-h-screen bg-[#0f1117] text-white p-5 relative overflow-hidden">
-        {/* Canvas Background */}
-        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" style={{ position: "fixed" }} />
+      <main className="min-h-screen bg-[#0f1117] text-white p-5 relative isolate overflow-hidden">
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <Hyperspeed effectOptions={homeLikeHyperspeedEffect} />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/35 to-black/80" />
+        </div>
 
-        {/* Animated Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10 pointer-events-none"></div>
 
-        {/* Floating Geometric Shapes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-5">
-          <div className="absolute w-96 h-96 rounded-full bg-purple-500/10 blur-3xl animate-blob top-1/4 -left-48"></div>
-          <div className="absolute w-96 h-96 rounded-full bg-pink-500/10 blur-3xl animate-blob animation-delay-2000 top-3/4 -right-48"></div>
-          <div className="absolute w-80 h-80 rounded-full bg-purple-700/10 blur-3xl animate-blob animation-delay-4000 top-1/2 left-1/3"></div>
+        <div className="relative z-40">
+          <Navbar />
         </div>
 
         <style jsx global>{`

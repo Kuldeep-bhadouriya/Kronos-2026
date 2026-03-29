@@ -33,19 +33,19 @@ type ActionType =
 
 type Action =
   | {
-      type: ActionType
+      type: "ADD_TOAST"
       toast: ToasterToast
     }
   | {
-      type: ActionType
+      type: "UPDATE_TOAST"
       toast: Partial<ToasterToast>
     }
   | {
-      type: ActionType
+      type: "DISMISS_TOAST"
       toastId?: ToasterToast["id"]
     }
   | {
-      type: ActionType
+      type: "REMOVE_TOAST"
       toastId?: ToasterToast["id"]
     }
 

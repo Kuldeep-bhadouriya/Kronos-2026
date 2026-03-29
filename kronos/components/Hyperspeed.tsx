@@ -459,7 +459,7 @@ class CarLights {
     const geometry = new THREE.TubeGeometry(curve, 40, 1, 8, false);
 
     const instanced = new THREE.InstancedBufferGeometry();
-    instanced.copy(geometry);
+    instanced.copy(geometry as unknown as THREE.InstancedBufferGeometry);
     instanced.instanceCount = options.lightPairsPerRoadWay * 2;
 
     const laneWidth = options.roadWidth / options.lanesPerRoad;
@@ -535,7 +535,7 @@ class CarLights {
       )
     });
 
-    material.onBeforeCompile = shader => {
+    material.onBeforeCompile = (shader: { vertexShader: string }) => {
       shader.vertexShader = shader.vertexShader.replace(
         '#include <getDistortion_vertex>',
         typeof this.options.distortion === 'object' ? this.options.distortion.getDistortion : ''
@@ -618,7 +618,7 @@ class LightsSticks {
     const options = this.options;
     const geometry = new THREE.PlaneGeometry(1, 1);
     const instanced = new THREE.InstancedBufferGeometry();
-    instanced.copy(geometry);
+    instanced.copy(geometry as unknown as THREE.InstancedBufferGeometry);
     const totalSticks = options.totalSideLightSticks;
     instanced.instanceCount = totalSticks;
 
@@ -666,7 +666,7 @@ class LightsSticks {
       )
     });
 
-    material.onBeforeCompile = shader => {
+    material.onBeforeCompile = (shader: { vertexShader: string }) => {
       shader.vertexShader = shader.vertexShader.replace(
         '#include <getDistortion_vertex>',
         typeof this.options.distortion === 'object' ? this.options.distortion.getDistortion : ''
@@ -802,7 +802,7 @@ class Road {
       )
     });
 
-    material.onBeforeCompile = shader => {
+    material.onBeforeCompile = (shader: { vertexShader: string }) => {
       shader.vertexShader = shader.vertexShader.replace(
         '#include <getDistortion_vertex>',
         typeof this.options.distortion === 'object' ? this.options.distortion.getDistortion : ''
@@ -918,6 +918,29 @@ function resizeRendererToDisplaySize(
   return needResize;
 }
 
+function getTargetAspect() {
+  return 16 / 9;
+}
+
+function getContainRenderSize(width: number, height: number) {
+  const aspect = getTargetAspect();
+  const viewportAspect = width / height;
+
+  if (viewportAspect > aspect) {
+    return {
+      renderWidth: Math.ceil(height * aspect),
+      renderHeight: height,
+      aspect
+    };
+  }
+
+  return {
+    renderWidth: width,
+    renderHeight: Math.ceil(width / aspect),
+    aspect
+  };
+}
+
 class App {
   container: HTMLElement;
   options: HyperspeedOptions;
@@ -929,7 +952,7 @@ class App {
   bloomPass!: EffectPass;
   clock: THREE.Clock;
   assets: {
-    smaa?: {
+    smaa: {
       search?: HTMLImageElement;
       area?: HTMLImageElement;
     };
@@ -945,6 +968,9 @@ class App {
   speedUp: number;
   timeOffset: number;
   hasValidSize: boolean;
+  viewportWidth: number;
+  viewportHeight: number;
+  useComposer: boolean;
 
   constructor(container: HTMLElement, options: HyperspeedOptions) {
     this.options = options;
@@ -956,6 +982,9 @@ class App {
     }
     this.container = container;
     this.hasValidSize = false;
+    this.viewportWidth = 0;
+    this.viewportHeight = 0;
+    this.useComposer = true;
 
     const initW = Math.max(1, container.offsetWidth);
     const initH = Math.max(1, container.offsetHeight);
@@ -969,9 +998,12 @@ class App {
 
     this.composer = new EffectComposer(this.renderer);
     const canvas = this.renderer.domElement;
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
+    canvas.style.position = 'absolute';
+    canvas.style.left = '50%';
+    canvas.style.top = '50%';
+    canvas.style.transform = 'translate(-50%, -50%)';
     canvas.style.display = 'block';
+    canvas.style.pointerEvents = 'none';
     container.appendChild(canvas);
 
     this.camera = new THREE.PerspectiveCamera(options.fov, initW / initH, 0.1, 10000);
@@ -992,7 +1024,7 @@ class App {
     };
 
     this.clock = new THREE.Clock();
-    this.assets = {};
+    this.assets = { smaa: {} };
     this.disposed = false;
 
     this.road = new Road(this, options);
@@ -1044,30 +1076,59 @@ class App {
       return;
     }
 
-    this.renderer.setSize(width, height);
-    this.camera.aspect = width / height;
+    this.applyResponsiveSize();
+  }
+
+  applyResponsiveSize() {
+    const width = this.container.offsetWidth;
+    const height = this.container.offsetHeight;
+
+    if (width <= 0 || height <= 0) {
+      this.hasValidSize = false;
+      return;
+    }
+
+    const { renderWidth, renderHeight, aspect } = getContainRenderSize(width, height);
+    this.viewportWidth = width;
+    this.viewportHeight = height;
+
+    this.renderer.setSize(renderWidth, renderHeight, false);
+    this.composer.setSize(renderWidth, renderHeight);
+
+    this.camera.aspect = aspect;
     this.camera.updateProjectionMatrix();
-    this.composer.setSize(width, height);
+
+    const canvas = this.renderer.domElement;
+    canvas.style.width = `${renderWidth}px`;
+    canvas.style.height = `${renderHeight}px`;
+
     this.hasValidSize = true;
   }
 
   initPasses() {
-    this.renderPass = new RenderPass(this.scene, this.camera);
-    this.bloomPass = new EffectPass(
-      this.camera,
-      new BloomEffect({
-        luminanceThreshold: 0.2,
-        luminanceSmoothing: 0,
-        resolutionScale: 1
-      })
-    );
-    this.renderPass.renderToScreen = false;
-    this.composer.addPass(this.renderPass);
-    this.bloomPass.renderToScreen = true;
-    this.composer.addPass(this.bloomPass);
-
-    // Some runtimes can fail to initialize SMAA internals; keep rendering functional without it.
     try {
+      const contextAttributes = this.renderer.getContext()?.getContextAttributes?.();
+      if (!contextAttributes) {
+        this.useComposer = false;
+        console.warn('Hyperspeed: Postprocessing disabled because WebGL context attributes are unavailable.');
+        return;
+      }
+
+      this.renderPass = new RenderPass(this.scene, this.camera);
+      this.bloomPass = new EffectPass(
+        this.camera,
+        new BloomEffect({
+          luminanceThreshold: 0.2,
+          luminanceSmoothing: 0,
+          resolutionScale: 1
+        })
+      );
+      this.renderPass.renderToScreen = false;
+      this.composer.addPass(this.renderPass);
+      this.bloomPass.renderToScreen = true;
+      this.composer.addPass(this.bloomPass);
+
+      // Some runtimes can fail to initialize SMAA internals; keep rendering functional without it.
       const smaaPass = new EffectPass(
         this.camera,
         new SMAAEffect({
@@ -1078,7 +1139,8 @@ class App {
       smaaPass.renderToScreen = true;
       this.composer.addPass(smaaPass);
     } catch (error) {
-      console.warn('Hyperspeed: SMAA disabled due to initialization failure.', error);
+      this.useComposer = false;
+      console.warn('Hyperspeed: Postprocessing disabled due to initialization failure.', error);
     }
   }
 
@@ -1198,24 +1260,28 @@ class App {
   }
 
   render(delta: number) {
-    this.composer.render(delta);
+    if (this.useComposer) {
+      this.composer.render(delta);
+      return;
+    }
+
+    this.renderer.render(this.scene, this.camera);
   }
 
   dispose() {
     this.disposed = true;
 
     if (this.scene) {
-      this.scene.traverse(object => {
-        const obj = object as unknown as THREE.Mesh;
-        if (!obj.isMesh) return;
+      this.scene.traverse((object: THREE.Object3D) => {
+        if (!(object instanceof THREE.Mesh)) return;
 
-        if (obj.geometry) obj.geometry.dispose();
+        if (object.geometry) object.geometry.dispose();
 
-        if (obj.material) {
-          if (Array.isArray(obj.material)) {
-            obj.material.forEach(material => material.dispose());
+        if (object.material) {
+          if (Array.isArray(object.material)) {
+            object.material.forEach((material: THREE.Material) => material.dispose());
           } else {
-            obj.material.dispose();
+            object.material.dispose();
           }
         }
       });
@@ -1254,26 +1320,17 @@ class App {
     if (this.disposed) return;
 
     if (!this.hasValidSize) {
-      const w = this.container.offsetWidth;
-      const h = this.container.offsetHeight;
-      if (w > 0 && h > 0) {
-        this.renderer.setSize(w, h, false);
-        this.camera.aspect = w / h;
-        this.camera.updateProjectionMatrix();
-        this.composer.setSize(w, h);
-        this.hasValidSize = true;
-      } else {
+      this.applyResponsiveSize();
+      if (!this.hasValidSize) {
         requestAnimationFrame(this.tick);
         return;
       }
     }
 
-    if (resizeRendererToDisplaySize(this.renderer, this.setSize)) {
-      const canvas = this.renderer.domElement;
-      if (this.hasValidSize) {
-        this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        this.camera.updateProjectionMatrix();
-      }
+    const width = this.container.offsetWidth;
+    const height = this.container.offsetHeight;
+    if (width !== this.viewportWidth || height !== this.viewportHeight) {
+      this.applyResponsiveSize();
     }
 
     if (this.hasValidSize) {
@@ -1327,7 +1384,8 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTION
     };
   }, [effectOptions]);
 
-  return <div id="lights" className="relative w-full h-full overflow-hidden" ref={hyperspeed}></div>;
+  return <div id="lights" className="relative w-full h-full overflow-hidden pointer-events-none" ref={hyperspeed}></div>;
 };
 
 export default Hyperspeed;
+export type { HyperspeedOptions };
