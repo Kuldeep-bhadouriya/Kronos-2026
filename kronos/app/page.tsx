@@ -1,6 +1,5 @@
 "use client";
-import VideoPlayer from "@/components/videoPlayer";
-import { useEffect, useMemo, useRef, useState, Suspense } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,139 +7,13 @@ import { Calendar, MapPin, ChevronRight, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Countdown from "@/components/Countdown";
 import PosterSlider from "@/components/posterSlider";
-
-const particleData = [
-  {
-    top: "4%",
-    left: "55%",
-    animation: "float-particle 10s linear infinite",
-    animationDelay: "0.3s",
-  },
-  {
-    top: "23%",
-    left: "81%",
-    animation: "float-particle 14s linear infinite",
-    animationDelay: "4.2s",
-  },
-  {
-    top: "69%",
-    left: "65%",
-    animation: "float-particle 7s linear infinite",
-    animationDelay: "3.4s",
-  },
-  {
-    top: "38%",
-    left: "9%",
-    animation: "float-particle 14s linear infinite",
-    animationDelay: "0.6s",
-  },
-  {
-    top: "44%",
-    left: "49%",
-    animation: "float-particle 11s linear infinite",
-    animationDelay: "2.5s",
-  },
-  {
-    top: "7%",
-    left: "57%",
-    animation: "float-particle 14s linear infinite",
-    animationDelay: "3.6s",
-  },
-  {
-    top: "14%",
-    left: "98%",
-    animation: "float-particle 13s linear infinite",
-    animationDelay: "2.5s",
-  },
-  {
-    top: "5%",
-    left: "50%",
-    animation: "float-particle 11s linear infinite",
-    animationDelay: "1.4s",
-  },
-  {
-    top: "41%",
-    left: "31%",
-    animation: "float-particle 12s linear infinite",
-    animationDelay: "1.3s",
-  },
-  {
-    top: "18%",
-    left: "3%",
-    animation: "float-particle 6s linear infinite",
-    animationDelay: "3.3s",
-  },
-  {
-    top: "48%",
-    left: "98%",
-    animation: "float-particle 7s linear infinite",
-    animationDelay: "2.6s",
-  },
-  {
-    top: "71%",
-    left: "14%",
-    animation: "float-particle 14s linear infinite",
-    animationDelay: "4.1s",
-  },
-  {
-    top: "49%",
-    left: "34%",
-    animation: "float-particle 14s linear infinite",
-    animationDelay: "4.6s",
-  },
-  {
-    top: "0%",
-    left: "37%",
-    animation: "float-particle 7s linear infinite",
-    animationDelay: "0.3s",
-  },
-  {
-    top: "46%",
-    left: "27%",
-    animation: "float-particle 14s linear infinite",
-    animationDelay: "3.7s",
-  },
-  {
-    top: "11%",
-    left: "82%",
-    animation: "float-particle 9s linear infinite",
-    animationDelay: "0.2s",
-  },
-  {
-    top: "4%",
-    left: "68%",
-    animation: "float-particle 9s linear infinite",
-    animationDelay: "1.3s",
-  },
-  {
-    top: "6%",
-    left: "58%",
-    animation: "float-particle 7s linear infinite",
-    animationDelay: "0.6s",
-  },
-  {
-    top: "47%",
-    left: "40%",
-    animation: "float-particle 8s linear infinite",
-    animationDelay: "3.2s",
-  },
-  {
-    top: "7%",
-    left: "95%",
-    animation: "float-particle 14s linear infinite",
-    animationDelay: "3.9s",
-  },
-  {
-    top: "34%",
-    left: "67%",
-    animation: "float-particle 20s linear infinite",
-    animationDelay: "3.9s",
-  },
-];
+import Hyperspeed from "@/components/Hyperspeed";
+import { hyperspeedPresets } from "@/components/HyperSpeedPresets";
 
 export default function KronosTechFest() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [isMobileView, setIsMobileView] = useState(false);
   const heroRef = useRef<HTMLElement | null>(null);
   const aboutRef = useRef<HTMLElement | null>(null);
   const eventsRef = useRef<HTMLElement | null>(null);
@@ -157,6 +30,42 @@ export default function KronosTechFest() {
       sponsors: sponsorsRef,
     }),
     []
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+    const updateView = () => setIsMobileView(mediaQuery.matches);
+    updateView();
+
+    mediaQuery.addEventListener("change", updateView);
+    return () => mediaQuery.removeEventListener("change", updateView);
+  }, []);
+
+  const homeHyperspeedEffect = useMemo(
+    () => ({
+      ...hyperspeedPresets.one,
+      roadWidth: isMobileView ? 7 : 10,
+      lanesPerRoad: isMobileView ? 2 : 3,
+      fov: isMobileView ? 105 : 95,
+      speedUp: isMobileView ? 2.2 : 3,
+      movingAwaySpeed: isMobileView
+        ? ([65, 95] as [number, number])
+        : ([95, 125] as [number, number]),
+      movingCloserSpeed: isMobileView
+        ? ([-125, -170] as [number, number])
+        : ([-185, -245] as [number, number]),
+      colors: {
+        ...hyperspeedPresets.one.colors,
+        background: 0x04030a,
+        shoulderLines: 0x2f2a42,
+        brokenLines: 0x2f2a42,
+        leftCars: [0xff4dcd, 0xcd4fff, 0xff7b4d],
+        rightCars: [0x5de7ff, 0x6ba8ff, 0xb3f7ff],
+        sticks: 0x7af4ff,
+      },
+    }),
+    [isMobileView]
   );
 
   // Handle scroll events
@@ -235,44 +144,23 @@ export default function KronosTechFest() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className="min-h-screen text-white overflow-hidden relative isolate">
       {/* Animated background */}
-      <div className="fixed inset-0 z-0">
-        {/* Arc reactor glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(138,43,226,0.15)_0%,transparent_70%)] animate-pulse-slow"></div>
-
-        {/* Updated colors for purple/pink theme */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(186,85,211,0.1),transparent_70%)] animate-move-slow"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(147,112,219,0.1),transparent_70%)] animate-move-slow-reverse"></div>
-
-        {/* Tech grid pattern */}
-        <div
-          className="absolute inset-0 bg-cover opacity-20"
-          style={{ backgroundImage: "url('/slider-1.jpg')" }}
-        ></div>
-
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {particleData.map((particle, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 rounded-full bg-purple-500 opacity-70"
-              style={{
-                top: particle.top,
-                left: particle.left,
-                animation: particle.animation,
-                animationDelay: particle.animationDelay,
-              }}
-            ></div>
-          ))}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0">
+          <Hyperspeed effectOptions={homeHyperspeedEffect} />
         </div>
+        <div className="absolute inset-0 bg-black/5" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(147,51,234,0.14),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.12),transparent_55%)]" />
       </div>
 
-      {/* Navbar */}
-      <Navbar isScrolled={isScrolled} activeSection={activeSection} />
+      <div className="relative z-10">
 
-      {/* Hero Section */}
-      <section
+        {/* Navbar */}
+        <Navbar isScrolled={isScrolled} activeSection={activeSection} />
+
+        {/* Hero Section */}
+        <section
         id="hero"
         ref={sectionRefs.hero}
         className="relative z-10 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden min-h-screen flex items-center"
@@ -355,34 +243,13 @@ export default function KronosTechFest() {
             <div className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-scroll-down"></div>
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Countdown Timer */}
-      <Countdown />
+        {/* Countdown Timer */}
+        <Countdown />
 
-      {/* Video Section */}
-      <section id="video" className="relative z-10 py-10 ">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
-              Watch Our Featured Video
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mt-4">
-              Dive into the highlights of our tech fest with this exclusive
-              videos and trailers.
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <div className="w-full md:w-3/4 lg:w-1/2 aspect-video">
-              <Suspense fallback={<div>Loading component...</div>}></Suspense>
-              <VideoPlayer />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Poster Slider Section */}
-      <section id="posters" className="relative z-10 main-h-screen py-10">
+        {/* Poster Slider Section */}
+        <section id="posters" className="relative z-10 main-h-screen py-10">
         <div className="container mx-auto px-4 h-full">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-white">
@@ -398,10 +265,10 @@ export default function KronosTechFest() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Events Section */}
-      <section
+        {/* Events Section */}
+        <section
         id="events"
         ref={sectionRefs.events}
         className="relative z-10 py-20"
@@ -516,10 +383,10 @@ export default function KronosTechFest() {
             </Link>
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Speakers Section */}
-      <section
+        {/* Speakers Section */}
+        <section
         id="speakers"
         ref={sectionRefs.speakers}
         className="relative z-10 py-20"
@@ -640,10 +507,10 @@ export default function KronosTechFest() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Sponsors Section */}
-      <section
+        {/* Sponsors Section */}
+        <section
         id="sponsors"
         ref={sectionRefs.sponsors}
         className="relative z-10 py-20"
@@ -827,7 +694,8 @@ export default function KronosTechFest() {
             </Link>
           </div>
         </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }

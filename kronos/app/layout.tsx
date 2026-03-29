@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import { Orbitron, Rajdhani } from "next/font/google";
+import GlobalBlurFade from "@/components/global-blur-fade";
 
 // Define the main heading font (for titles like "EVENTS", "HOLI PARTY", etc.)
 const orbitron = Orbitron({
@@ -34,7 +35,7 @@ export default function RootLayout({
         <link rel="icon" href="/title_logo.png" />
       </head>
       <body className={`${orbitron.variable} ${rajdhani.variable}`}>
-        {children}
+        <GlobalBlurFade>{children}</GlobalBlurFade>
       </body>
     </html>
   );
