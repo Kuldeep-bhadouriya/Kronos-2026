@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Orbitron, Rajdhani } from "next/font/google";
 import GlobalBlurFade from "@/components/global-blur-fade";
+import GradualBlur from "@/components/ui/gradual-blur";
 
 // Define the main heading font (for titles like "EVENTS", "HOLI PARTY", etc.)
 const orbitron = Orbitron({
@@ -36,6 +37,17 @@ export default function RootLayout({
       </head>
       <body className={`${orbitron.variable} ${rajdhani.variable}`}>
         <GlobalBlurFade>{children}</GlobalBlurFade>
+        <GradualBlur
+          target="page"
+          position="bottom"
+          height="7rem"
+          strength={2}
+          divCount={5}
+          curve="bezier"
+          exponential
+          opacity={1}
+          zIndex={60}
+        />
       </body>
     </html>
   );
