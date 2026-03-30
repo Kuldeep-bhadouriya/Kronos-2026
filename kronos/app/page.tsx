@@ -1,17 +1,27 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Calendar, MapPin, ChevronRight, ArrowRight, Clock3 } from "lucide-react";
+import Link from "next/link";
+import {
+  ArrowRight,
+  CalendarDays,
+  ChevronRight,
+  Clock3,
+  MapPin,
+  Sparkles,
+  Ticket,
+  Users,
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Countdown from "@/components/Countdown";
 import Hyperspeed, { type HyperspeedOptions } from "@/components/Hyperspeed";
 import { CardStack, type CardStackItem } from "@/components/card-stack";
-import { preEvents, mainEvents } from "@/lib/data";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { mainEvents, preEvents } from "@/lib/data";
 import type { Event } from "@/lib/types";
 
 const pastCelebrities: CardStackItem[] = [
@@ -80,22 +90,110 @@ const pastCelebrities: CardStackItem[] = [
   },
 ];
 
+const sponsorTiers = [
+  {
+    tier: "Platinum Partners",
+    headingClass: "text-purple-200",
+    borderClass: "border-purple-800/35",
+    glowClass: "from-purple-500/18 to-pink-500/12",
+    gridClass: "grid-cols-2 md:grid-cols-3",
+    sponsors: [
+      {
+        name: "Google",
+        image:
+          "https://images.yourstory.com/cs/images/companies/lenskaart-33-1587990847871.png?fm=png&auto=formatar=1:1&mode=fill&fill=solid",
+      },
+      {
+        name: "Microsoft",
+        image:
+          "https://logos-marcas.com/wp-content/uploads/2021/03/Honda-Logotipo-2000-presente.jpg",
+      },
+      {
+        name: "Amazon",
+        image:
+          "https://tse3.mm.bing.net/th?id=OIP.TLxP6eAGKN4bWUZ0aF46zwHaHa&pid=Api&P=0&h=180",
+      },
+    ],
+  },
+  {
+    tier: "Gold Partners",
+    headingClass: "text-pink-200",
+    borderClass: "border-pink-700/35",
+    glowClass: "from-pink-500/18 to-purple-500/12",
+    gridClass: "grid-cols-2 md:grid-cols-4",
+    sponsors: [
+      {
+        name: "IBM",
+        image:
+          "https://tse2.mm.bing.net/th?id=OIP.rmApNlkmt1XV52d2RWl1ggHaEK&pid=Api&P=0&h=180",
+      },
+      {
+        name: "Intel",
+        image:
+          "https://tse1.mm.bing.net/th?id=OIP.KDPTy05azia6fr42nA689gHaD4&pid=Api&P=0&h=180",
+      },
+      {
+        name: "Oracle",
+        image:
+          "https://tse2.mm.bing.net/th?id=OIP.kkvPd39_KtkGavl6rbrgNAHaE8&pid=Api&P=0&h=180",
+      },
+      {
+        name: "Cisco",
+        image:
+          "https://tse3.mm.bing.net/th?id=OIP.tO-AQAR5s_MUgpoPDrT7BQAAAA&pid=Api&P=0&h=180",
+      },
+    ],
+  },
+  {
+    tier: "Ecosystem Partners",
+    headingClass: "text-slate-200",
+    borderClass: "border-purple-900/30",
+    glowClass: "from-purple-500/14 to-slate-400/8",
+    gridClass: "grid-cols-2 md:grid-cols-5",
+    sponsors: [
+      {
+        name: "Adobe",
+        image:
+          "https://tse4.mm.bing.net/th?id=OIP.K1op1wSh4Iv0l0ib8skRwwHaEK&pid=Api&P=0&h=180",
+      },
+      {
+        name: "Nvidia",
+        image:
+          "https://tse1.mm.bing.net/th?id=OIP.bYVxvwq-4t530u24ooiadAHaDA&pid=Api&P=0&h=180",
+      },
+      {
+        name: "Salesforce",
+        image:
+          "https://tse3.mm.bing.net/th?id=OIP.8-9dRYU-fKR5arZeCcJnSAHaDr&pid=Api&P=0&h=180",
+      },
+      {
+        name: "SAP",
+        image:
+          "https://tse4.mm.bing.net/th?id=OIP.-erQrffKB1yp91EKAnKrhAAAAA&pid=Api&P=0&h=180",
+      },
+      {
+        name: "VMware",
+        image:
+          "https://tse2.mm.bing.net/th?id=OIP.84yghb8dXKRfsliVHAM-ZQHaB7&pid=Api&P=0&h=180",
+      },
+    ],
+  },
+] as const;
+
 export default function KronosTechFest() {
   const [activeSection, setActiveSection] = useState("hero");
   const [isMobileView, setIsMobileView] = useState(false);
+
   const heroRef = useRef<HTMLElement | null>(null);
-  const aboutRef = useRef<HTMLElement | null>(null);
   const eventsRef = useRef<HTMLElement | null>(null);
   const speakersRef = useRef<HTMLElement | null>(null);
-  const scheduleRef = useRef<HTMLElement | null>(null);
   const sponsorsRef = useRef<HTMLElement | null>(null);
+
   const sectionRefs = useMemo(
     () => ({
       hero: heroRef,
-      about: aboutRef,
       events: eventsRef,
       speakers: speakersRef,
-      schedule: scheduleRef,
       sponsors: sponsorsRef,
     }),
     []
@@ -103,22 +201,51 @@ export default function KronosTechFest() {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
-
     const updateView = () => setIsMobileView(mediaQuery.matches);
-    updateView();
 
+    updateView();
     mediaQuery.addEventListener("change", updateView);
     return () => mediaQuery.removeEventListener("change", updateView);
   }, []);
 
+  useEffect(() => {
+    const sections = Object.entries(sectionRefs) as Array<
+      [keyof typeof sectionRefs, RefObject<HTMLElement | null>]
+    >;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const topVisible = [...entries]
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (topVisible?.target?.id) {
+          setActiveSection(topVisible.target.id);
+        }
+      },
+      {
+        rootMargin: "-20% 0px -40% 0px",
+        threshold: [0.2, 0.4, 0.7],
+      }
+    );
+
+    sections.forEach(([_, ref]) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [sectionRefs]);
+
   const homeHyperspeedEffect = useMemo<Partial<HyperspeedOptions>>(
     () => ({
-      roadWidth: isMobileView ? 7 : 10,
+      roadWidth: isMobileView ? 7 : 10.5,
       lanesPerRoad: isMobileView ? 2 : 3,
-      fov: isMobileView ? 105 : 95,
-      speedUp: isMobileView ? 2.2 : 3,
-      movingAwaySpeed: isMobileView ? [65, 95] : [95, 125],
-      movingCloserSpeed: isMobileView ? [-125, -170] : [-185, -245],
+      fov: isMobileView ? 108 : 94,
+      speedUp: isMobileView ? 2.3 : 3.2,
+      movingAwaySpeed: isMobileView ? [70, 95] : [98, 130],
+      movingCloserSpeed: isMobileView ? [-128, -165] : [-190, -248],
       colors: {
         roadColor: 0x080808,
         islandColor: 0x0a0a0a,
@@ -133,13 +260,36 @@ export default function KronosTechFest() {
     [isMobileView]
   );
 
-  const featuredEvents = useMemo(
-    () =>
-      [preEvents[0], preEvents[2], mainEvents[0]].filter(
-        (event): event is Event => Boolean(event)
-      ),
-    []
-  );
+  const featuredEvents = useMemo(() => {
+    const picks = [mainEvents[0], preEvents[4], preEvents[2], preEvents[0]];
+    return picks.filter((event): event is Event => Boolean(event)).slice(0, 3);
+  }, []);
+
+  const eventStats = useMemo(() => {
+    const allEvents = [...preEvents, ...mainEvents];
+    const coordinatorCount = new Set(allEvents.map((event) => event.coordinator.name)).size;
+
+    return [
+      {
+        label: "Events",
+        value: `${allEvents.length}+`,
+        helper: "Across tech and culture",
+        icon: Ticket,
+      },
+      {
+        label: "Coordinators",
+        value: `${coordinatorCount}+`,
+        helper: "Student-led execution",
+        icon: Users,
+      },
+      {
+        label: "Festival Days",
+        value: "03",
+        helper: "High-energy campus takeover",
+        icon: Sparkles,
+      },
+    ];
+  }, []);
 
   const getEventTime = (event: Event) => {
     if (event.timing) return event.timing;
@@ -157,440 +307,405 @@ export default function KronosTechFest() {
     );
   };
 
-  // Handle scroll events
-  useEffect(() => {
-    const handleScroll = () => {
-      // Determine active section
-      const scrollPosition = window.scrollY + 100;
-      const sections = Object.keys(sectionRefs) as Array<keyof typeof sectionRefs>;
-
-      for (const section of sections) {
-        const element = sectionRefs[section].current;
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const height = element.offsetHeight;
-
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + height
-          ) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [sectionRefs]);
-
-  // Countdown timer
-
   return (
-    <div className="min-h-screen text-white overflow-hidden relative isolate">
-      {/* Animated background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+    <div className="relative isolate min-h-screen overflow-hidden bg-slate-950 text-slate-100">
+      <div className="pointer-events-none fixed inset-0 z-0">
         <div className="absolute inset-0">
           <Hyperspeed effectOptions={homeHyperspeedEffect} />
         </div>
-        <div className="absolute inset-0 bg-black/5" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(147,51,234,0.14),transparent_50%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.12),transparent_55%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/35 to-black/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(168,85,247,0.2),transparent_42%),radial-gradient(circle_at_85%_85%,rgba(236,72,153,0.16),transparent_50%)]" />
       </div>
 
       <div className="relative z-10">
-
-        {/* Navbar */}
         <Navbar activeSection={activeSection} />
 
-        {/* Hero Section */}
         <section
-        id="hero"
-        ref={sectionRefs.hero}
-        className="relative z-10 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden min-h-screen flex items-center"
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col">
-            <div className="max-w-3xl space-y-6 animate-fade-in-up">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                <span className="block">KRONOS</span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-text-shimmer">
-                  TECH REVOLUTION
-                </span>
-              </h1>
-              <p className="text-gray-400 max-w-md">
-                Experience the future of technology at the most anticipated tech
-                festival of the year. Powered by innovation, driven by
-                brilliance.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-4">
-                <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <Calendar className="w-4 h-4 text-purple-500" />
-                  <span>April 25-27, 2025</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <MapPin className="w-4 h-4 text-purple-500" />
-                  <span>Institute of Technology and Management Gwalior</span>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Link href="/events">
-                  <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-none shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105">
-                    Explore Events
-                  </Button>
-                </Link>
-                {/* <Button
-                  variant="outline"
-                  className="border-purple-500/50 text-white hover:bg-purple-950/30 hover:text-grey transition-all duration-300 hover:border-purple-500 group"
-                >
-                  Explore Events
-                  <ChevronRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                </Button> */}
-              </div>
-            </div>
-          </div>
-        </div>
+          id="hero"
+          ref={sectionRefs.hero}
+          className="relative flex min-h-screen items-center overflow-hidden pb-20 pt-32 md:pb-24 md:pt-40"
+        >
+          <div className="container mx-auto px-4">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center">
+              <div className="max-w-3xl space-y-7 animate-fade-in-up">
+                <Badge className="rounded-full border-purple-400/35 bg-purple-500/10 px-4 py-1 text-xs tracking-[0.24em] text-purple-100">
+                  ITM GWALIOR FLAGSHIP EXPERIENCE
+                </Badge>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce-slow">
-          <div className="text-xs text-gray-400 mb-2">Scroll Down</div>
-          <div className="w-6 h-10 rounded-full border-2 border-purple-500/30 flex items-center justify-center">
-            <div className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-scroll-down"></div>
-          </div>
-        </div>
-        </section>
+                <h1 className="text-balance text-4xl font-black uppercase leading-[0.9] tracking-[0.08em] sm:text-6xl lg:text-7xl">
+                  <span className="block text-slate-50">KRONOS 2026</span>
+                  <span className="mt-2 block bg-gradient-to-r from-purple-300 via-purple-200 to-pink-300 bg-clip-text text-transparent">
+                    Build. Battle. Break Through.
+                  </span>
+                </h1>
 
-        {/* Countdown Timer */}
-        <Countdown />
+                <p className="max-w-2xl text-base text-slate-300/90 sm:text-lg">
+                  A three-day campus takeover built around innovation, creator culture, competitive events,
+                  and performances. Explore new ideas, form teams, and ship unforgettable moments.
+                </p>
 
-        {/* Events Section */}
-        <section
-        id="events"
-        ref={sectionRefs.events}
-        className="relative z-10 py-20"
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-3xl md:text-4xl font-bold tech-title bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-text-shimmer">
-              EVENTS
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mt-4">
-              Step into a realm of groundbreaking events that spark creativity,
-              ignite learning, and drive transformation..
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {featuredEvents.map((event, index) => (
-              <Card
-                key={`${event.id}-${event.title}`}
-                className="group relative h-full overflow-hidden rounded-2xl border-purple-500/20 bg-slate-900/45 shadow-xl backdrop-blur-md transition-all duration-300 hover:border-purple-400/50 hover:shadow-purple-500/20 animate-fade-in-up"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="relative aspect-[16/9] overflow-hidden">
-                  <Image
-                    src={event.image || "/placeholder.svg"}
-                    alt={event.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/50 to-transparent" />
-
-                  <div className="absolute bottom-3 left-3 flex flex-wrap gap-2">
-                    <Badge className="border-purple-400/40 bg-purple-500/20 text-purple-100">
-                      {event.id.startsWith("PRE") ? "Pre-Event" : "Main Event"}
-                    </Badge>
-                    <Badge variant="secondary" className="bg-slate-950/60 text-slate-100">
-                      {event.category === "tech" ? "Tech" : "Non-Tech"}
-                    </Badge>
+                <div className="flex flex-wrap gap-3 text-sm text-slate-200/90">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-purple-400/35 bg-purple-500/10 px-4 py-2 backdrop-blur-xl">
+                    <CalendarDays className="h-4 w-4 text-purple-200" />
+                    <span>April 25-27, 2026</span>
                   </div>
-
+                  <div className="inline-flex items-center gap-2 rounded-full border border-pink-400/35 bg-pink-500/10 px-4 py-2 backdrop-blur-xl">
+                    <MapPin className="h-4 w-4 text-pink-200" />
+                    <span>ITM Gwalior Campus</span>
+                  </div>
                 </div>
 
-                <div className="flex flex-col gap-4 p-5">
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-semibold leading-tight tracking-tight text-slate-100 transition-colors group-hover:text-purple-300">
-                      {event.title}
-                    </h3>
-                    <p className="line-clamp-2 text-sm text-slate-300/85">
-                      {getDescriptionPreview(event.description)}
+                <div className="flex flex-wrap items-center gap-4">
+                  <Link href="/events">
+                    <Button className="h-12 rounded-full border border-purple-300/25 bg-gradient-to-r from-purple-600 to-pink-600 px-6 text-base font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:-translate-y-0.5 hover:from-purple-500 hover:to-pink-500">
+                      Explore Events
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/team">
+                    <Button
+                      variant="outline"
+                      className="h-12 rounded-full border-purple-300/40 bg-black/35 px-6 text-base text-slate-100 backdrop-blur-xl transition-all duration-300 hover:border-pink-300/45 hover:bg-purple-500/20"
+                    >
+                      Meet Core Team
+                    </Button>
+                  </Link>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {eventStats.map((stat, index) => {
+                    const StatIcon = stat.icon;
+
+                    return (
+                      <Card
+                        key={stat.label}
+                        className="animate-fade-in-up rounded-2xl border border-purple-800/35 bg-black/35 p-4 backdrop-blur-md"
+                        style={{ animationDelay: `${index * 110}ms` }}
+                      >
+                        <div className="mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-purple-300/30 bg-purple-500/10">
+                          <StatIcon className="h-4 w-4 text-purple-100" />
+                        </div>
+                        <p className="text-2xl font-bold tracking-wide text-slate-100">{stat.value}</p>
+                        <p className="text-xs uppercase tracking-[0.16em] text-slate-300/90">{stat.label}</p>
+                        <p className="mt-2 text-xs text-slate-400">{stat.helper}</p>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="animate-fade-in-right">
+                <Card className="relative overflow-hidden rounded-3xl border border-purple-800/35 bg-black/40 p-6 backdrop-blur-xl">
+                  <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-purple-500/20 blur-3xl" />
+                  <div className="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-pink-500/15 blur-3xl" />
+
+                  <div className="relative space-y-6">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-purple-100">Festival Pulse</p>
+                      <h2 className="mt-2 text-2xl font-bold text-slate-50 sm:text-3xl">
+                        Where creators, coders, and performers collide.
+                      </h2>
+                    </div>
+
+                    <div className="space-y-3">
+                      <Link
+                        href="/#events"
+                        className="group flex items-center justify-between rounded-xl border border-white/10 bg-black/45 px-4 py-3 transition-colors hover:border-purple-400/45 hover:bg-purple-500/15"
+                      >
+                        <span className="text-sm font-semibold tracking-wide text-slate-200">
+                          Featured Competitions
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-purple-100 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                      <Link
+                        href="/#speakers"
+                        className="group flex items-center justify-between rounded-xl border border-white/10 bg-black/45 px-4 py-3 transition-colors hover:border-pink-400/45 hover:bg-pink-500/15"
+                      >
+                        <span className="text-sm font-semibold tracking-wide text-slate-200">
+                          Past Celebrity Nights
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-pink-100 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                      <Link
+                        href="/#sponsors"
+                        className="group flex items-center justify-between rounded-xl border border-white/10 bg-black/45 px-4 py-3 transition-colors hover:border-purple-400/45 hover:bg-purple-500/15"
+                      >
+                        <span className="text-sm font-semibold tracking-wide text-slate-200">
+                          Brand Collaborations
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-purple-100 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </div>
+
+                    <p className="text-sm leading-relaxed text-slate-300">
+                      Join teams. Compete hard. Learn faster. KRONOS is designed for people who want
+                      more than passive attendance.
                     </p>
                   </div>
+                </Card>
+              </div>
+            </div>
 
-                  <div className="grid grid-cols-1 gap-2 text-xs text-slate-300/80 sm:grid-cols-2">
-                    <div className="inline-flex items-center gap-2">
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>{event.date}</span>
-                    </div>
-                    <div className="inline-flex items-center gap-2">
-                      <Clock3 className="w-3.5 h-3.5" />
-                      <span>{getEventTime(event)}</span>
+            <div className="pointer-events-none absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center md:flex">
+              <span className="mb-2 text-xs tracking-[0.16em] text-slate-400">SCROLL TO EXPLORE</span>
+                <span className="h-10 w-6 rounded-full border border-purple-300/35 p-1">
+                  <span className="block h-2 w-2 animate-scroll-down rounded-full bg-purple-300" />
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <Countdown />
+
+        <section id="events" ref={sectionRefs.events} className="relative z-10 py-20 md:py-24">
+          <div className="container mx-auto px-4">
+            <div className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
+              <div className="max-w-2xl space-y-4 animate-fade-in-left">
+                <p className="text-xs uppercase tracking-[0.22em] text-purple-100">Featured Events</p>
+                <h2 className="text-balance text-3xl font-bold uppercase tracking-[0.06em] text-slate-50 md:text-5xl">
+                  Pick your arena and own the stage.
+                </h2>
+                <p className="text-base text-slate-300">
+                  Technical challenges, creator showcases, and crowd-packed competitions are curated for
+                  students who want to build real momentum.
+                </p>
+              </div>
+
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-purple-100 transition-colors hover:text-pink-100"
+              >
+                Full Event Catalog
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {featuredEvents.map((event, index) => (
+                <Card
+                  key={`${event.id}-${event.title}`}
+                    className="group relative h-full overflow-hidden rounded-3xl border border-purple-900/35 bg-black/40 shadow-2xl shadow-slate-950/35 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-pink-400/45 animate-fade-in-up"
+                  style={{ animationDelay: `${index * 120}ms` }}
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={event.image || "/placeholder.svg"}
+                      alt={event.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent" />
+
+                    <div className="absolute bottom-3 left-3 flex flex-wrap gap-2">
+                      <Badge className="border-purple-400/40 bg-purple-500/15 text-purple-100">
+                        {event.id.startsWith("PRE") ? "Pre Event" : "Main Event"}
+                      </Badge>
+                      <Badge className="border-pink-400/35 bg-pink-500/15 text-pink-100">
+                        {event.category === "tech" ? "Tech" : "Non-Tech"}
+                      </Badge>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-slate-700/70 pt-4">
-                    <div className="flex min-w-0 items-center gap-2">
-                      <Avatar className="size-8 border border-slate-600/70">
-                        <AvatarImage src={event.coordinator.avatar} alt={event.coordinator.name} />
-                        <AvatarFallback>
-                          {event.coordinator.name
-                            .split(" ")
-                            .map((part) => part[0])
-                            .join("")
-                            .slice(0, 2)
-                            .toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="min-w-0 text-xs">
-                        <p className="truncate font-medium text-slate-100">{event.coordinator.name}</p>
-                        <p className="truncate text-slate-400">{event.venue}</p>
+                  <div className="flex h-full flex-col gap-4 p-5">
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-semibold uppercase tracking-[0.04em] text-slate-100">
+                        {event.title}
+                      </h3>
+                      <p className="line-clamp-2 text-sm leading-relaxed text-slate-300/90">
+                        {getDescriptionPreview(event.description)}
+                      </p>
+                    </div>
+
+                    <div className="grid gap-2 text-xs text-slate-300 sm:grid-cols-2">
+                      <div className="inline-flex items-center gap-2">
+                        <CalendarDays className="h-3.5 w-3.5 text-purple-200" />
+                        <span>{event.date}</span>
+                      </div>
+                      <div className="inline-flex items-center gap-2">
+                        <Clock3 className="h-3.5 w-3.5 text-pink-200" />
+                        <span>{getEventTime(event)}</span>
                       </div>
                     </div>
 
-                    <Link href="/events">
-                      <Button
-                        variant="outline"
-                        className="border-purple-500/40 text-white hover:bg-purple-950/30"
+                      <div className="mt-auto flex items-center justify-between border-t border-white/10 pt-4">
+                      <div className="flex min-w-0 items-center gap-2">
+                        <Avatar className="size-9 border border-slate-500/70">
+                          <AvatarImage src={event.coordinator.avatar} alt={event.coordinator.name} />
+                          <AvatarFallback>
+                            {event.coordinator.name
+                              .split(" ")
+                              .map((part) => part[0])
+                              .join("")
+                              .slice(0, 2)
+                              .toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 text-xs">
+                          <p className="truncate font-semibold text-slate-100">{event.coordinator.name}</p>
+                          <p className="truncate text-slate-400">{event.venue}</p>
+                        </div>
+                      </div>
+
+                      <Link href="/events">
+                        <Button
+                          variant="outline"
+                            className="rounded-full border-purple-300/40 bg-black/35 text-slate-100 hover:border-pink-300/45 hover:bg-purple-500/20"
+                        >
+                          View
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <div className="mt-12 text-center animate-fade-in">
+              <Link href="/events">
+                  <Button className="h-11 rounded-full border border-purple-300/25 bg-gradient-to-r from-purple-600 to-pink-600 px-7 text-white transition-all duration-300 hover:-translate-y-0.5 hover:from-purple-500 hover:to-pink-500">
+                  View All Events
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="speakers" ref={sectionRefs.speakers} className="relative z-10 py-20 md:py-24">
+          <div className="container mx-auto px-4">
+            <div className="grid gap-10 lg:grid-cols-[420px_minmax(0,1fr)] lg:items-center">
+              <div className="space-y-5 animate-fade-in-left">
+                  <p className="text-xs uppercase tracking-[0.2em] text-purple-100">Legacy Stage</p>
+                <h2 className="text-balance text-3xl font-bold uppercase tracking-[0.06em] text-slate-50 md:text-4xl">
+                  Artists who have already lit up KRONOS.
+                </h2>
+                <p className="text-base leading-relaxed text-slate-300">
+                  Our stage has hosted voices that move crowds and stories that stay with students long
+                  after the festival ends. Explore some of the standout appearances from previous editions.
+                </p>
+                  <div className="inline-flex rounded-full border border-pink-400/35 bg-pink-500/10 px-4 py-2 text-xs uppercase tracking-[0.16em] text-pink-100">
+                  Celebrity showcase archive
+                </div>
+              </div>
+
+              <CardStack
+                items={pastCelebrities}
+                cardHeight={isMobileView ? 300 : 360}
+                cardWidth={isMobileView ? 340 : 560}
+                maxVisible={5}
+                overlap={0.56}
+                spreadDeg={44}
+                depthPx={160}
+                activeScale={1.04}
+                inactiveScale={0.9}
+                activeLiftPx={28}
+                autoAdvance
+                intervalMs={3200}
+                pauseOnHover
+                className="mx-auto"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section id="sponsors" ref={sectionRefs.sponsors} className="relative z-10 py-20 md:py-24">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto mb-12 max-w-3xl text-center animate-fade-in">
+                <p className="text-xs uppercase tracking-[0.2em] text-purple-100">Partners</p>
+              <h2 className="mt-3 text-balance text-3xl font-bold uppercase tracking-[0.06em] text-slate-50 md:text-5xl">
+                Backed by companies building what comes next.
+              </h2>
+              <p className="mt-4 text-base text-slate-300">
+                KRONOS happens because visionary brands support student-led innovation and community-driven
+                execution.
+              </p>
+            </div>
+
+            <div className="space-y-10">
+              {sponsorTiers.map((tier, tierIndex) => (
+                <div
+                  key={tier.tier}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${tierIndex * 100}ms` }}
+                >
+                  <h3 className={`mb-5 text-center text-2xl font-bold tracking-[0.05em] ${tier.headingClass}`}>
+                    {tier.tier}
+                  </h3>
+
+                  <div className={`grid gap-5 ${tier.gridClass}`}>
+                    {tier.sponsors.map((sponsor) => (
+                      <Card
+                        key={sponsor.name}
+                        className={`group relative overflow-hidden rounded-2xl border bg-black/40 p-5 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${tier.borderClass}`}
                       >
-                        View
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </Link>
+                        <div
+                          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${tier.glowClass} opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100`}
+                        />
+                        <div className="relative flex min-h-[120px] items-center justify-center">
+                          <Image
+                            src={sponsor.image || "/placeholder.svg"}
+                            alt={sponsor.name}
+                            width={280}
+                            height={120}
+                            className="max-h-20 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                      </Card>
+                    ))}
                   </div>
                 </div>
-              </Card>
-            ))}
+              ))}
+            </div>
+
+            <Card className="mx-auto mt-14 max-w-3xl animate-fade-in-up rounded-3xl border border-purple-900/30 bg-black/35 p-8 text-center backdrop-blur-lg">
+              <h3 className="text-2xl font-bold uppercase tracking-[0.06em] text-slate-50">
+                Become a KRONOS Partner
+              </h3>
+              <p className="mt-3 text-base text-slate-300">
+                Reach high-intent student communities and position your brand at the center of one of the
+                most energetic tech-culture fests in the region.
+              </p>
+              <div className="mt-6">
+                <Link
+                  href="https://drive.google.com/file/d/1f-ZGJsn3BNd6VJ3X551p0xs7SCezE5qV/view?usp=sharing"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Button className="h-11 rounded-full border border-purple-300/25 bg-gradient-to-r from-purple-600 to-pink-600 px-7 text-white transition-all duration-300 hover:-translate-y-0.5 hover:from-purple-500 hover:to-pink-500">
+                    Download Sponsor Deck
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </Card>
           </div>
-          <div className="text-center mt-12 animate-fade-in animation-delay-500">
-            <Link href="/events">
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-none shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105 group">
-                View All Events
-                <ChevronRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
-            </Link>
-          </div>
-        </div>
         </section>
 
-        {/* Speakers Section */}
-        <section
-        id="speakers"
-        ref={sectionRefs.speakers}
-        className="relative z-10 py-20"
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Meet Our Past Celebrity
-            </h2>
-
-            <p className="text-gray-400 max-w-2xl mx-auto mt-4">
-              HERE ARE SOME OF THE PAST CELEBRITY SPEAKERS WHO HAVE GRACED OUR
-              STAGES
-            </p>
-          </div>
-
-          <CardStack
-            items={pastCelebrities}
-            cardHeight={360}
-            cardWidth={560}
-            maxVisible={5}
-            overlap={0.56}
-            spreadDeg={44}
-            depthPx={160}
-            activeScale={1.04}
-            inactiveScale={0.9}
-            activeLiftPx={28}
-            autoAdvance
-            intervalMs={3200}
-            pauseOnHover
-            className="mx-auto"
-          />
-        </div>
-        </section>
-
-        {/* Sponsors Section */}
-        <section
-        id="sponsors"
-        ref={sectionRefs.sponsors}
-        className="relative z-10 py-20"
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Past Sponsors & Partners
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mt-4">
-              Kronos Tech Fest is made possible by these innovative companies
-              shaping the future of technology.
-            </p>
-          </div>
-
-          <div className="space-y-12">
-            {/* Platinum Sponsors */}
-            <div className="animate-fade-in-up">
-              <h3 className="text-2xl font-bold mb-6 text-center text-purple-500">
-                Platinum Sponsors
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-                {[
-                  {
-                    name: "Google",
-                    image:
-                      "https://images.yourstory.com/cs/images/companies/lenskaart-33-1587990847871.png?fm=png&auto=formatar=1:1&mode=fill&fill=solid",
-                  },
-                  {
-                    name: "Microsoft",
-                    image:
-                      "https://logos-marcas.com/wp-content/uploads/2021/03/Honda-Logotipo-2000-presente.jpg",
-                  },
-                  {
-                    name: "Amazon",
-                    image:
-                      "https://tse3.mm.bing.net/th?id=OIP.TLxP6eAGKN4bWUZ0aF46zwHaHa&pid=Api&P=0&h=180",
-                  },
-                ].map((sponsor, i) => (
-                  <div
-                    key={i}
-                    className="bg-gradient-to-b from-gray-900 to-gray-800 border border-purple-500/20 rounded-xl p-8 flex items-center justify-center transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/20 group"
+        <section className="relative z-10 pb-20 pt-8 md:pb-24">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 rounded-3xl border border-purple-700/35 bg-gradient-to-r from-purple-950/40 via-black/55 to-pink-950/35 p-8 text-center backdrop-blur-lg">
+              <p className="text-xs uppercase tracking-[0.2em] text-purple-100">Ready for launch</p>
+              <h2 className="text-balance text-3xl font-bold uppercase tracking-[0.06em] text-slate-50 md:text-4xl">
+                Build your team and lock your KRONOS weekend.
+              </h2>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/events">
+                  <Button className="h-11 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-6 text-white hover:from-purple-500 hover:to-pink-500">
+                    Explore Events
+                  </Button>
+                </Link>
+                <Link href="/contact">
+                  <Button
+                    variant="outline"
+                    className="h-11 rounded-full border-white/30 bg-black/35 px-6 text-white hover:bg-white/10 hover:text-white"
                   >
-                    <div className="relative">
-                      {/* Glow effect */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                      {/* Sponsor Image */}
-                      <Image
-                        src={sponsor.image || "/placeholder.svg"}
-                        alt={sponsor.name}
-                        width={300}
-                        height={120}
-                        className="max-h-32 w-auto transition-transform duration-500 group-hover:scale-110 object-contain"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Gold Sponsors */}
-            <div className="animate-fade-in-up animation-delay-300">
-              <h3 className="text-2xl font-bold mb-6 text-center text-yellow-500">
-                Gold Sponsors
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {[
-                  {
-                    name: "IBM",
-                    image:
-                      "https://tse2.mm.bing.net/th?id=OIP.rmApNlkmt1XV52d2RWl1ggHaEK&pid=Api&P=0&h=180",
-                  },
-                  {
-                    name: "Intel",
-                    image:
-                      "https://tse1.mm.bing.net/th?id=OIP.KDPTy05azia6fr42nA689gHaD4&pid=Api&P=0&h=180",
-                  },
-                  {
-                    name: "Oracle",
-                    image:
-                      "https://tse2.mm.bing.net/th?id=OIP.kkvPd39_KtkGavl6rbrgNAHaE8&pid=Api&P=0&h=180",
-                  },
-                  {
-                    name: "Cisco",
-                    image:
-                      "https://tse3.mm.bing.net/th?id=OIP.tO-AQAR5s_MUgpoPDrT7BQAAAA&pid=Api&P=0&h=180",
-                  },
-                ].map((sponsor, i) => (
-                  <div
-                    key={i}
-                    className="bg-gradient-to-b from-gray-900 to-gray-800 border border-yellow-500/20 rounded-xl p-6 flex items-center justify-center transition-all duration-300 hover:border-yellow-500/40 hover:shadow-lg hover:shadow-yellow-500/20 group"
-                  >
-                    <div className="relative">
-                      {/* Glow effect */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                      {/* Sponsor Image */}
-                      <Image
-                        src={sponsor.image || "/placeholder.svg"}
-                        alt={sponsor.name}
-                        width={300}
-                        height={120}
-                        className="max-h-28 w-auto transition-transform duration-500 group-hover:scale-110 object-contain"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Silver Sponsors */}
-            <div className="animate-fade-in-up animation-delay-500">
-              <h3 className="text-2xl font-bold mb-6 text-center text-gray-400">
-                Silver Sponsors
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {[
-                  {
-                    name: "Adobe",
-                    image:
-                      "https://tse4.mm.bing.net/th?id=OIP.K1op1wSh4Iv0l0ib8skRwwHaEK&pid=Api&P=0&h=180",
-                  },
-                  {
-                    name: "Nvidia",
-                    image:
-                      "https://tse1.mm.bing.net/th?id=OIP.bYVxvwq-4t530u24ooiadAHaDA&pid=Api&P=0&h=180",
-                  },
-                  {
-                    name: "Salesforce",
-                    image:
-                      "https://tse3.mm.bing.net/th?id=OIP.8-9dRYU-fKR5arZeCcJnSAHaDr&pid=Api&P=0&h=180",
-                  },
-                  {
-                    name: "SAP",
-                    image:
-                      "https://tse4.mm.bing.net/th?id=OIP.-erQrffKB1yp91EKAnKrhAAAAA&pid=Api&P=0&h=180",
-                  },
-                  {
-                    name: "VMware",
-                    image:
-                      "https://tse2.mm.bing.net/th?id=OIP.84yghb8dXKRfsliVHAM-ZQHaB7&pid=Api&P=0&h=180",
-                  },
-                ].map((sponsor, i) => (
-                  <div
-                    key={i}
-                    className="bg-gradient-to-b from-gray-900 to-gray-800 border border-gray-500/20 rounded-xl p-4 flex items-center justify-center transition-all duration-300 hover:border-gray-500/40 hover:shadow-lg hover:shadow-gray-500/20 group"
-                  >
-                    <div className="relative">
-                      {/* Glow effect */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-gray-500/10 to-gray-400/10 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                      {/* Sponsor Image */}
-                      <Image
-                        src={sponsor.image || "/placeholder.svg"}
-                        alt={sponsor.name}
-                        width={300}
-                        height={120}
-                        className="max-h-24 w-auto transition-transform duration-500 group-hover:scale-110 object-contain"
-                      />
-                    </div>
-                  </div>
-                ))}
+                    Contact Organizers
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
-
-          <div className="text-center mt-16 animate-fade-in animation-delay-700">
-            <h3 className="text-xl font-bold mb-4">Become a Sponsor</h3>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-6">
-              Join these innovative companies in supporting the future of
-              technology at Kronos Tech Fest.
-            </p>
-            <Link href="https://drive.google.com/file/d/1f-ZGJsn3BNd6VJ3X551p0xs7SCezE5qV/view?usp=sharing">
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-none shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105">
-                Download Sponsor Deck
-              </Button>
-            </Link>
-          </div>
-        </div>
         </section>
       </div>
     </div>

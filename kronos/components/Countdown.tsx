@@ -1,9 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowRight, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TARGET_DATE = new Date("2025-04-25T00:00:00Z").getTime();
+const TARGET_DATE = new Date("2026-04-25T00:00:00Z").getTime();
+
+type CountdownState = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  isLive: boolean;
+};
 
 export default function Countdown() {
   const calculateTimeLeft = useCallback(() => {
@@ -11,7 +21,7 @@ export default function Countdown() {
     const difference = TARGET_DATE - now;
 
     if (difference <= 0) {
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      return { days: 0, hours: 0, minutes: 0, seconds: 0, isLive: true };
     }
 
     const days = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -19,10 +29,10 @@ export default function Countdown() {
     const minutes = Math.floor((difference / (1000 * 60)) % 60);
     const seconds = Math.floor((difference / 1000) % 60);
 
-    return { days, hours, minutes, seconds };
+    return { days, hours, minutes, seconds, isLive: false };
   }, []);
 
-  const [countdown, setCountdown] = useState(calculateTimeLeft);
+  const [countdown, setCountdown] = useState<CountdownState>(calculateTimeLeft);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,37 +43,54 @@ export default function Countdown() {
   }, [calculateTimeLeft]);
 
   return (
-    <section className="relative z-10 py-10">
+    <section className="relative z-10 py-8 md:py-10">
       <div className="container mx-auto px-4">
-        <div className="bg-gradient-to-r from-gray-900/80 to-gray-800/80 backdrop-blur-md border border-purple-500/20 rounded-xl p-8 transform hover:scale-[1.01] transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/10 animate-fade-in">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="text-xl font-bold mb-2">Event Countdown</h3>
-              <p className="text-gray-400">The future of tech begins in:</p>
+        <div className="animate-fade-in overflow-hidden rounded-3xl border border-purple-800/35 bg-black/40 p-6 backdrop-blur-xl md:p-8">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-purple-400/35 bg-purple-500/10 px-3 py-1 text-xs uppercase tracking-[0.15em] text-purple-100">
+                <CalendarDays className="h-3.5 w-3.5" />
+                Festival Countdown
+              </div>
+
+              <h3 className="text-2xl font-bold uppercase tracking-[0.06em] text-slate-50 md:text-3xl">
+                {countdown.isLive ? "Kronos is live now" : "The next edition starts in"}
+              </h3>
+
+              <p className="max-w-2xl text-sm text-slate-300 md:text-base">
+                {countdown.isLive
+                  ? "The countdown has ended. Jump into the schedule and catch every active segment."
+                  : "Time is ticking. Get your team ready and lock your game plan before day one."}
+              </p>
             </div>
-            <div className="flex gap-4">
+
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
                 { label: "DAYS", value: countdown.days },
                 { label: "HOURS", value: countdown.hours },
                 { label: "MINUTES", value: countdown.minutes },
                 { label: "SECONDS", value: countdown.seconds },
-              ].map((item, index) => (
-                <div key={index} className="flex flex-col items-center">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-md blur-sm"></div>
-                    <div className="relative z-10 w-16 h-16 flex items-center justify-center bg-gray-900 border border-purple-500/30 rounded-md">
-                      <div className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
-                        {item.value.toString().padStart(2, "0")}
-                      </div>
-                    </div>
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="flex min-w-[90px] flex-col items-center justify-center rounded-2xl border border-purple-900/35 bg-black/45 px-3 py-4 backdrop-blur-lg"
+                >
+                  <div className="text-3xl font-bold text-slate-100 sm:text-4xl">
+                    {item.value.toString().padStart(2, "0")}
                   </div>
-                  <div className="text-xs text-gray-400 mt-2">{item.label}</div>
+                  <div className="mt-1 text-[10px] tracking-[0.2em] text-slate-400">{item.label}</div>
                 </div>
               ))}
             </div>
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-none shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105">
-              Get Tickets
-            </Button>
+
+            <div className="lg:justify-self-end">
+              <Link href={countdown.isLive ? "/events" : "/schedule"}>
+                <Button className="h-11 rounded-full border border-purple-300/25 bg-gradient-to-r from-purple-600 to-pink-600 px-6 text-white transition-all duration-300 hover:-translate-y-0.5 hover:from-purple-500 hover:to-pink-500">
+                  {countdown.isLive ? "View Live Events" : "Open Schedule"}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
