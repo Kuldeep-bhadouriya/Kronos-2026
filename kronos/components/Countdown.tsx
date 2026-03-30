@@ -15,6 +15,14 @@ type CountdownState = {
   isLive: boolean;
 };
 
+const INITIAL_COUNTDOWN: CountdownState = {
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+  isLive: false,
+};
+
 export default function Countdown() {
   const calculateTimeLeft = useCallback(() => {
     const now = new Date().getTime();
@@ -32,9 +40,12 @@ export default function Countdown() {
     return { days, hours, minutes, seconds, isLive: false };
   }, []);
 
-  const [countdown, setCountdown] = useState<CountdownState>(calculateTimeLeft);
+  const [countdown, setCountdown] = useState<CountdownState>(INITIAL_COUNTDOWN);
 
   useEffect(() => {
+    // Start from mount time to avoid server/client time drift during hydration.
+    setCountdown(calculateTimeLeft());
+
     const timer = setInterval(() => {
       setCountdown(calculateTimeLeft());
     }, 1000);
