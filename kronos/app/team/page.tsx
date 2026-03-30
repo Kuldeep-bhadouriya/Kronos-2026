@@ -185,16 +185,6 @@ export default function TeamPage() {
         image: `/2026 Team/Yash_Chaturvedi_Logistics.jpeg`,
       },
       coCoordinators: [
-        {
-          name: "Deepanshu Tripathi",
-          role: "Co-coordinator ",
-          image: `/deepanshu - logistics.jpg`,
-        },
-        {
-          name: "Jatin Sharma",
-          role: "Co-coordinator ",
-          image: `/logistics- jatin.jpg`,
-        },
       ],
     },
     {

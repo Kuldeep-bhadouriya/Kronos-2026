@@ -57,7 +57,7 @@ const developers: DeveloperProfile[] = [
 
 const DeveloperTeam: React.FC = () => {
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-10 pt-8 sm:px-6">
+    <section className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6">
       <PageHeading
         eyebrow="KRONOS 2026"
         title="Developers Team"
@@ -77,21 +77,21 @@ const DeveloperTeam: React.FC = () => {
         </span>
       </div>
 
-      <div className="mt-10 grid gap-7 md:grid-cols-2">
+      <div className="mt-10 grid gap-7 md:grid-cols-2 md:justify-items-center">
         {developers.map((member) => (
           <article
             key={member.name}
-            className="group relative overflow-hidden rounded-[28px] border border-amber-300/25 bg-[linear-gradient(145deg,rgba(12,18,34,0.9),rgba(10,14,25,0.62))] p-[1px] shadow-[0_18px_50px_rgba(2,6,23,0.5)] transition-all duration-500 hover:-translate-y-1 hover:border-red-300/55 hover:shadow-[0_22px_64px_rgba(190,50,28,0.3)]"
+            className="group relative w-full md:max-w-[30rem] overflow-hidden rounded-[28px] border border-amber-300/25 bg-[linear-gradient(145deg,rgba(12,18,34,0.9),rgba(10,14,25,0.62))] p-[1px] shadow-[0_18px_50px_rgba(2,6,23,0.5)] transition-all duration-500 hover:-translate-y-1 hover:border-red-300/55 hover:shadow-[0_22px_64px_rgba(190,50,28,0.3)]"
           >
             <div className="relative h-full rounded-[27px] bg-slate-950/75 backdrop-blur-sm">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_15%,rgba(245,168,83,0.16),transparent_45%),radial-gradient(circle_at_90%_90%,rgba(236,72,34,0.14),transparent_48%)]" />
 
-              <div className="relative aspect-[5/4] overflow-hidden rounded-t-[27px]">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-t-[27px]">
                 <Image
                   src={member.image}
                   alt={member.name}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 48vw, 30rem"
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
