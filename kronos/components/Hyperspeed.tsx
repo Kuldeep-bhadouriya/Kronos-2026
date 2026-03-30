@@ -929,37 +929,89 @@ function isAndroidDevice() {
   return /android/i.test(window.navigator.userAgent);
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function hasDataSaverEnabled() {
+  const connection = (
+    window.navigator as Navigator & {
+      connection?: {
+        saveData?: boolean;
+        effectiveType?: string;
+      };
+    }
+  ).connection;
+
+  if (!connection) return false;
+
+  if (connection.saveData) return true;
+
+  return connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g';
+}
+
 function isMobileViewport() {
   return window.matchMedia('(max-width: 900px)').matches;
+}
+
+function isCompactViewport() {
+  return window.matchMedia('(max-width: 640px)').matches;
 }
 
 function createQualityProfile(): QualityProfile {
   const isAndroid = isAndroidDevice();
   const isMobile = isMobileViewport();
+  const isCompact = isCompactViewport();
+  const reducedMotion = prefersReducedMotion();
+  const dataSaver = hasDataSaverEnabled();
   const hardwareConcurrency = window.navigator.hardwareConcurrency ?? 4;
   const isLowCoreDevice = hardwareConcurrency <= 8;
+
+  if (reducedMotion) {
+    return {
+      pixelRatioCap: 1,
+      renderScale: isCompact ? 0.58 : 0.68,
+      useCinematicAspect: false,
+      enableBloom: false,
+      bloomResolutionScale: 0,
+      enableSMAA: false,
+      maxFPS: 24
+    };
+  }
+
+  if (dataSaver) {
+    return {
+      pixelRatioCap: 1,
+      renderScale: isCompact ? 0.6 : 0.7,
+      useCinematicAspect: false,
+      enableBloom: false,
+      bloomResolutionScale: 0,
+      enableSMAA: false,
+      maxFPS: 24
+    };
+  }
 
   if (isAndroid) {
     return {
       pixelRatioCap: 1,
-      renderScale: isLowCoreDevice ? 0.7 : 0.8,
+      renderScale: isCompact || isLowCoreDevice ? 0.62 : 0.72,
       useCinematicAspect: false,
-      enableBloom: true,
-      bloomResolutionScale: 0.65,
+      enableBloom: false,
+      bloomResolutionScale: 0,
       enableSMAA: false,
-      maxFPS: 30
+      maxFPS: 26
     };
   }
 
   if (isMobile) {
     return {
-      pixelRatioCap: 1.25,
-      renderScale: isLowCoreDevice ? 0.8 : 0.9,
+      pixelRatioCap: 1,
+      renderScale: isCompact || isLowCoreDevice ? 0.68 : 0.8,
       useCinematicAspect: false,
-      enableBloom: true,
-      bloomResolutionScale: 0.8,
+      enableBloom: !isCompact,
+      bloomResolutionScale: isCompact ? 0 : 0.55,
       enableSMAA: false,
-      maxFPS: 45
+      maxFPS: isCompact ? 28 : 34
     };
   }
 

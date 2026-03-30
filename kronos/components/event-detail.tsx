@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { X } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Clock3, Compass, Layers3, X } from "lucide-react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import CoordinatorCard from "@/components/coordinator-card";
@@ -13,7 +13,7 @@ type Accent = "amber" | "red";
 interface EventDetailProps {
   event: Event;
   onClose: () => void;
-  activeSection: string;
+  activeSection: "pre-event" | "main-event";
 }
 
 const accentStyles: Record<
@@ -67,10 +67,23 @@ export default function EventDetail({ event, onClose, activeSection }: EventDeta
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
+    const onKeyDown = (eventKey: KeyboardEvent) => {
+      if (eventKey.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
     return () => {
       document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }, []);
+  }, [onClose]);
+
+  const eventTime = event.timing || `${event.startTime || "TBD"} - ${event.endTime || "TBD"}`;
+  const eventPhase = activeSection === "pre-event" ? "Pre Event" : "Main Event";
+  const eventCategory = event.category === "tech" ? "Tech" : "Open Arena";
 
   if (!isMounted) return null;
 
@@ -80,26 +93,27 @@ export default function EventDetail({ event, onClose, activeSection }: EventDeta
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-md sm:items-center"
+      className="fixed inset-0 z-[1300] flex items-start justify-center overflow-hidden bg-black/80 p-2 backdrop-blur-md sm:items-center sm:p-4"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${event.title} details`}
     >
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
         transition={{ type: "spring", damping: 24, stiffness: 280 }}
-        className="relative my-4 w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900/90 shadow-xl sm:my-0 sm:max-h-[90vh]"
+        className="relative my-1 flex w-full max-w-5xl max-h-[calc(100dvh-0.5rem)] flex-col overflow-hidden rounded-3xl border border-slate-700/70 bg-slate-950/95 shadow-xl sm:my-0 sm:max-h-[90dvh]"
         style={{ boxShadow: accent.shadow }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={`absolute left-0 top-0 h-1 w-20 ${accent.line}`} />
-        <div className={`absolute right-0 top-0 h-1 w-10 ${accent.line}`} />
-        <div className={`absolute bottom-0 left-0 h-1 w-10 ${accent.line}`} />
-        <div className={`absolute bottom-0 right-0 h-1 w-20 ${accent.line}`} />
+        <div className={`absolute left-0 top-0 h-1 w-28 ${accent.line}`} />
+        <div className={`absolute bottom-0 right-0 h-1 w-28 ${accent.line}`} />
 
-        <div className="relative h-64 sm:h-72">
+        <div className="relative h-52 shrink-0 sm:h-72 lg:h-80">
           <Image src={event.image || "/placeholder.svg"} alt={event.title} fill className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/75 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-transparent" />
 
           <motion.div
             className={`absolute inset-0 h-20 bg-gradient-to-b from-transparent ${accent.overlay} to-transparent`}
@@ -112,17 +126,19 @@ export default function EventDetail({ event, onClose, activeSection }: EventDeta
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             onClick={onClose}
-            className={`absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-slate-600/70 bg-slate-800/60 text-slate-200 transition-colors ${accent.buttonHover}`}
+            className={`absolute right-3 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-slate-600/70 bg-slate-800/60 text-slate-200 transition-colors sm:right-4 ${accent.buttonHover}`}
+            style={{ top: "max(0.75rem, env(safe-area-inset-top))" }}
+            aria-label="Close event details"
           >
             <X size={18} />
           </motion.button>
 
-          <div className="absolute bottom-0 left-0 p-6">
+          <div className="absolute bottom-0 left-0 p-6 sm:p-7">
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.4 }}
-              className="mb-2 text-3xl font-bold text-white"
+              className="mb-2 text-3xl font-bold uppercase tracking-[0.08em] text-white sm:text-4xl"
             >
               {event.title}
             </motion.h2>
@@ -131,87 +147,103 @@ export default function EventDetail({ event, onClose, activeSection }: EventDeta
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25, duration: 0.4 }}
-              className={`text-sm font-semibold uppercase tracking-[0.14em] ${accent.text}`}
+              className={`text-xs font-semibold uppercase tracking-[0.2em] ${accent.text}`}
             >
-              {event.date}
+              {eventPhase} MISSION
             </motion.div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 p-6 md:grid-cols-3">
-          <motion.div
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.35, duration: 0.4 }}
-            className="md:col-span-1"
-          >
-            <CoordinatorCard coordinator={event.coordinator} accentColor={accentColor} />
-          </motion.div>
+        <div className="min-h-0 overflow-y-auto overscroll-contain">
+          <div className="grid grid-cols-1 gap-8 p-5 sm:p-6 md:grid-cols-3 md:p-8">
+            <motion.div
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.35, duration: 0.4 }}
+              className="md:col-span-1"
+            >
+              <CoordinatorCard coordinator={event.coordinator} accentColor={accentColor} />
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.45, duration: 0.4 }}
-            className="md:col-span-2"
-          >
-            <section className="mb-6 rounded-xl border border-slate-700/70 bg-black/20 p-4">
-              <h3 className={`mb-3 text-sm font-semibold uppercase tracking-[0.14em] ${accent.text}`}>
-                Mission Briefing
-              </h3>
-              <p className="whitespace-pre-line leading-relaxed text-slate-300/90">{event.description}</p>
-            </section>
+            <motion.div
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.45, duration: 0.4 }}
+              className="md:col-span-2"
+            >
+              <section className="mb-6 rounded-2xl border border-white/10 bg-black/30 p-5">
+                <h3 className={`mb-3 text-xs font-semibold uppercase tracking-[0.2em] ${accent.text}`}>
+                  Mission Brief
+                </h3>
+                <p className="whitespace-pre-line leading-relaxed text-slate-300/90">{event.description}</p>
+              </section>
 
-            <section className="mb-4 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-xl border border-slate-700/70 bg-black/20 p-4">
-                <h3 className={`mb-2 text-xs font-semibold uppercase tracking-[0.14em] ${accent.text}`}>Location</h3>
-                <p className="text-base text-slate-200">{event.venue || "Venue TBD"}</p>
-              </div>
-
-              <div className="rounded-xl border border-slate-700/70 bg-black/20 p-4">
-                <h3 className={`mb-2 text-xs font-semibold uppercase tracking-[0.14em] ${accent.text}`}>Timeframe</h3>
-                <div className="flex items-center gap-2 text-slate-200">
-                  <div className={`h-2 w-2 rounded-full ${accent.dot}`} />
-                  <span className="text-sm">
-                    {event.timing || `${event.startTime || "TBD"} - ${event.endTime || "TBD"}`}
-                  </span>
+              <section className="mb-6 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <h3 className={`mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] ${accent.text}`}>
+                    <Layers3 className="size-3.5" />
+                    Track
+                  </h3>
+                  <p className="text-base text-slate-200">{eventCategory}</p>
                 </div>
-              </div>
-            </section>
 
-            <div className="mt-6">
-              <a href={event.registerLink} target="_blank" rel="noopener noreferrer" className="group relative block">
-                <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-amber-500/40 via-orange-400/25 to-red-500/40 opacity-30 blur transition duration-300 group-hover:opacity-70" />
+                <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <h3 className={`mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] ${accent.text}`}>
+                    <CalendarDays className="size-3.5" />
+                    Date
+                  </h3>
+                  <p className="text-base text-slate-200">{event.date}</p>
+                </div>
 
-                <div
-                  className={`relative flex items-center justify-between gap-3 rounded-xl border bg-slate-900 px-5 py-4 ring-1 ${accent.border} ${accent.ring} ${accent.buttonBg} ${accent.buttonHover}`}
+                <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <h3 className={`mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] ${accent.text}`}>
+                    <Compass className="size-3.5" />
+                    Location
+                  </h3>
+                  <p className="text-base text-slate-200">{event.venue || "Venue TBD"}</p>
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <h3 className={`mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] ${accent.text}`}>
+                    <Clock3 className="size-3.5" />
+                    Timeframe
+                  </h3>
+                  <div className="flex items-center gap-2 text-slate-200">
+                    <div className={`h-2 w-2 rounded-full ${accent.dot}`} />
+                    <span className="text-sm">{eventTime}</span>
+                  </div>
+                </div>
+              </section>
+
+              <div className="mt-4 pb-2">
+                <a
+                  href={event.registerLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative block"
                 >
-                  <div>
-                    <div className={`text-sm font-semibold uppercase tracking-[0.16em] ${accent.buttonText}`}>Register Now</div>
-                    <div className="mt-1 text-xs text-slate-400">Secure your position for this event.</div>
-                  </div>
+                  <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-amber-500/40 via-orange-400/25 to-red-500/40 opacity-35 blur transition duration-300 group-hover:opacity-75" />
 
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-full border ${accent.border} bg-black/30`}>
-                    <svg
-                      className={accent.buttonText}
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    className={`relative flex items-center justify-between gap-3 rounded-2xl border bg-slate-900 px-5 py-4 ring-1 ${accent.border} ${accent.ring} ${accent.buttonBg} ${accent.buttonHover}`}
+                  >
+                    <div>
+                      <div className={`text-sm font-semibold uppercase tracking-[0.16em] ${accent.buttonText}`}>
+                        Register Now
+                      </div>
+                      <div className="mt-1 text-xs text-slate-400">Secure your position for this event.</div>
+                    </div>
+
+                    <div
+                      className={`flex h-10 w-10 items-center justify-center rounded-full border ${accent.border} bg-black/30`}
                     >
-                      <path
-                        d="M14 5L21 12M21 12L14 19M21 12H3"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                      <ArrowUpRight className={accent.buttonText} size={16} />
+                    </div>
                   </div>
-                </div>
-              </a>
-            </div>
-          </motion.div>
+                </a>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </motion.div>
     </motion.div>,

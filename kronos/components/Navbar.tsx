@@ -51,6 +51,10 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   const isTopLevelItemActive = (item: NavigationItem) => {
     if (item.section && pathname === "/") {
       return item.section === activeSection;
@@ -110,6 +114,7 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
       <nav
         id="main-navigation"
         className={cn(styles.mobilePanel, isOpen && styles.mobilePanelOpen)}
+        aria-label="Mobile primary navigation"
         aria-hidden={!isOpen}
         onClick={(event) => {
           if (event.target === event.currentTarget) {
