@@ -3,6 +3,7 @@
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react"
 import Navbar from "@/components/Navbar"
 import Hyperspeed from "@/components/Hyperspeed"
+import PageHeading from "@/components/page-heading"
 import { homeLikeHyperspeedEffect } from "@/lib/hyperspeed"
 
 const animations = `
@@ -40,11 +41,12 @@ export default function Home() {
           <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600/15 via-transparent to-pink-500/15" />
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-transparent" />
-            <div className="relative z-10 text-center px-4">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 font-orbitron animate-slideDown">
-                About Us
-              </h1>
-              <div className="w-24 h-1 bg-purple-500 mx-auto animate-scaleIn" style={{ animationDelay: "0.3s" }} />
+            <div className="relative z-10 w-full px-4 animate-slideDown">
+              <PageHeading
+                eyebrow="KRONOS 2026"
+                title="About Us"
+                description="Discover the story, scale, and spirit of Central India&apos;s biggest youth techno-cultural festival."
+              />
             </div>
           </section>
 
@@ -117,12 +119,12 @@ export default function Home() {
 
           {/* Hero Section */}
           <section className="h-screen flex flex-col items-center justify-center text-center px-4 backdrop-blur-sm">
-            <h1 className="text-7xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600 font-orbitron animate-pulseGlow">
+            <h2 className="text-5xl md:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600 font-orbitron animate-pulseGlow">
               KRONOS awaits!
-            </h1>
-            <h2 className="text-4xl font-semibold mb-6 animate-fadeIn" style={{ animationDelay: "0.3s" }}>
-              Join the movement
             </h2>
+            <h3 className="text-3xl md:text-4xl font-semibold mb-6 animate-fadeIn" style={{ animationDelay: "0.3s" }}>
+              Join the movement
+            </h3>
             <p className="text-xl text-gray-300 max-w-3xl animate-fadeIn" style={{ animationDelay: "0.5s" }}>
               Witness the grandeur of Central India&apos;s largest youth festival and be a part of the unforgettable
               experience!

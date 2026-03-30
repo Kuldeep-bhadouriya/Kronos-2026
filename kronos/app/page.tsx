@@ -212,9 +212,6 @@ export default function KronosTechFest() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col">
             <div className="max-w-3xl space-y-6 animate-fade-in-up">
-              <div className="inline-block px-3 py-1 rounded-full bg-purple-900/20 border border-purple-500/30 text-purple-500 text-xs font-medium backdrop-blur-sm">
-                TECH FEST 2025
-              </div>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
                 <span className="block">KRONOS</span>
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-text-shimmer">
@@ -274,9 +271,6 @@ export default function KronosTechFest() {
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
-            <div className="inline-block px-3 py-1 rounded-full bg-purple-900/20 border border-purple-500/30 text-purple-500 text-xs font-medium mb-4 backdrop-blur-sm">
-              FEATURED EVENTS
-            </div>
             <h2 className="text-3xl md:text-4xl font-bold tech-title bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-text-shimmer">
               EVENTS
             </h2>
@@ -386,10 +380,6 @@ export default function KronosTechFest() {
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
-            <div className="inline-block px-3 py-1 rounded-full bg-purple-900/20 border border-purple-500/30 text-purple-500 text-xs font-medium mb-4 backdrop-blur-sm">
-              TECH VISIONARIES
-            </div>
-
             <h2 className="text-3xl md:text-4xl font-bold">
               Meet Our Past Celebrity
             </h2>
@@ -427,9 +417,6 @@ export default function KronosTechFest() {
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
-            <div className="inline-block px-3 py-1 rounded-full bg-purple-900/20 border border-purple-500/30 text-purple-500 text-xs font-medium mb-4 backdrop-blur-sm">
-              OUR PARTNERS
-            </div>
             <h2 className="text-3xl md:text-4xl font-bold">
               Past Sponsors & Partners
             </h2>

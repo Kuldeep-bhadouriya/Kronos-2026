@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Hyperspeed from "@/components/Hyperspeed";
+import PageHeading from "@/components/page-heading";
 import { homeLikeHyperspeedEffect } from "@/lib/hyperspeed";
 
 // Define types for team members
@@ -161,11 +162,6 @@ export default function TeamPage() {
           role: "Co-coordinator ",
           image: `/WhatsApp Image 2025-03-30 at 5.10.28 PM.jpeg`,
         },
-        {
-          name: "Prabhat Verma",
-          role: "Co-coordinator ",
-          image: `/pr-prabhat.jpg`,
-        },
       ],
     },
     {
@@ -268,26 +264,26 @@ export default function TeamPage() {
         },
       ],
     },
-    {
-      name: "Discipline",
-      coordinator: {
-        name: "Aryan Shrivastava",
-        role: "Coordinator",
-        image: `/2026 Team/Aryan_Shrivastava_Discipline_Coordinator.png`,
-      },
-      coCoordinators: [
-        {
-          name: "Rohit Gupta",
-          role: "Co-coordinator",
-          image: `/WhatsApp Image 2025-03-27 at 4.09.50 PM.jpeg`,
-        },
-        {
-          name: "Naman Mishra",
-          role: "Co-coordinator",
-          image: `/WhatsApp Image 2025-03-27 at 4.09.51 PM.jpeg`,
-        },
-      ],
-    },
+    // {
+    //   name: "Discipline",
+    //   coordinator: {
+    //     name: "Aryan Shrivastava",
+    //     role: "Coordinator",
+    //     image: `/2026 Team/Aryan_Shrivastava_Discipline_Coordinator.png`,
+    //   },
+    //   coCoordinators: [
+    //     {
+    //       name: "Rohit Gupta",
+    //       role: "Co-coordinator",
+    //       image: `/WhatsApp Image 2025-03-27 at 4.09.50 PM.jpeg`,
+    //     },
+    //     {
+    //       name: "Naman Mishra",
+    //       role: "Co-coordinator",
+    //       image: `/WhatsApp Image 2025-03-27 at 4.09.51 PM.jpeg`,
+    //     },
+    //   ],
+    // },
   ];
 
   return (
@@ -303,23 +299,11 @@ export default function TeamPage() {
 
       <div className="container mx-auto px-4 py-12 relative z-20 pt-32">
         <div className="relative mb-12 flex flex-col justify-center items-center">
-          <div className="inline-block rounded-full px-4 py-1 text-xs font-medium bg-purple-900/30 text-purple-300 mb-4 border border-purple-800/50 backdrop-blur-sm animate-pulse">
-            TECH FEST 2025
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
-            <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient">
-              KRONOS
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient animation-delay-1000">
-              TEAM
-            </span>
-          </h1>
-          <p className="text-gray-400 max-w-2xl text-justify backdrop-blur-sm bg-black/20 p-4 rounded-lg">
-            Meet the brilliant minds behind Kronos Tech Revolution. Our team of
-            innovators, visionaries, and tech enthusiasts are working tirelessly
-            to bring you the most anticipated tech festival of the year.
-          </p>
+          <PageHeading
+            eyebrow="KRONOS 2026"
+            title="Kronos Team"
+            description="Meet the innovators, leaders, and coordinators building Central India&apos;s most anticipated youth tech festival."
+          />
         </div>
 
         <div className="flex flex-col gap-8 max-w-4xl mx-auto">
@@ -525,7 +509,11 @@ export default function TeamPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="flex flex-col gap-6">
+                  <div
+                    className={`flex flex-col ${
+                      department.coCoordinators.length > 0 ? "gap-6" : "gap-0"
+                    }`}
+                  >
                     {/* Coordinator */}
                     <div className="flex flex-col items-center">
                       <div className="w-28 h-28 rounded-full overflow-hidden mb-3 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
@@ -549,33 +537,41 @@ export default function TeamPage() {
                     </div>
 
                     {/* Co-coordinators */}
-                    <div className="grid grid-cols-2 gap-4">
-                      {department.coCoordinators.map(
-                        (coCoordinator, coIndex) => (
-                          <div
-                            key={coIndex}
-                            className="flex flex-col items-center"
-                          >
-                            <div className="w-28 h-28 rounded-full overflow-hidden mb-2 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
-                              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
-                              <Image
-                                src={coCoordinator.image || "/placeholder.svg"}
-                                alt={coCoordinator.name}
-                                width={112}
-                                height={112}
-                                className="object-cover"
-                              />
+                    {department.coCoordinators.length > 0 && (
+                      <div
+                        className={`grid gap-4 ${
+                          department.coCoordinators.length === 1
+                            ? "grid-cols-1 place-items-center"
+                            : "grid-cols-2"
+                        }`}
+                      >
+                        {department.coCoordinators.map(
+                          (coCoordinator, coIndex) => (
+                            <div
+                              key={coIndex}
+                              className="flex flex-col items-center"
+                            >
+                              <div className="w-28 h-28 rounded-full overflow-hidden mb-2 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
+                                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                                <Image
+                                  src={coCoordinator.image || "/placeholder.svg"}
+                                  alt={coCoordinator.name}
+                                  width={112}
+                                  height={112}
+                                  className="object-cover"
+                                />
+                              </div>
+                              <h3 className="text-base font-semibold text-center text-white">
+                                {coCoordinator.name}
+                              </h3>
+                              <p className="text-xs text-purple-300 text-center">
+                                {coCoordinator.role}
+                              </p>
                             </div>
-                            <h3 className="text-base font-semibold text-center text-white">
-                              {coCoordinator.name}
-                            </h3>
-                            <p className="text-xs text-purple-300 text-center">
-                              {coCoordinator.role}
-                            </p>
-                          </div>
-                        )
-                      )}
-                    </div>
+                          )
+                        )}
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

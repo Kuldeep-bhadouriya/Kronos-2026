@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import PageHeading from "@/components/page-heading";
 
 import { FaGithub, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 
@@ -18,17 +19,7 @@ const DeveloperTeam: React.FC = () => {
         }
 
         .container {
-          padding: 50px 20px;
-        }
-
-        .section-title {
-          font-size: 36px;
-          font-weight: 700;
-          margin-bottom: 20px;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          color: #ff007f; /* Pinkish color for the theme */
-          text-align: center; /* Center align */
+          padding: 70px 20px 50px;
         }
 
         .team-container {
@@ -134,7 +125,13 @@ const DeveloperTeam: React.FC = () => {
       `}</style>
 
       <div className="container">
-        <h2 className="section-title">Developers Team</h2>
+        <PageHeading
+          eyebrow="KRONOS 2026"
+          title="Developers Team"
+          description="The engineers behind the digital experience powering registrations, updates, and the complete Kronos web journey."
+          className="mb-12"
+          accentClassName="from-pink-300 via-fuchsia-300 to-purple-300"
+        />
 
         <div className="team-container">
           {/* <div className="team-row">

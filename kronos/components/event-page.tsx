@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import EventList from "@/components/event-list";
 import EventDetail from "@/components/event-detail";
+import PageHeading from "@/components/page-heading";
 import type { Event } from "@/lib/types";
 import { preEvents, mainEvents } from "@/lib/data";
 import { Scan } from "lucide-react";
@@ -85,14 +86,19 @@ export default function EventPage() {
         />
 
         <header className="container mx-auto py-12 relative z-10">
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold text-center tracking-wider font-['Orbitron'] mt-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-red-500"
+            className="mt-10"
           >
-            EVENTS
-          </motion.h1>
+            <PageHeading
+              eyebrow="KRONOS 2026"
+              title="Events"
+              description="Explore pre-event and main-event experiences designed to challenge, inspire, and entertain."
+              accentClassName="from-blue-400 via-violet-300 to-red-400"
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}

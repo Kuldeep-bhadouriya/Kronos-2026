@@ -6,6 +6,7 @@ import { homeLikeHyperspeedEffect } from "@/lib/hyperspeed"
 import { Card } from "@/components/ui/card"
 import Navbar from "@/components/Navbar"
 import Hyperspeed from "@/components/Hyperspeed"
+import PageHeading from "@/components/page-heading"
 
 const events = [
   {
@@ -472,9 +473,13 @@ export default function Home() {
             style={{ animationDirection: "reverse" }}
           ></div>
 
-          <h1 className="text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] mb-8 sm:mb-10 md:mb-12 text-[#9c6bdf] shimmer-effect p-4 floating-animation">
-            SCHEDULE
-          </h1>
+          <PageHeading
+            eyebrow="KRONOS 2026"
+            title="Schedule"
+            description="Browse the complete timeline for pre-events and main events so you never miss a key moment."
+            className="mb-8 px-4 sm:mb-10 md:mb-12 floating-animation"
+            accentClassName="from-purple-300 via-fuchsia-200 to-pink-300"
+          />
 
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-12 sm:mb-16">
             <button
