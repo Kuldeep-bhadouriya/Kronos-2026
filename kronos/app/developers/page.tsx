@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Developer from "@/components/developer";
 import Navbar from "@/components/Navbar";

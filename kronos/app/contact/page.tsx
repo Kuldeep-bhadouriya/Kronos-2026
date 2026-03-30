@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import ContactUs from "@/components/contact";
 import Navbar from "@/components/Navbar";
