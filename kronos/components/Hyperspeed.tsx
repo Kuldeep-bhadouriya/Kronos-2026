@@ -903,40 +903,106 @@ const roadVertex = `
   }
 `;
 
-function resizeRendererToDisplaySize(
-  renderer: THREE.WebGLRenderer,
-  setSize: (width: number, height: number, updateStyle: boolean) => void
-) {
-  const canvas = renderer.domElement;
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  if (width <= 0 || height <= 0) return false;
-  const needResize = canvas.width !== width || canvas.height !== height;
-  if (needResize) {
-    setSize(width, height, false);
-  }
-  return needResize;
+interface QualityProfile {
+  pixelRatioCap: number;
+  renderScale: number;
+  useCinematicAspect: boolean;
+  enableBloom: boolean;
+  bloomResolutionScale: number;
+  enableSMAA: boolean;
+  maxFPS: number;
+}
+
+interface RenderSizing {
+  renderWidth: number;
+  renderHeight: number;
+  displayWidth: number;
+  displayHeight: number;
+  aspect: number;
 }
 
 function getTargetAspect() {
   return 16 / 9;
 }
 
-function getContainRenderSize(width: number, height: number) {
-  const aspect = getTargetAspect();
-  const viewportAspect = width / height;
+function isAndroidDevice() {
+  return /android/i.test(window.navigator.userAgent);
+}
 
-  if (viewportAspect > aspect) {
+function isMobileViewport() {
+  return window.matchMedia('(max-width: 900px)').matches;
+}
+
+function createQualityProfile(): QualityProfile {
+  const isAndroid = isAndroidDevice();
+  const isMobile = isMobileViewport();
+  const hardwareConcurrency = window.navigator.hardwareConcurrency ?? 4;
+  const isLowCoreDevice = hardwareConcurrency <= 8;
+
+  if (isAndroid) {
     return {
-      renderWidth: Math.ceil(height * aspect),
-      renderHeight: height,
-      aspect
+      pixelRatioCap: 1,
+      renderScale: isLowCoreDevice ? 0.7 : 0.8,
+      useCinematicAspect: false,
+      enableBloom: true,
+      bloomResolutionScale: 0.65,
+      enableSMAA: false,
+      maxFPS: 30
+    };
+  }
+
+  if (isMobile) {
+    return {
+      pixelRatioCap: 1.25,
+      renderScale: isLowCoreDevice ? 0.8 : 0.9,
+      useCinematicAspect: false,
+      enableBloom: true,
+      bloomResolutionScale: 0.8,
+      enableSMAA: false,
+      maxFPS: 45
     };
   }
 
   return {
-    renderWidth: width,
-    renderHeight: Math.ceil(width / aspect),
+    pixelRatioCap: 2,
+    renderScale: 1,
+    useCinematicAspect: true,
+    enableBloom: true,
+    bloomResolutionScale: 1,
+    enableSMAA: true,
+    maxFPS: 60
+  };
+}
+
+function getRenderSizing(width: number, height: number, qualityProfile: QualityProfile): RenderSizing {
+  const renderScale = Math.min(1, Math.max(0.65, qualityProfile.renderScale));
+
+  if (!qualityProfile.useCinematicAspect) {
+    return {
+      renderWidth: Math.max(1, Math.round(width * renderScale)),
+      renderHeight: Math.max(1, Math.round(height * renderScale)),
+      displayWidth: width,
+      displayHeight: height,
+      aspect: width / height
+    };
+  }
+
+  const aspect = getTargetAspect();
+  const viewportAspect = width / height;
+  let displayWidth = width;
+  let displayHeight = height;
+
+  if (viewportAspect > aspect) {
+    displayWidth = Math.ceil(height * aspect);
+  } else {
+    displayHeight = Math.ceil(width / aspect);
+  }
+
+  return {
+    renderWidth: Math.max(1, Math.round(displayWidth * renderScale)),
+    renderHeight: Math.max(1, Math.round(displayHeight * renderScale)),
+    displayWidth,
+    displayHeight,
     aspect
   };
 }
@@ -971,6 +1037,9 @@ class App {
   viewportWidth: number;
   viewportHeight: number;
   useComposer: boolean;
+  qualityProfile: QualityProfile;
+  frameInterval: number;
+  lastFrameTime: number;
 
   constructor(container: HTMLElement, options: HyperspeedOptions) {
     this.options = options;
@@ -985,6 +1054,9 @@ class App {
     this.viewportWidth = 0;
     this.viewportHeight = 0;
     this.useComposer = true;
+    this.qualityProfile = createQualityProfile();
+    this.frameInterval = 1000 / this.qualityProfile.maxFPS;
+    this.lastFrameTime = 0;
 
     const initW = Math.max(1, container.offsetWidth);
     const initH = Math.max(1, container.offsetHeight);
@@ -994,7 +1066,7 @@ class App {
       alpha: true
     });
     this.renderer.setSize(initW, initH, false);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this.qualityProfile.pixelRatioCap));
 
     this.composer = new EffectComposer(this.renderer);
     const canvas = this.renderer.domElement;
@@ -1088,7 +1160,11 @@ class App {
       return;
     }
 
-    const { renderWidth, renderHeight, aspect } = getContainRenderSize(width, height);
+    const { renderWidth, renderHeight, displayWidth, displayHeight, aspect } = getRenderSizing(
+      width,
+      height,
+      this.qualityProfile
+    );
     this.viewportWidth = width;
     this.viewportHeight = height;
 
@@ -1099,14 +1175,19 @@ class App {
     this.camera.updateProjectionMatrix();
 
     const canvas = this.renderer.domElement;
-    canvas.style.width = `${renderWidth}px`;
-    canvas.style.height = `${renderHeight}px`;
+    canvas.style.width = `${displayWidth}px`;
+    canvas.style.height = `${displayHeight}px`;
 
     this.hasValidSize = true;
   }
 
   initPasses() {
     try {
+      if (!this.qualityProfile.enableBloom && !this.qualityProfile.enableSMAA) {
+        this.useComposer = false;
+        return;
+      }
+
       const contextAttributes = this.renderer.getContext()?.getContextAttributes?.();
       if (!contextAttributes) {
         this.useComposer = false;
@@ -1115,29 +1196,40 @@ class App {
       }
 
       this.renderPass = new RenderPass(this.scene, this.camera);
-      this.bloomPass = new EffectPass(
-        this.camera,
-        new BloomEffect({
-          luminanceThreshold: 0.2,
-          luminanceSmoothing: 0,
-          resolutionScale: 1
-        })
-      );
-      this.renderPass.renderToScreen = false;
+      this.renderPass.renderToScreen = !this.qualityProfile.enableBloom && !this.qualityProfile.enableSMAA;
       this.composer.addPass(this.renderPass);
-      this.bloomPass.renderToScreen = true;
-      this.composer.addPass(this.bloomPass);
 
-      // Some runtimes can fail to initialize SMAA internals; keep rendering functional without it.
-      const smaaPass = new EffectPass(
-        this.camera,
-        new SMAAEffect({
-          preset: SMAAPreset.MEDIUM
-        })
-      );
-      this.bloomPass.renderToScreen = false;
-      smaaPass.renderToScreen = true;
-      this.composer.addPass(smaaPass);
+      if (this.qualityProfile.enableBloom) {
+        this.bloomPass = new EffectPass(
+          this.camera,
+          new BloomEffect({
+            luminanceThreshold: 0.2,
+            luminanceSmoothing: 0,
+            resolutionScale: this.qualityProfile.bloomResolutionScale
+          })
+        );
+        this.bloomPass.renderToScreen = !this.qualityProfile.enableSMAA;
+        this.composer.addPass(this.bloomPass);
+      }
+
+      if (this.qualityProfile.enableSMAA) {
+        // Some runtimes can fail to initialize SMAA internals; keep rendering functional without it.
+        const smaaPass = new EffectPass(
+          this.camera,
+          new SMAAEffect({
+            preset: SMAAPreset.MEDIUM
+          })
+        );
+
+        if (this.qualityProfile.enableBloom) {
+          this.bloomPass.renderToScreen = false;
+        } else {
+          this.renderPass.renderToScreen = false;
+        }
+
+        smaaPass.renderToScreen = true;
+        this.composer.addPass(smaaPass);
+      }
     } catch (error) {
       this.useComposer = false;
       console.warn('Hyperspeed: Postprocessing disabled due to initialization failure.', error);
@@ -1145,6 +1237,10 @@ class App {
   }
 
   loadAssets(): Promise<void> {
+    if (!this.qualityProfile.enableSMAA) {
+      return Promise.resolve();
+    }
+
     const assets = this.assets;
     return new Promise(resolve => {
       const manager = new THREE.LoadingManager(resolve);
@@ -1316,8 +1412,14 @@ class App {
     this.composer.setSize(width, height, updateStyles);
   }
 
-  tick() {
+  tick(timestamp = 0) {
     if (this.disposed) return;
+
+    if (this.lastFrameTime !== 0 && timestamp - this.lastFrameTime < this.frameInterval) {
+      requestAnimationFrame(this.tick);
+      return;
+    }
+    this.lastFrameTime = timestamp;
 
     if (!this.hasValidSize) {
       this.applyResponsiveSize();
@@ -1334,7 +1436,7 @@ class App {
     }
 
     if (this.hasValidSize) {
-      const delta = this.clock.getDelta();
+      const delta = Math.min(this.clock.getDelta(), 0.1);
       this.render(delta);
       this.update(delta);
     }
