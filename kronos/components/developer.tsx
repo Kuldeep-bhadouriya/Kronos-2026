@@ -51,11 +51,6 @@ const developers: DeveloperProfile[] = [
         href: "https://www.linkedin.com/in/kuldeep-singh-bhadouriya-68a748311",
         icon: <FaLinkedinIn />,
       },
-      {
-        label: "Instagram",
-        href: "https://www.instagram.com/wtf.kuldeepz",
-        icon: <FaInstagram />,
-      },
     ],
   },
 ];

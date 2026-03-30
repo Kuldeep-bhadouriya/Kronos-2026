@@ -19,17 +19,18 @@ type TeamMember = {
 
 type Department = {
   name: string;
-  coordinator: TeamMember;
+  coordinator?: TeamMember;
+  coordinators?: TeamMember[];
   coCoordinators: TeamMember[];
 };
 
 export default function TeamPage() {
   // Sample data - replace with actual team data
   const dsw: TeamMember = {
-    name: "Manoj Mishra",
+    name: "Nitin Dixit",
     role: "Faculty Incharge",
-    image: "/WhatsApp Image 2025-03-27 at 3.23.14 PM.jpeg",
-    bio: "With a passion for fostering innovation and empowering students, Manoj Mishra has been an integral part of Kronos Tech Fest as the Faculty Coordinator. With years of experience in academic leadership and student engagement, he has played a key role in shaping this event into one of the most anticipated tech festivals of the year.",
+    image: "/WhatsApp Image 2025-03-07 at 19.39.53_61d1cf60.jpg",
+    bio: "With a passion for fostering innovation and empowering students, Nitin Dixit has been an integral part of Kronos Tech Fest as the Faculty Coordinator. With years of experience in academic leadership and student engagement, he has played a key role in shaping this event into one of the most anticipated tech festivals of the year.",
     email: "dsw@itmgoi.in",
     achievements: [
       "Spearheaded partnerships with leading tech organizations and sponsors.",
@@ -91,21 +92,28 @@ export default function TeamPage() {
   const departments: Department[] = [
     {
       name: "Tech",
-      coordinator: {
-        name: "Aryaman Bhatnagar",
-        role: "Coordinator",
-        image: `/tech.jpg`,
-      },
-      coCoordinators: [
+      coordinators: [
         {
-          name: "Ronak Verma",
-          role: "Co-coordinator",
-          image: `/tech-ronak.jpg`,
+          name: "Atharva Bhargava",
+          role: "Coordinator",
+          image: `/WhatsApp Image 2025-03-21 at 15.34.21_000b1ee1.jpg`,
         },
         {
-          name: "Vedant Pisal",
+          name: "Jayan Shrivastava",
+          role: "Coordinator",
+          image: `/2026 Team/Jayan_Shrivastava_Tech_coordinator.jpg`,
+        },
+      ],
+      coCoordinators: [
+        {
+          name: "Naman Jain",
           role: "Co-coordinator",
-          image: `/tech-vedant.jpg`,
+          image: `/2026 Team/Naman_Jain_Tech_Co-coordiantor.jpg`,
+        },
+        {
+          name: "Kuldeep Singh Bhadouriya",
+          role: "Co-coordinator",
+          image: `/WhatsApp Image 2025-03-21 at 15.34.16_9d399998.jpg`,
         },
       ],
     },
@@ -122,11 +130,6 @@ export default function TeamPage() {
           role: "Co-coordinator",
           image: `/2026 Team/Rohit_Gujar_Non_Tech_Co-Coordinator.jpg`,
         },
-        {
-          name: "Milan Sharma",
-          role: "Co-coordinator",
-          image: `/WhatsApp Image 2025-03-27 at 1.52.37 PM.jpeg`,
-        },
       ],
     },
     {
@@ -136,18 +139,28 @@ export default function TeamPage() {
         role: "Coordinator",
         image: `/2026 Team/Nihal_Soni_HR.jpeg`,
       },
-      coCoordinators: [
+      coCoordinators: [],
+    },
+    {
+      name: "Discipline",
+      coordinators: [
         {
-          name: "Adarsh Dixit",
-          role: "Co-coordinator ",
-          image: `/IMG-20241103-WA0010 - Adarsh Dixit.jpg`,
+          name: "Monu Tiwari",
+          role: "Coordinator",
+          image: `/2026 Team/Monu_Tiwari_Disciplane.jpeg`,
         },
         {
-          name: "Sneha Saraswat",
-          role: "Co-coordinator  ",
-          image: `/hr-sneha.jpg`,
+          name: "Aryan Shrivastava",
+          role: "Coordinator",
+          image: `/2026 Team/Aryan_Shrivastava_Discipline_Coordinator.png`,
+        },
+        {
+          name: "Rishikesh Mudgal",
+          role: "Coordinator",
+          image: `/2026 Team/RishiKesh_Mudgal_Discipline_Head.jpeg`,
         },
       ],
+      coCoordinators: [],
     },
     {
       name: "PR/Media",
@@ -193,14 +206,14 @@ export default function TeamPage() {
       },
       coCoordinators: [
         {
-          name: "Sarthak Yadav",
+          name: "Priya Sikarwar",
           role: "Co-coordinator ",
-          image: `/design-sarthak.png`,
+          image: `/2026 Team/Priya_Sikarwar_Design_co-coordinator.jpeg`,
         },
         {
-          name: "Utkarsh Srivastava",
+          name: "Rudra Shrivastava",
           role: "Co-coordinator ",
-          image: `/design-utksrsh.jpg`,
+          image: `/2026 Team/Rudra_Shrivastava_Design_Co-Coordinator.jpeg`,
         },
       ],
     },
@@ -217,73 +230,54 @@ export default function TeamPage() {
           role: "Co-coordinator ",
           image: `/2026 Team/Abhishek_singh_Finance_co-coordinator.jpeg`,
         },
-        {
-          name: "Pulak Jain",
-          role: "Co-coordinator ",
-          image: `/pulak.jpeg`,
-        },
       ],
     },
     {
       name: "Promotion",
       coordinator: {
-        name: "Krishna Sikarwar",
+        name: "Rahul Sharma",
         role: "Coordinator",
-        image: `/promotion.jpeg`,
+        image: "",
       },
       coCoordinators: [
         {
-          name: "Sadaf Ali",
+          name: "Krishna Gupta",
           role: "Co-coordinator ",
-          image: `/promotion-sadaf.jpg`,
+          image: "",
         },
         {
-          name: "Kavya Soni",
+          name: "Aditya Sharma",
           role: "Co-coordinator ",
-          image: `/promotion-kavy.jpeg`,
+          image: "/2026 Team/Aditya_Sharma_Promotion.jpeg",
+        },
+      ],
+    },
+    {
+      name: "Management",
+      coordinator: {
+        name: "Rudra Tripathi",
+        role: "Coordinator",
+        image: `/2026 Team/Rudra_Tripathi_Management_Coordinator.jpeg`,
+      },
+      coCoordinators: [
+        {
+          name: "Vansh Tomar",
+          role: "Co-coordinator ",
+          image: "/2026 Team/Vansh_Tomar_Management_Co-coordinator.jpeg",
         },
       ],
     },
     {
       name: "Sponsorship",
       coordinator: {
-        name: "Shivangi Dixit",
+        name: "Arun Rajawat",
         role: "Coordinator ",
-        image: `/sponsorsdhip.jpg`,
+        image: `/2026 Team/Arun_Rajawat_Sponsership.png`,
       },
       coCoordinators: [
-        {
-          name: "Krishna Sahu",
-          role: "Co-coordinator ",
-          image: `/IMG_20250306_224553 - Krishna Sahu.jpg`,
-        },
-        {
-          name: "Adil Khan",
-          role: "Co-coordinator",
-          image: `/sponsorship-adil.jpg`,
-        },
+
       ],
     },
-    // {
-    //   name: "Discipline",
-    //   coordinator: {
-    //     name: "Aryan Shrivastava",
-    //     role: "Coordinator",
-    //     image: `/2026 Team/Aryan_Shrivastava_Discipline_Coordinator.png`,
-    //   },
-    //   coCoordinators: [
-    //     {
-    //       name: "Rohit Gupta",
-    //       role: "Co-coordinator",
-    //       image: `/WhatsApp Image 2025-03-27 at 4.09.50 PM.jpeg`,
-    //     },
-    //     {
-    //       name: "Naman Mishra",
-    //       role: "Co-coordinator",
-    //       image: `/WhatsApp Image 2025-03-27 at 4.09.51 PM.jpeg`,
-    //     },
-    //   ],
-    // },
   ];
 
   return (
@@ -354,7 +348,7 @@ export default function TeamPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
+          {/* <Card className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
             <CardHeader className="text-center border-b border-amber-900/30">
               <CardTitle className="text-amber-400 group-hover:text-red-400 transition-colors uppercase tracking-wider">
                 Faculty Coordinator (ADSW)
@@ -399,7 +393,7 @@ export default function TeamPage() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
           {/* President Card */}
           <Card className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
             <CardHeader className="text-center border-b border-amber-900/30">
@@ -499,6 +493,11 @@ export default function TeamPage() {
           {/* Department Cards */}
           <div className="grid md:grid-cols-2 gap-6">
             {departments.map((department, index) => (
+              (() => {
+                const coordinators = department.coordinators ??
+                  (department.coordinator ? [department.coordinator] : []);
+
+                return (
               <Card
                 key={index}
                 className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.02] transform-gpu"
@@ -515,27 +514,61 @@ export default function TeamPage() {
                       department.coCoordinators.length > 0 ? "gap-6" : "gap-0"
                     }`}
                   >
-                    {/* Coordinator */}
-                    <div className="flex flex-col items-center">
-                      <div className="w-28 h-28 rounded-full overflow-hidden mb-3 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
-                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
-                        <Image
-                          src={
-                            department.coordinator.image || "/placeholder.svg"
-                          }
-                          alt={department.coordinator.name}
-                          width={112}
-                          height={112}
-                          className="object-cover"
-                        />
+                    {/* Coordinators */}
+                    {coordinators.length === 1 ? (
+                      <div className="flex flex-col items-center">
+                        <div className="w-28 h-28 rounded-full overflow-hidden mb-3 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
+                          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                          <Image
+                            src={coordinators[0].image || "/placeholder.svg"}
+                            alt={coordinators[0].name}
+                            width={112}
+                            height={112}
+                            className="object-cover"
+                          />
+                        </div>
+                        <h3 className="text-lg font-semibold text-white">
+                          {coordinators[0].name}
+                        </h3>
+                        <p className="text-amber-300 text-sm">
+                          {coordinators[0].role}
+                        </p>
                       </div>
-                      <h3 className="text-lg font-semibold text-white">
-                        {department.coordinator.name}
-                      </h3>
-                      <p className="text-amber-300 text-sm">
-                        {department.coordinator.role}
-                      </p>
-                    </div>
+                    ) : (
+                      <div
+                        className={`grid gap-4 ${
+                          department.name === "Discipline"
+                            ? "grid-cols-3"
+                            : coordinators.length === 2
+                            ? "grid-cols-2"
+                            : "grid-cols-2 md:grid-cols-3"
+                        }`}
+                      >
+                        {coordinators.map((coordinator, coordinatorIndex) => (
+                          <div
+                            key={coordinatorIndex}
+                            className="flex flex-col items-center"
+                          >
+                            <div className="w-28 h-28 rounded-full overflow-hidden mb-2 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
+                              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                              <Image
+                                src={coordinator.image || "/placeholder.svg"}
+                                alt={coordinator.name}
+                                width={112}
+                                height={112}
+                                className="object-cover"
+                              />
+                            </div>
+                            <h3 className="text-base font-semibold text-center text-white">
+                              {coordinator.name}
+                            </h3>
+                            <p className="text-xs text-amber-300 text-center">
+                              {coordinator.role}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Co-coordinators */}
                     {department.coCoordinators.length > 0 && (
@@ -576,6 +609,8 @@ export default function TeamPage() {
                   </div>
                 </CardContent>
               </Card>
+                );
+              })()
             ))}
           </div>
         </div>
