@@ -328,9 +328,7 @@ export default function KronosTechFest() {
           <div className="container mx-auto px-4">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_460px] lg:items-center">
               <div className="max-w-3xl space-y-7 animate-fade-in-up">
-                <Badge className="rounded-full border-purple-400/35 bg-purple-500/10 px-4 py-1 text-xs tracking-[0.24em] text-purple-100">
-                  ITM GWALIOR FLAGSHIP EXPERIENCE
-                </Badge>
+                
 
                 <h1 className="text-balance text-4xl font-black uppercase leading-[0.9] tracking-[0.08em] sm:text-6xl lg:text-7xl">
                   <span className="block text-slate-50">KRONOS 2026</span>
@@ -574,8 +572,8 @@ export default function KronosTechFest() {
 
         <section id="speakers" ref={sectionRefs.speakers} className="relative z-10 py-20 md:py-24">
           <div className="container mx-auto px-4">
-            <div className="grid gap-10 lg:grid-cols-[420px_minmax(0,1fr)] lg:items-center">
-              <div className="space-y-5 animate-fade-in-left">
+            <div className="mx-auto max-w-6xl">
+              <div className="mx-auto mb-10 max-w-3xl space-y-5 text-center animate-fade-in">
                   <p className="text-xs uppercase tracking-[0.2em] text-purple-100">Legacy Stage</p>
                 <h2 className="text-balance text-3xl font-bold uppercase tracking-[0.06em] text-slate-50 md:text-4xl">
                   Artists who have already lit up KRONOS.
@@ -584,7 +582,7 @@ export default function KronosTechFest() {
                   Our stage has hosted voices that move crowds and stories that stay with students long
                   after the festival ends. Explore some of the standout appearances from previous editions.
                 </p>
-                  <div className="inline-flex rounded-full border border-pink-400/35 bg-pink-500/10 px-4 py-2 text-xs uppercase tracking-[0.16em] text-pink-100">
+                <div className="inline-flex rounded-full border border-pink-400/35 bg-pink-500/10 px-4 py-2 text-xs uppercase tracking-[0.16em] text-pink-100">
                   Celebrity showcase archive
                 </div>
               </div>
@@ -592,7 +590,7 @@ export default function KronosTechFest() {
               <CardStack
                 items={pastCelebrities}
                 cardHeight={isMobileView ? 300 : 360}
-                cardWidth={isMobileView ? 340 : 560}
+                cardWidth={isMobileView ? 340 : 620}
                 maxVisible={5}
                 overlap={0.56}
                 spreadDeg={44}
@@ -603,7 +601,7 @@ export default function KronosTechFest() {
                 autoAdvance
                 intervalMs={3200}
                 pauseOnHover
-                className="mx-auto"
+                className="mx-auto w-full"
               />
             </div>
           </div>
