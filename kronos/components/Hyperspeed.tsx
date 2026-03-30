@@ -966,7 +966,7 @@ function createQualityProfile(): QualityProfile {
   return {
     pixelRatioCap: 2,
     renderScale: 1,
-    useCinematicAspect: true,
+    useCinematicAspect: false,
     enableBloom: true,
     bloomResolutionScale: 1,
     enableSMAA: true,

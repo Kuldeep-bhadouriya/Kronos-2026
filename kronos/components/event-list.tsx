@@ -38,11 +38,11 @@ export default function EventList({
   const accentStyles =
     activeSection === "pre-event"
       ? {
-          hoverBorder: "hover:border-blue-500/50",
-          hoverShadow: "hover:shadow-blue-500/20",
-          heading: "group-hover:text-blue-300",
-          actionButton: "bg-blue-500 text-blue-50 shadow-blue-500/30",
-          tag: "bg-blue-500/20 text-blue-100 border-blue-400/40",
+          hoverBorder: "hover:border-amber-500/50",
+          hoverShadow: "hover:shadow-amber-500/20",
+          heading: "group-hover:text-amber-200",
+          actionButton: "bg-amber-500 text-amber-50 shadow-amber-500/30",
+          tag: "bg-amber-500/20 text-amber-100 border-amber-400/40",
         }
       : {
           hoverBorder: "hover:border-rose-500/50",

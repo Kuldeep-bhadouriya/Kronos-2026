@@ -2,109 +2,102 @@
 
 import Image from "next/image";
 import { Mail, Phone } from "lucide-react";
-import type { Coordinator } from "@/lib/types";
 import { motion } from "framer-motion";
+import type { Coordinator } from "@/lib/types";
+
+type Accent = "amber" | "red";
 
 interface CoordinatorCardProps {
   coordinator: Coordinator;
-  accentColor: string;
+  accentColor: Accent;
 }
 
-export default function CoordinatorCard({
-  coordinator,
-  accentColor,
-}: CoordinatorCardProps) {
+const accentStyles: Record<
+  Accent,
+  {
+    heading: string;
+    line: string;
+    lineFrom: string;
+    icon: string;
+    hoverIconBg: string;
+    imageBorder: string;
+    imageShadow: string;
+    glow: string;
+  }
+> = {
+  amber: {
+    heading: "text-amber-300",
+    line: "bg-amber-500",
+    lineFrom: "from-amber-500",
+    icon: "text-amber-300",
+    hoverIconBg: "group-hover/item:bg-amber-900/50",
+    imageBorder: "border-amber-400/60",
+    imageShadow: "shadow-[0_0_20px_rgba(245,158,11,0.3)]",
+    glow: "from-amber-500/10",
+  },
+  red: {
+    heading: "text-red-300",
+    line: "bg-red-500",
+    lineFrom: "from-red-500",
+    icon: "text-red-300",
+    hoverIconBg: "group-hover/item:bg-red-900/50",
+    imageBorder: "border-red-400/60",
+    imageShadow: "shadow-[0_0_20px_rgba(239,68,68,0.3)]",
+    glow: "from-red-500/10",
+  },
+};
+
+export default function CoordinatorCard({ coordinator, accentColor }: CoordinatorCardProps) {
+  const accent = accentStyles[accentColor];
+
   return (
-    <div
-      className={`bg-slate-900/60 backdrop-blur-md rounded-lg p-5 border border-slate-800 h-full relative overflow-hidden group`}
-    >
-      {/* Holographic effects */}
-      <div
-        className={`absolute inset-0 bg-gradient-to-b from-${accentColor}-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-      ></div>
+    <div className="group relative h-full overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-900/60 p-5 backdrop-blur-md">
+      <div className={`absolute inset-0 bg-gradient-to-b ${accent.glow} to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
+
       <motion.div
-        className={`absolute inset-0 bg-gradient-to-b from-transparent via-${accentColor}-500/10 to-transparent h-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+        className="absolute inset-0 h-20 bg-gradient-to-b from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         initial={{ top: "-50%" }}
         animate={{ top: "100%" }}
-        transition={{
-          duration: 2,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "linear",
-        }}
+        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
       />
 
-      {/* Interface elements */}
-      <div
-        className={`absolute top-0 left-0 w-10 h-1 bg-${accentColor}-500`}
-      ></div>
-      <div
-        className={`absolute top-0 right-0 w-5 h-1 bg-${accentColor}-500`}
-      ></div>
+      <div className={`absolute left-0 top-0 h-1 w-10 ${accent.line}`} />
+      <div className={`absolute right-0 top-0 h-1 w-5 ${accent.line}`} />
 
-      <h3
-        className={`text-lg font-['Orbitron'] mb-5 text-${accentColor}-400 relative z-10`}
-      >
-        COORDINATOR
+      <h3 className={`relative z-10 mb-5 text-lg font-semibold uppercase tracking-[0.16em] ${accent.heading}`}>
+        Coordinator
       </h3>
 
-      <div className="flex flex-col items-center relative z-10">
+      <div className="relative z-10 flex flex-col items-center">
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className={`relative w-32 h-32 mb-5 rounded-full overflow-hidden border-2 border-${accentColor}-500/50 shadow-[0_0_20px_rgba(${
-            accentColor === "blue" ? "59,130,246" : "239,68,68"
-          },0.3)]`}
+          className={`relative mb-5 h-32 w-32 overflow-hidden rounded-full border-2 ${accent.imageBorder} ${accent.imageShadow}`}
         >
-          <Image
-            src={coordinator.avatar || "/placeholder.svg"}
-            alt={coordinator.name}
-            fill
-            className="object-cover"
-          />
-
-          {/* Holographic overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-slate-900/20 mix-blend-overlay"></div>
-          <div
-            className={`absolute inset-0 border-4 border-${accentColor}-500/10 rounded-full`}
-          ></div>
-
-          {/* Scan lines */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0ic2NhbmxpbmVzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDAgMSBMIDEwMCAxIE0gMCAzIEwgMTAwIDMgTSAwIDUgTCAxMDAgNSBNIDAgNyBMIDEwMCA3IE0gMCA5IEwgMTAwIDkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwZiIgc3Ryb2tlLXdpZHRoPSIwLjIiIHN0cm9rZS1vcGFjaXR5PSIwLjMiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjc2NhbmxpbmVzKSIgLz48L3N2Zz4=')] opacity-20 mix-blend-overlay"></div>
+          <Image src={coordinator.avatar || "/placeholder.svg"} alt={coordinator.name} fill className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent to-slate-900/25 mix-blend-overlay" />
         </motion.div>
 
-        <h4 className="text-xl font-medium text-white mb-1 font-['Orbitron'] text-center">
-          {coordinator.name}
-        </h4>
-
-        <p className={`text-${accentColor}-400 text-sm mb-5 text-center`}>
-          {coordinator.role}
-        </p>
+        <h4 className="mb-1 text-center text-xl font-medium text-white">{coordinator.name}</h4>
+        <p className={`mb-5 text-center text-sm ${accent.heading}`}>{coordinator.role}</p>
 
         <div className="w-full space-y-4">
-          <div className="flex items-center gap-3 text-slate-300 group/item">
-            <div
-              className={`w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center group-hover/item:bg-${accentColor}-900/50 transition-colors`}
-            >
-              <Phone size={14} className={`text-${accentColor}-400`} />
+          <div className="group/item flex items-center gap-3 text-slate-300">
+            <div className={`flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 transition-colors ${accent.hoverIconBg}`}>
+              <Phone size={14} className={accent.icon} />
             </div>
-            <span className="font-mono">{coordinator.phone}</span>
+            <span className="font-mono text-sm">{coordinator.phone}</span>
           </div>
 
-          <div className="flex items-center gap-3 text-slate-300 group/item">
-            <div
-              className={`w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center group-hover/item:bg-${accentColor}-900/50 transition-colors`}
-            >
-              <Mail size={15} className={`text-${accentColor}-400`} />
+          <div className="group/item flex items-center gap-3 text-slate-300">
+            <div className={`flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 transition-colors ${accent.hoverIconBg}`}>
+              <Mail size={15} className={accent.icon} />
             </div>
-            <span className="text-[14px] break-all font-mono">
-              {coordinator.email}
-            </span>
+            <span className="break-all font-mono text-sm">{coordinator.email}</span>
           </div>
         </div>
       </div>
 
-      <div
-        className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-${accentColor}-600 to-${accentColor}-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-      ></div>
+      <div className={`absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r ${accent.lineFrom} to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
     </div>
   );
 }

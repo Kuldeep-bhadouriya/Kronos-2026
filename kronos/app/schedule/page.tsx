@@ -272,10 +272,11 @@ export default function Home() {
 
   return (
     <>
-      <main className="min-h-screen bg-[#0f1117] text-white p-5 relative isolate overflow-hidden">
+      <main className="min-h-screen bg-slate-950 text-white p-5 relative isolate overflow-hidden">
         <div className="fixed inset-0 z-0 pointer-events-none">
           <Hyperspeed effectOptions={homeLikeHyperspeedEffect} />
           <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/35 to-black/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(220,68,24,0.2),transparent_42%),radial-gradient(circle_at_85%_85%,rgba(245,200,96,0.16),transparent_50%)]" />
         </div>
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10 pointer-events-none"></div>
@@ -410,9 +411,9 @@ export default function Home() {
           .shimmer-effect {
             background: linear-gradient(
               90deg,
-              rgba(156, 107, 223, 0.1) 0%,
+              rgba(245, 158, 11, 0.1) 0%,
               rgba(156, 107, 223, 0.3) 50%,
-              rgba(156, 107, 223, 0.1) 100%
+              rgba(245, 158, 11, 0.1) 100%
             );
             background-size: 200% 100%;
             animation: shimmer 3s infinite;
@@ -441,15 +442,15 @@ export default function Home() {
           @keyframes text-glow {
             0%,
             100% {
-              text-shadow: 0 0 8px rgba(156, 107, 223, 0.5);
+              text-shadow: 0 0 8px rgba(245, 158, 11, 0.45);
             }
             50% {
-              text-shadow: 0 0 15px rgba(156, 107, 223, 0.8),
-                0 0 30px rgba(156, 107, 223, 0.4);
+              text-shadow: 0 0 15px rgba(245, 158, 11, 0.7),
+                0 0 30px rgba(220, 38, 38, 0.25);
             }
           }
 
-          .text-glow-purple {
+          .text-glow-amber {
             animation: text-glow 2s infinite;
           }
 
@@ -460,16 +461,16 @@ export default function Home() {
           .card-hover:hover {
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 20px 40px rgba(156, 107, 223, 0.2),
-              0 0 20px rgba(156, 107, 223, 0.1),
-              0 0 0 1px rgba(156, 107, 223, 0.1);
+              0 0 20px rgba(245, 158, 11, 0.1),
+              0 0 0 1px rgba(245, 158, 11, 0.1);
           }
         `}</style>
 
         <div className="max-w-7xl mx-auto py-12 relative z-20">
           {/* Decorative elements */}
-          <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-purple-500/10 blur-3xl rotate-animation"></div>
+          <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-amber-500/10 blur-3xl rotate-animation"></div>
           <div
-            className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-pink-500/10 blur-3xl rotate-animation"
+            className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-red-500/10 blur-3xl rotate-animation"
             style={{ animationDirection: "reverse" }}
           ></div>
 
@@ -478,7 +479,7 @@ export default function Home() {
             title="Schedule"
             description="Browse the complete timeline for pre-events and main events so you never miss a key moment."
             className="mb-8 px-4 sm:mb-10 md:mb-12 floating-animation"
-            accentClassName="from-purple-300 via-fuchsia-200 to-pink-300"
+            accentClassName="from-amber-300 via-orange-200 to-red-300"
           />
 
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-12 sm:mb-16">
@@ -490,39 +491,39 @@ export default function Home() {
               onClick={() => handleCategoryChange("pre")}
             >
               {/* Background layers */}
-              <div className="absolute inset-0 bg-black/50 backdrop-blur-md rounded-lg border border-purple-500/30 transition-all duration-500 group-hover:border-purple-500/70"></div>
+              <div className="absolute inset-0 bg-black/50 backdrop-blur-md rounded-lg border border-amber-500/30 transition-all duration-500 group-hover:border-amber-500/70"></div>
               <div
                 className={cn(
                   "absolute inset-0 opacity-0 transition-opacity duration-500",
                   activeCategory === "pre" ? "opacity-100" : "group-hover:opacity-40",
                 )}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-lg"></div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(156,107,223,0.3),transparent_70%)]"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-600/20 to-red-600/20 rounded-lg"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.3),transparent_70%)]"></div>
               </div>
 
               {/* Animated corners */}
               <span
                 className={cn(
-                  "absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-purple-500 transition-all duration-500",
+                  "absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-amber-500 transition-all duration-500",
                   activeCategory === "pre" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
               <span
                 className={cn(
-                  "absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-purple-500 transition-all duration-500",
+                  "absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-amber-500 transition-all duration-500",
                   activeCategory === "pre" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
               <span
                 className={cn(
-                  "absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-purple-500 transition-all duration-500",
+                  "absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-amber-500 transition-all duration-500",
                   activeCategory === "pre" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
               <span
                 className={cn(
-                  "absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-purple-500 transition-all duration-500",
+                  "absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-amber-500 transition-all duration-500",
                   activeCategory === "pre" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
@@ -530,7 +531,7 @@ export default function Home() {
               {/* Animated underline */}
               <span
                 className={cn(
-                  "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500",
+                  "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-500 to-red-500 transition-all duration-500",
                   activeCategory === "pre" ? "w-full" : "group-hover:w-3/4",
                 )}
               ></span>
@@ -539,12 +540,12 @@ export default function Home() {
               <span
                 className={cn(
                   "relative z-10 font-bold tracking-widest text-lg transition-all duration-500",
-                  activeCategory === "pre" ? "text-glow-purple" : "",
+                  activeCategory === "pre" ? "text-glow-amber" : "",
                 )}
               >
                 PRE EVENT
                 {activeCategory === "pre" && (
-                  <span className="absolute inset-0 flex items-center justify-center blur-sm text-purple-400 animate-pulse">
+                  <span className="absolute inset-0 flex items-center justify-center blur-sm text-amber-400 animate-pulse">
                     PRE EVENT
                   </span>
                 )}
@@ -559,39 +560,39 @@ export default function Home() {
               onClick={() => handleCategoryChange("main")}
             >
               {/* Background layers */}
-              <div className="absolute inset-0 bg-black/50 backdrop-blur-md rounded-lg border border-purple-500/30 transition-all duration-500 group-hover:border-purple-500/70"></div>
+              <div className="absolute inset-0 bg-black/50 backdrop-blur-md rounded-lg border border-amber-500/30 transition-all duration-500 group-hover:border-amber-500/70"></div>
               <div
                 className={cn(
                   "absolute inset-0 opacity-0 transition-opacity duration-500",
                   activeCategory === "main" ? "opacity-100" : "group-hover:opacity-40",
                 )}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-lg"></div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(156,107,223,0.3),transparent_70%)]"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-600/20 to-red-600/20 rounded-lg"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(245,158,11,0.3),transparent_70%)]"></div>
               </div>
 
               {/* Animated corners */}
               <span
                 className={cn(
-                  "absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-purple-500 transition-all duration-500",
+                  "absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-amber-500 transition-all duration-500",
                   activeCategory === "main" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
               <span
                 className={cn(
-                  "absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-purple-500 transition-all duration-500",
+                  "absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-amber-500 transition-all duration-500",
                   activeCategory === "main" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
               <span
                 className={cn(
-                  "absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-purple-500 transition-all duration-500",
+                  "absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-amber-500 transition-all duration-500",
                   activeCategory === "main" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
               <span
                 className={cn(
-                  "absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-purple-500 transition-all duration-500",
+                  "absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-amber-500 transition-all duration-500",
                   activeCategory === "main" ? "w-8 h-8" : "group-hover:w-6 group-hover:h-6",
                 )}
               ></span>
@@ -599,7 +600,7 @@ export default function Home() {
               {/* Animated underline */}
               <span
                 className={cn(
-                  "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500",
+                  "absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-500 to-red-500 transition-all duration-500",
                   activeCategory === "main" ? "w-full" : "group-hover:w-3/4",
                 )}
               ></span>
@@ -608,12 +609,12 @@ export default function Home() {
               <span
                 className={cn(
                   "relative z-10 font-bold tracking-widest text-lg transition-all duration-500",
-                  activeCategory === "main" ? "text-glow-purple" : "",
+                  activeCategory === "main" ? "text-glow-amber" : "",
                 )}
               >
                 MAIN EVENT
                 {activeCategory === "main" && (
-                  <span className="absolute inset-0 flex items-center justify-center blur-sm text-purple-400 animate-pulse">
+                  <span className="absolute inset-0 flex items-center justify-center blur-sm text-amber-400 animate-pulse">
                     MAIN EVENT
                   </span>
                 )}

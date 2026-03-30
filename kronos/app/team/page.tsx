@@ -112,9 +112,9 @@ export default function TeamPage() {
     {
       name: "Non-Tech",
       coordinator: {
-        name: "Vishnu Kushwah",
+        name: "Dev Arora",
         role: "Coordinator",
-        image: `/non-tech.jpg`,
+        image: `/2026 Team/Dev_Arora_Non_Tech_Coordinator.jpeg`,
       },
       coCoordinators: [
         {
@@ -158,9 +158,9 @@ export default function TeamPage() {
       },
       coCoordinators: [
         {
-          name: "Mohit Prajapati",
+          name: "Suman Sharma",
           role: "Co-coordinator ",
-          image: `/WhatsApp Image 2025-03-30 at 5.10.28 PM.jpeg`,
+          image: `/2026 Team/Suman_Sharma_PR_Co-Coordinator.jpeg`,
         },
       ],
     },
@@ -207,15 +207,15 @@ export default function TeamPage() {
     {
       name: "Finance",
       coordinator: {
-        name: "Manav Sahu",
+        name: "Radhika Agarwal",
         role: "Coordinator",
-        image: `/IMG_8532 - Manav Sahu.jpeg`,
+        image: `/2026 Team/Radhika_Agarwal_Finance_Coordinator.jpeg`,
       },
       coCoordinators: [
         {
-          name: "Radhika Agarwal",
+          name: "Abhishek Singh",
           role: "Co-coordinator ",
-          image: `/Snapchat-986183843 - Radhika Agarwal.jpg`,
+          image: `/2026 Team/Abhishek_singh_Finance_co-coordinator.jpeg`,
         },
         {
           name: "Pulak Jain",
@@ -287,10 +287,11 @@ export default function TeamPage() {
   ];
 
   return (
-    <div className="text-white min-h-screen relative isolate overflow-hidden">
+    <div className="text-slate-100 bg-slate-950 min-h-screen relative isolate overflow-hidden">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Hyperspeed effectOptions={homeLikeHyperspeedEffect} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/35 to-black/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(220,68,24,0.2),transparent_42%),radial-gradient(circle_at_85%_85%,rgba(245,200,96,0.16),transparent_50%)]" />
       </div>
 
       <div className="relative z-40">
@@ -307,16 +308,16 @@ export default function TeamPage() {
         </div>
 
         <div className="flex flex-col gap-8 max-w-4xl mx-auto">
-          <Card className="w-full bg-black/40 backdrop-blur-md border border-purple-800/50 hover:border-pink-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
-            <CardHeader className="text-center border-b border-purple-900/30">
-              <CardTitle className="text-purple-400 group-hover:text-pink-400 transition-colors uppercase tracking-wider">
+          <Card className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
+            <CardHeader className="text-center border-b border-amber-900/30">
+              <CardTitle className="text-amber-400 group-hover:text-red-400 transition-colors uppercase tracking-wider">
                 Faculty Coordinator (DSW)
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
                   <Image
                     src={dsw.image || "/placeholder.svg"}
                     alt={dsw.name}
@@ -330,12 +331,12 @@ export default function TeamPage() {
                     {dsw.name}
                   </h3>
                   <p className="text-gray-400 mb-3">{dsw.bio}</p>
-                  <p className="text-purple-300 mb-2">
+                  <p className="text-amber-300 mb-2">
                     <span className="font-semibold">Contact: </span>
                     {dsw.email}
                   </p>
                   <div className="mt-3">
-                    <h4 className="text-pink-400 font-medium mb-2 uppercase tracking-wider text-sm">
+                    <h4 className="text-red-400 font-medium mb-2 uppercase tracking-wider text-sm">
                       Key Achievements:
                     </h4>
                     <ul className="list-disc list-inside text-gray-300 text-sm">
@@ -353,16 +354,16 @@ export default function TeamPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="w-full bg-black/40 backdrop-blur-md border border-purple-800/50 hover:border-pink-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
-            <CardHeader className="text-center border-b border-purple-900/30">
-              <CardTitle className="text-purple-400 group-hover:text-pink-400 transition-colors uppercase tracking-wider">
+          <Card className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
+            <CardHeader className="text-center border-b border-amber-900/30">
+              <CardTitle className="text-amber-400 group-hover:text-red-400 transition-colors uppercase tracking-wider">
                 Faculty Coordinator (ADSW)
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
                   <Image
                     src={adsw.image || "/placeholder.svg"}
                     alt={adsw.name}
@@ -376,12 +377,12 @@ export default function TeamPage() {
                     {adsw.name}
                   </h3>
                   <p className="text-gray-400 mb-3">{adsw.bio}</p>
-                  <p className="text-purple-300 mb-2">
+                  <p className="text-amber-300 mb-2">
                     <span className="font-semibold">Contact: </span>
                     {adsw.email}
                   </p>
                   <div className="mt-3">
-                    <h4 className="text-pink-400 font-medium mb-2 uppercase tracking-wider text-sm">
+                    <h4 className="text-red-400 font-medium mb-2 uppercase tracking-wider text-sm">
                       Key Achievements:
                     </h4>
                     <ul className="list-disc list-inside text-gray-300 text-sm">
@@ -400,16 +401,16 @@ export default function TeamPage() {
             </CardContent>
           </Card>
           {/* President Card */}
-          <Card className="w-full bg-black/40 backdrop-blur-md border border-purple-800/50 hover:border-pink-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
-            <CardHeader className="text-center border-b border-purple-900/30">
-              <CardTitle className="text-purple-400 group-hover:text-pink-400 transition-colors uppercase tracking-wider">
+          <Card className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
+            <CardHeader className="text-center border-b border-amber-900/30">
+              <CardTitle className="text-amber-400 group-hover:text-red-400 transition-colors uppercase tracking-wider">
                 President
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
                   <Image
                     src={president.image || "/placeholder.svg"}
                     alt={president.name}
@@ -423,12 +424,12 @@ export default function TeamPage() {
                     {president.name}
                   </h3>
                   <p className="text-gray-400 mb-3">{president.bio}</p>
-                  <p className="text-purple-300 mb-2">
+                  <p className="text-amber-300 mb-2">
                     <span className="font-semibold">Contact: </span>
                     {president.email}
                   </p>
                   <div className="mt-3">
-                    <h4 className="text-pink-400 font-medium mb-2 uppercase tracking-wider text-sm">
+                    <h4 className="text-red-400 font-medium mb-2 uppercase tracking-wider text-sm">
                       Key Achievements:
                     </h4>
                     <ul className="list-disc list-inside text-gray-300 text-sm">
@@ -448,16 +449,16 @@ export default function TeamPage() {
           </Card>
 
           {/* Secretary Card */}
-          <Card className="w-full bg-black/40 backdrop-blur-md border border-purple-800/50 hover:border-pink-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
-            <CardHeader className="text-center border-b border-purple-900/30">
-              <CardTitle className="text-purple-400 group-hover:text-pink-400 transition-colors uppercase tracking-wider">
+          <Card className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.01]">
+            <CardHeader className="text-center border-b border-amber-900/30">
+              <CardTitle className="text-amber-400 group-hover:text-red-400 transition-colors uppercase tracking-wider">
                 Secretary
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                <div className="w-40 h-40 rounded-full overflow-hidden mb-4 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors shrink-0 relative hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
                   <Image
                     src={secretary.image || "/placeholder.svg"}
                     alt={secretary.name}
@@ -471,12 +472,12 @@ export default function TeamPage() {
                     {secretary.name}
                   </h3>
                   <p className="text-gray-400 mb-3">{secretary.bio}</p>
-                  <p className="text-purple-300 mb-2">
+                  <p className="text-amber-300 mb-2">
                     <span className="font-semibold">Contact: </span>
                     {secretary.email}
                   </p>
                   <div className="mt-3">
-                    <h4 className="text-pink-400 font-medium mb-2 uppercase tracking-wider text-sm">
+                    <h4 className="text-red-400 font-medium mb-2 uppercase tracking-wider text-sm">
                       Key Achievements:
                     </h4>
                     <ul className="list-disc list-inside text-gray-300 text-sm">
@@ -500,11 +501,11 @@ export default function TeamPage() {
             {departments.map((department, index) => (
               <Card
                 key={index}
-                className="w-full bg-black/40 backdrop-blur-md border border-purple-800/50 hover:border-pink-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.02] transform-gpu"
+                className="w-full bg-black/40 backdrop-blur-md border border-amber-800/50 hover:border-red-500/50 transition-all duration-300 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] group overflow-hidden hover:scale-[1.02] transform-gpu"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <CardHeader className="text-center border-b border-purple-900/30">
-                  <CardTitle className="text-purple-400 group-hover:text-pink-400 transition-colors uppercase tracking-wider text-sm">
+                <CardHeader className="text-center border-b border-amber-900/30">
+                  <CardTitle className="text-amber-400 group-hover:text-red-400 transition-colors uppercase tracking-wider text-sm">
                     {department.name}
                   </CardTitle>
                 </CardHeader>
@@ -516,8 +517,8 @@ export default function TeamPage() {
                   >
                     {/* Coordinator */}
                     <div className="flex flex-col items-center">
-                      <div className="w-28 h-28 rounded-full overflow-hidden mb-3 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                      <div className="w-28 h-28 rounded-full overflow-hidden mb-3 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
                         <Image
                           src={
                             department.coordinator.image || "/placeholder.svg"
@@ -531,7 +532,7 @@ export default function TeamPage() {
                       <h3 className="text-lg font-semibold text-white">
                         {department.coordinator.name}
                       </h3>
-                      <p className="text-purple-300 text-sm">
+                      <p className="text-amber-300 text-sm">
                         {department.coordinator.role}
                       </p>
                     </div>
@@ -551,8 +552,8 @@ export default function TeamPage() {
                               key={coIndex}
                               className="flex flex-col items-center"
                             >
-                              <div className="w-28 h-28 rounded-full overflow-hidden mb-2 border-2 border-purple-500/50 group-hover:border-pink-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
-                                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
+                              <div className="w-28 h-28 rounded-full overflow-hidden mb-2 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
+                                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
                                 <Image
                                   src={coCoordinator.image || "/placeholder.svg"}
                                   alt={coCoordinator.name}
@@ -564,7 +565,7 @@ export default function TeamPage() {
                               <h3 className="text-base font-semibold text-center text-white">
                                 {coCoordinator.name}
                               </h3>
-                              <p className="text-xs text-purple-300 text-center">
+                              <p className="text-xs text-amber-300 text-center">
                                 {coCoordinator.role}
                               </p>
                             </div>
@@ -581,7 +582,7 @@ export default function TeamPage() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-20 border-t border-purple-900/30 py-8 relative z-20">
+      <footer className="mt-20 border-t border-amber-900/30 py-8 relative z-20">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-500 text-sm">
             © 2025 KRONOS TECH REVOLUTION. All rights reserved.

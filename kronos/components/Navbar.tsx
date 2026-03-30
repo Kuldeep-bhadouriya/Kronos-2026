@@ -18,9 +18,9 @@ const navigationItems: NavigationItem[] = [
   { name: "ABOUT", path: "/about" },
   { name: "EVENTS", path: "/events" },
   { name: "SCHEDULE", path: "/schedule" },
-  { name: "CORE TEAM", path: "/team" },
-  { name: "DEVELOPER", path: "/developers" },
   { name: "CONTACT", path: "/contact" },
+  { name: "OUR TEAM", path: "/team" },
+  { name: "DEVELOPER", path: "/developers" },
 ];
 
 interface NavbarProps {
@@ -31,6 +31,7 @@ interface NavbarProps {
 export default function Navbar({ activeSection = "hero" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const registerPath = "/events";
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -60,7 +61,7 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
 
   return (
     <header className={styles.root}>
-      <div className={styles.brandBar}>
+      <div className={styles.shell}>
         <Link href="/" className={styles.brand} onClick={() => setIsOpen(false)}>
           <Image
             src="/itm_logo.png"
@@ -71,6 +72,27 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
             priority
           />
           <span className={styles.wordmark}>KRONOS</span>
+        </Link>
+
+        <nav className={styles.desktopNav} aria-label="Primary">
+          <ul className={styles.desktopMenu}>
+            {navigationItems.map((item) => {
+              const isActive = isTopLevelItemActive(item);
+              const linkClasses = cn(styles.desktopLink, isActive && styles.desktopLinkActive);
+
+              return (
+                <li key={item.name}>
+                  <Link href={item.path} className={linkClasses} onClick={() => setIsOpen(false)}>
+                    {item.name}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <Link href={registerPath} className={styles.registerCta}>
+          Register
         </Link>
 
         <button
@@ -87,7 +109,7 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
 
       <nav
         id="main-navigation"
-        className={cn(styles.navMain, isOpen && styles.navMainOpen)}
+        className={cn(styles.mobilePanel, isOpen && styles.mobilePanelOpen)}
         aria-hidden={!isOpen}
         onClick={(event) => {
           if (event.target === event.currentTarget) {
@@ -95,26 +117,17 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
           }
         }}
       >
-        <button
-          type="button"
-          className={styles.overlayClose}
-          aria-label="Close main navigation"
-          onClick={() => setIsOpen(false)}
-        >
-          <span className={styles.overlayCloseIcon} />
-        </button>
-
-        <ul className={styles.menu}>
+        <ul className={styles.mobileMenu}>
           {navigationItems.map((item, index) => {
             const isActive = isTopLevelItemActive(item);
-            const linkClasses = cn(styles.menuLink, isActive && styles.menuLinkActive);
+            const linkClasses = cn(styles.mobileLink, isActive && styles.mobileLinkActive);
 
             return (
               <li
                 key={item.name}
-                className={styles.menuItem}
+                className={styles.mobileItem}
                 style={{
-                  transitionDelay: isOpen ? `${130 + index * 85}ms` : "0ms",
+                  transitionDelay: isOpen ? `${80 + index * 45}ms` : "0ms",
                 }}
               >
                 <Link
@@ -127,6 +140,11 @@ export default function Navbar({ activeSection = "hero" }: NavbarProps) {
               </li>
             );
           })}
+          <li className={styles.mobileItem}>
+            <Link href={registerPath} className={styles.mobileRegister} onClick={() => setIsOpen(false)}>
+              Register
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

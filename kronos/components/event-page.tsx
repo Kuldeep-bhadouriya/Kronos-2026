@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import EventList from "@/components/event-list";
-import EventDetail from "@/components/event-detail";
+import { Scan } from "lucide-react";
+import EventList from "./event-list";
+import EventDetail from "./event-detail";
 import PageHeading from "@/components/page-heading";
+import Navbar from "@/components/Navbar";
+import Hyperspeed from "@/components/Hyperspeed";
 import type { Event } from "@/lib/types";
 import { preEvents, mainEvents } from "@/lib/data";
-import { Scan } from "lucide-react";
-import Navbar from "./Navbar";
+import { homeLikeHyperspeedEffect } from "@/lib/hyperspeed";
 
 export default function EventPage() {
   const [activeSection, setActiveSection] = useState("pre-event");
@@ -16,177 +18,144 @@ export default function EventPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading for the futuristic effect
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1600);
 
     return () => clearTimeout(timer);
   }, []);
-
-  const handleEventClick = (event: Event) => {
-    setSelectedEvent(event);
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedEvent(null);
-  };
 
   const eventsToShow = activeSection === "pre-event" ? preEvents : mainEvents;
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex flex-col items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="relative"
-        >
-          <Scan className="w-16 h-16 text-blue-500" />
+      <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 text-slate-100">
+        <div className="pointer-events-none fixed inset-0 z-0">
+          <Hyperspeed effectOptions={homeLikeHyperspeedEffect} />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/35 to-black/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(220,68,24,0.2),transparent_42%),radial-gradient(circle_at_85%_85%,rgba(245,200,96,0.16),transparent_50%)]" />
+        </div>
+
+        <div className="relative z-20 text-center">
           <motion.div
-            className="absolute inset-0 rounded-full border-2 border-blue-500"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1.5, opacity: 0 }}
-            transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-          />
-        </motion.div>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="mt-6 text-blue-400 font-mono"
-        >
-          INITIALIZING KRONOS INTERFACE...
-        </motion.p>
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+          >
+            <Scan className="mx-auto h-16 w-16 text-amber-300" />
+            <motion.div
+              className="absolute inset-0 rounded-full border-2 border-amber-400/70"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1.5, opacity: 0 }}
+              transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+            />
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35, duration: 0.5 }}
+            className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-amber-100"
+          >
+            Initializing Event Interface...
+          </motion.p>
+        </div>
       </div>
     );
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-black text-slate-200 overflow-hidden">
-        {/* Background effects */}
-        <div className="fixed inset-0 bg-gradient-to-b from-blue-950/20 via-transparent to-red-950/10"></div>
+    <div className="relative isolate min-h-screen overflow-hidden bg-slate-950 text-slate-100">
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <Hyperspeed effectOptions={homeLikeHyperspeedEffect} />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/35 to-black/80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(220,68,24,0.2),transparent_42%),radial-gradient(circle_at_85%_85%,rgba(245,200,96,0.16),transparent_50%)]" />
+      </div>
 
-        {/* Grid overlay */}
-        <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBmMTczMCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==')] opacity-20"></div>
+      <div className="relative z-30">
+        <Navbar />
+      </div>
 
-        {/* Holographic scan line effect */}
+      <header className="container relative z-20 mx-auto px-4 pb-10 pt-32">
         <motion.div
-          className="fixed inset-0 bg-gradient-to-b from-transparent via-blue-500/10 to-transparent h-40 pointer-events-none"
-          initial={{ top: "-10%" }}
-          animate={{ top: "110%" }}
-          transition={{
-            duration: 8,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "linear",
-          }}
-        />
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+        >
+          <PageHeading
+            eyebrow="KRONOS 2026"
+            title="Events"
+            description="Explore pre-event and main-event experiences designed to challenge, inspire, and entertain."
+            accentClassName="from-amber-200 via-orange-300 to-red-400"
+          />
+        </motion.div>
 
-        <header className="container mx-auto py-12 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-10"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.45, delay: 0.35 }}
+          className="mt-8 flex flex-wrap justify-center gap-4"
+        >
+          <button
+            onClick={() => setActiveSection("pre-event")}
+            className={`relative overflow-hidden rounded-full border px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.14em] transition-all duration-300 ${
+              activeSection === "pre-event"
+                ? "border-amber-300/40 bg-amber-500/20 text-amber-100"
+                : "border-slate-700/70 bg-black/35 text-slate-200 hover:border-amber-300/35 hover:bg-amber-500/10"
+            }`}
           >
-            <PageHeading
-              eyebrow="KRONOS 2026"
-              title="Events"
-              description="Explore pre-event and main-event experiences designed to challenge, inspire, and entertain."
-              accentClassName="from-blue-400 via-violet-300 to-red-400"
+            <span>Pre Event</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSection("main-event")}
+            className={`relative overflow-hidden rounded-full border px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.14em] transition-all duration-300 ${
+              activeSection === "main-event"
+                ? "border-red-300/40 bg-red-500/20 text-red-100"
+                : "border-slate-700/70 bg-black/35 text-slate-200 hover:border-red-300/35 hover:bg-red-500/10"
+            }`}
+          >
+            <span>Main Event</span>
+          </button>
+        </motion.div>
+      </header>
+
+      <main className="container relative z-20 mx-auto px-4 pb-16">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            <EventList
+              events={eventsToShow}
+              onEventClick={setSelectedEvent}
+              activeSection={activeSection}
             />
           </motion.div>
+        </AnimatePresence>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex justify-center mt-8 gap-6"
-          >
-            <button
-              onClick={() => setActiveSection("pre-event")}
-              className={`px-6 py-3 rounded-md transition-all duration-300 backdrop-blur-sm relative overflow-hidden group ${
-                activeSection === "pre-event"
-                  ? "bg-blue-950/30 text-blue-400 border border-blue-500/30"
-                  : "bg-slate-900/30 border border-slate-800/50 hover:border-blue-800/50"
-              }`}
-            >
-              <span className="relative z-10">PRE EVENT</span>
-              {activeSection === "pre-event" && (
-                <motion.div
-                  layoutId="activeSection"
-                  className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-blue-700/10"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-              )}
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </button>
+        <AnimatePresence>
+          {selectedEvent && (
+            <EventDetail
+              event={selectedEvent}
+              onClose={() => setSelectedEvent(null)}
+              activeSection={activeSection}
+            />
+          )}
+        </AnimatePresence>
+      </main>
 
-            <button
-              onClick={() => setActiveSection("main-event")}
-              className={`px-6 py-3 rounded-md transition-all duration-300 backdrop-blur-sm relative overflow-hidden group ${
-                activeSection === "main-event"
-                  ? "bg-red-950/30 text-red-400 border border-red-500/30"
-                  : "bg-slate-900/30 border border-slate-800/50 hover:border-red-800/50"
-              }`}
-            >
-              <span className="relative z-10">MAIN EVENT</span>
-              {activeSection === "main-event" && (
-                <motion.div
-                  layoutId="activeSection"
-                  className="absolute inset-0 bg-gradient-to-r from-red-900/20 to-red-700/10"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-              )}
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </button>
-          </motion.div>
-        </header>
-
-        <main className="container mx-auto px-4 pb-16 relative z-10">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-            >
-              <EventList
-                events={eventsToShow}
-                onEventClick={handleEventClick}
-                activeSection={activeSection}
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {selectedEvent && (
-              <EventDetail
-                event={selectedEvent}
-                onClose={handleCloseDetail}
-                activeSection={activeSection}
-              />
-            )}
-          </AnimatePresence>
-        </main>
-
-        {/* HUD elements */}
-        <div className="fixed bottom-4 left-4 text-xs text-blue-400 font-mono opacity-70">
-          KRONOS_OS v3.4.2
-        </div>
-
-        <div className="fixed bottom-4 right-4 text-xs text-blue-400 font-mono opacity-70">
-          {new Date().toLocaleTimeString()}
-        </div>
+      <div className="fixed bottom-4 left-4 z-30 text-[11px] uppercase tracking-[0.16em] text-amber-100/70">
+        Kronos OS v3.4.2
       </div>
-    </>
+
+      <div className="fixed bottom-4 right-4 z-30 text-[11px] uppercase tracking-[0.16em] text-amber-100/70">
+        {new Date().toLocaleTimeString()}
+      </div>
+    </div>
   );
 }

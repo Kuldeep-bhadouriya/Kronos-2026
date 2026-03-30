@@ -141,11 +141,11 @@ const socialLinks: SocialLink[] = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen text-white relative isolate overflow-hidden">
+    <div className="min-h-screen bg-slate-950 text-slate-100 relative isolate overflow-hidden">
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Hyperspeed effectOptions={homeLikeHyperspeedEffect} />
         <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/35 to-black/80" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(168,85,247,0.2),transparent_42%),radial-gradient(circle_at_85%_85%,rgba(236,72,153,0.16),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_10%,rgba(220,68,24,0.2),transparent_42%),radial-gradient(circle_at_85%_85%,rgba(245,200,96,0.16),transparent_50%)]" />
       </div>
 
       <div className="relative z-40">
@@ -154,7 +154,7 @@ export default function AboutPage() {
 
       <main className="relative z-20 pb-24">
         <section className="pt-32 px-4">
-          <div className="mx-auto max-w-6xl rounded-3xl border border-purple-800/35 bg-black/35 backdrop-blur-xl p-6 sm:p-10 md:p-14 shadow-[0_30px_90px_rgba(0,0,0,0.35)]">
+          <div className="mx-auto max-w-6xl rounded-3xl border border-amber-800/35 bg-black/35 backdrop-blur-xl p-6 sm:p-10 md:p-14 shadow-[0_30px_90px_rgba(0,0,0,0.35)]">
             <PageHeading
               eyebrow="KRONOS 2026"
               title="About Kronos"
@@ -180,18 +180,18 @@ export default function AboutPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-3 pt-2">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-purple-400/35 bg-purple-500/10 px-4 py-2 text-sm text-purple-100">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/35 bg-amber-500/10 px-4 py-2 text-sm text-amber-100">
                     <CalendarDays className="h-4 w-4" />
                     3 days of non-stop events
                   </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-pink-400/35 bg-pink-500/10 px-4 py-2 text-sm text-pink-100">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-red-400/35 bg-red-500/10 px-4 py-2 text-sm text-red-100">
                     <Compass className="h-4 w-4" />
                     Tech + culture in one stage
                   </span>
                 </div>
 
                 <div className="flex flex-wrap gap-3 pt-2">
-                  <Button asChild className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-500 hover:to-pink-500">
+                  <Button asChild className="bg-gradient-to-r from-amber-600 to-red-600 text-white hover:from-amber-500 hover:to-red-500">
                     <Link href="/events">
                       Explore Events
                       <ArrowRight className="h-4 w-4" />
@@ -200,7 +200,7 @@ export default function AboutPage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="border-purple-300/40 bg-black/35 text-slate-100 hover:bg-purple-500/20 hover:text-white"
+                    className="border-amber-300/40 bg-black/35 text-slate-100 hover:bg-amber-500/20 hover:text-white"
                   >
                     <Link href="/team">Meet the Team</Link>
                   </Button>
@@ -208,7 +208,7 @@ export default function AboutPage() {
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-black/45 p-5 sm:p-6 space-y-4">
-                <p className="text-xs uppercase tracking-[0.25em] text-purple-200/90">Why Students Come Back</p>
+                <p className="text-xs uppercase tracking-[0.25em] text-amber-200/90">Why Students Come Back</p>
                 <ul className="space-y-3 text-sm sm:text-base text-slate-200">
                   <li className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
                     Competitive format that pushes practical skills.
@@ -230,10 +230,10 @@ export default function AboutPage() {
             {stats.map((item, index) => (
               <article
                 key={item.label}
-                className="rounded-2xl border border-purple-800/35 bg-black/35 backdrop-blur-md p-6 hover:border-pink-400/50 transition-colors duration-300 animate-fade-in-up opacity-0"
+                className="rounded-2xl border border-amber-800/35 bg-black/35 backdrop-blur-md p-6 hover:border-red-400/50 transition-colors duration-300 animate-fade-in-up opacity-0"
                 style={{ animationDelay: `${index * 120}ms` }}
               >
-                <p className="text-3xl md:text-4xl font-bold text-purple-200">{item.value}</p>
+                <p className="text-3xl md:text-4xl font-bold text-amber-200">{item.value}</p>
                 <p className="mt-2 text-base font-semibold text-white">{item.label}</p>
                 <p className="mt-2 text-sm text-slate-300">{item.detail}</p>
               </article>
@@ -258,10 +258,10 @@ export default function AboutPage() {
                 return (
                   <article
                     key={pillar.title}
-                    className="group rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md transition-all duration-300 hover:border-purple-400/55 hover:-translate-y-1 animate-fade-in-up opacity-0"
+                    className="group rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md transition-all duration-300 hover:border-amber-400/55 hover:-translate-y-1 animate-fade-in-up opacity-0"
                     style={{ animationDelay: `${index * 140}ms` }}
                   >
-                    <div className="mb-4 inline-flex rounded-xl border border-purple-300/30 bg-purple-500/10 p-3 text-purple-100 group-hover:border-pink-300/50 group-hover:bg-pink-500/15">
+                    <div className="mb-4 inline-flex rounded-xl border border-amber-300/30 bg-amber-500/10 p-3 text-amber-100 group-hover:border-red-300/50 group-hover:bg-red-500/15">
                       <Icon className="h-5 w-5" />
                     </div>
                     <h3 className="text-xl font-semibold text-white">{pillar.title}</h3>
@@ -274,7 +274,7 @@ export default function AboutPage() {
         </section>
 
         <section className="px-4 pt-16" aria-labelledby="journey-heading">
-          <div className="mx-auto max-w-6xl rounded-3xl border border-purple-900/30 bg-black/35 p-6 sm:p-10 backdrop-blur-lg">
+          <div className="mx-auto max-w-6xl rounded-3xl border border-amber-900/30 bg-black/35 p-6 sm:p-10 backdrop-blur-lg">
             <h2 id="journey-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-[0.08em] text-white">
               Kronos Journey
             </h2>
@@ -289,7 +289,7 @@ export default function AboutPage() {
                   className="relative grid gap-4 rounded-2xl border border-white/10 bg-black/45 p-5 sm:grid-cols-[120px_1fr] sm:items-start animate-fade-in-up opacity-0"
                   style={{ animationDelay: `${index * 130}ms` }}
                 >
-                  <p className="text-lg sm:text-xl font-semibold text-purple-200">{step.year}</p>
+                  <p className="text-lg sm:text-xl font-semibold text-amber-200">{step.year}</p>
                   <div>
                     <h3 className="text-lg sm:text-xl font-semibold text-white">{step.title}</h3>
                     <p className="mt-2 text-sm sm:text-base text-slate-300 leading-relaxed">{step.description}</p>
@@ -312,7 +312,7 @@ export default function AboutPage() {
               </p>
 
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-purple-900/35 bg-black/45 p-4 sm:p-5 h-44 flex items-center justify-center">
+                <div className="rounded-2xl border border-amber-900/35 bg-black/45 p-4 sm:p-5 h-44 flex items-center justify-center">
                   <Image
                     src="/ITMGOILogo.png"
                     alt="ITM Group of Institutions logo"
@@ -321,7 +321,7 @@ export default function AboutPage() {
                     className="h-auto w-auto max-h-28 object-contain"
                   />
                 </div>
-                <div className="rounded-2xl border border-purple-900/35 bg-black/45 p-4 sm:p-5 h-44 flex items-center justify-center">
+                <div className="rounded-2xl border border-amber-900/35 bg-black/45 p-4 sm:p-5 h-44 flex items-center justify-center">
                   <Image
                     src="/itm_logo.png"
                     alt="ITM University logo"
@@ -350,7 +350,7 @@ export default function AboutPage() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-purple-400/35 bg-purple-500/10 px-4 py-2 text-sm text-purple-100 transition-all hover:border-pink-400/45 hover:bg-pink-500/15"
+                        className="inline-flex items-center gap-2 rounded-full border border-amber-400/35 bg-amber-500/10 px-4 py-2 text-sm text-amber-100 transition-all hover:border-red-400/45 hover:bg-red-500/15"
                       >
                         <Icon className="h-4 w-4" />
                         {link.label}
@@ -366,7 +366,7 @@ export default function AboutPage() {
                   GDSC Office, Nuemman Block, ITM Gwalior, Madhya Pradesh, India
                 </p>
                 <p className="mt-2 text-sm sm:text-base text-slate-200">+91 7471168868</p>
-                <a href="mailto:kronos@itmgoi.in" className="mt-2 inline-block text-sm sm:text-base text-purple-200 hover:text-pink-200">
+                <a href="mailto:kronos@itmgoi.in" className="mt-2 inline-block text-sm sm:text-base text-amber-200 hover:text-red-200">
                   kronos@itmgoi.in
                 </a>
               </div>
@@ -375,14 +375,14 @@ export default function AboutPage() {
         </section>
 
         <section className="px-4 pt-16">
-          <div className="mx-auto max-w-6xl rounded-3xl border border-purple-700/35 bg-gradient-to-r from-purple-950/40 via-black/55 to-pink-950/35 p-8 sm:p-12 text-center backdrop-blur-lg">
+          <div className="mx-auto max-w-6xl rounded-3xl border border-amber-700/35 bg-gradient-to-r from-amber-950/40 via-black/55 to-red-950/35 p-8 sm:p-12 text-center backdrop-blur-lg">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white uppercase tracking-[0.08em]">Ready to be part of it?</h2>
             <p className="mt-4 max-w-2xl mx-auto text-slate-200 text-base sm:text-lg">
               Join the students, artists, and innovators shaping this edition of Kronos. Build memories, win big, and
               leave inspired.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <Button asChild className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-500 hover:to-pink-500">
+              <Button asChild className="bg-gradient-to-r from-amber-600 to-red-600 text-white hover:from-amber-500 hover:to-red-500">
                 <Link href="/events">
                   Browse Events
                   <ArrowRight className="h-4 w-4" />

@@ -1,367 +1,130 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import PageHeading from "@/components/page-heading";
-
 import { FaGithub, FaLinkedinIn, FaInstagram } from "react-icons/fa";
+
+type SocialLink = {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+};
+
+type DeveloperProfile = {
+  name: string;
+  role: string;
+  image: string;
+  socials: SocialLink[];
+};
+
+const developers: DeveloperProfile[] = [
+  {
+    name: "Atharva Bhargava",
+    role: "Developer",
+    image: "/WhatsApp Image 2025-03-21 at 15.34.21_000b1ee1.jpg",
+    socials: [
+      { label: "GitHub", href: "#", icon: <FaGithub /> },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/atharva-bhargava-684617276",
+        icon: <FaLinkedinIn />,
+      },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/atharva__bhargava",
+        icon: <FaInstagram />,
+      },
+    ],
+  },
+  {
+    name: "Kartik Sharma",
+    role: "Developer",
+    image: "/WhatsApp Image 2025-03-14 at 11.26.25_42aaba9c[1].jpg",
+    socials: [
+      { label: "GitHub", href: "https://github.com/sharmaxkartik", icon: <FaGithub /> },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/sharmaxkartik",
+        icon: <FaLinkedinIn />,
+      },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/wickedkartik",
+        icon: <FaInstagram />,
+      },
+    ],
+  },
+  {
+    name: "Kuldeep Singh Bhadouriya",
+    role: "Developer",
+    image: "/WhatsApp Image 2025-03-21 at 15.34.16_9d399998.jpg",
+    socials: [
+      { label: "GitHub", href: "https://github.com/Kuldeep-bhadouriya", icon: <FaGithub /> },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/kuldeep-singh-bhadouriya-68a748311",
+        icon: <FaLinkedinIn />,
+      },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/wtf.kuldeepz",
+        icon: <FaInstagram />,
+      },
+    ],
+  },
+];
 
 const DeveloperTeam: React.FC = () => {
   return (
-    <>
-      <style jsx>{`
-        body {
-          font-family: "Orbitron", sans-serif;
-          background-color: #0d0d0d; /* Darker background for the theme */
-          color: #ffffff;
-          margin: 0;
-          padding: 0;
-          text-align: center;
-        }
+    <section className="mx-auto max-w-6xl px-4 pb-6 pt-8 sm:px-6">
+      <PageHeading
+        eyebrow="KRONOS 2026"
+        title="Developers Team"
+        description="The engineers behind registrations, updates, and the digital experience across Kronos."
+        className="items-start text-left"
+        align="left"
+        accentClassName="from-amber-200 via-orange-300 to-red-400"
+        descriptionClassName="max-w-2xl text-slate-300"
+      />
 
-        .container {
-          padding: 70px 20px 50px;
-        }
-
-        .team-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 30px;
-        }
-
-        .team-row {
-          display: flex;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 40px;
-          width: 100%;
-          max-width: 1200px;
-        }
-
-        .team-member {
-          width: 250px;
-          text-align: center;
-          background: #1a1a1a; /* Slightly lighter background for cards */
-          padding: 20px;
-          border-radius: 12px;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .team-member:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 4px 10px rgba(255, 0, 127, 0.5); /* Pinkish shadow */
-        }
-
-        .member-photo-container {
-          width: 150px;
-          height: 150px;
-          margin: 0 auto;
-          border-radius: 50%;
-          overflow: hidden;
-          border: 3px solid #ff007f; /* Pinkish border */
-        }
-
-        .member-photo {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .member-info {
-          margin-top: 10px;
-        }
-
-        .member-name {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 5px;
-        }
-
-        .member-role {
-          font-size: 14px;
-          color: #ff007f; /* Pinkish color */
-          font-weight: bold;
-        }
-
-        .social-links {
-          margin-top: 10px;
-        }
-
-        .social-links a {
-          display: inline-block;
-          margin: 0 8px;
-          font-size: 20px;
-          color: #ff007f; /* Pinkish color */
-          transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .social-links a:hover {
-          color: white;
-          transform: scale(1.1);
-        }
-
-        .bottom-content {
-          margin-top: 50px;
-          text-align: center; /* Center align */
-        }
-
-        .bottom-title {
-          font-size: 24px;
-          font-weight: 700;
-          color: #ff007f; /* Pinkish color */
-          text-align: center; /* Center align */
-        }
-
-        @media (max-width: 768px) {
-          .team-row {
-            flex-direction: column;
-            align-items: center;
-          }
-
-          .team-member {
-            width: 90%;
-          }
-        }
-      `}</style>
-
-      <div className="container">
-        <PageHeading
-          eyebrow="KRONOS 2026"
-          title="Developers Team"
-          description="The engineers behind the digital experience powering registrations, updates, and the complete Kronos web journey."
-          className="mb-12"
-          accentClassName="from-pink-300 via-fuchsia-300 to-purple-300"
-        />
-
-        <div className="team-container">
-          {/* <div className="team-row">
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="WhatsApp Image 2025-03-21 at 15.32.27_1b41afa2.jpg"
-                  alt="Aryaman Bhatnagar"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Aryaman Bhatnagar</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a
-                    href="https://github.com/AryamanBhatngar"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/aryaman-bhatnagar-abgwl20122003/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/bhatnagar4re"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
+      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {developers.map((member) => (
+          <article
+            key={member.name}
+            className="group rounded-2xl border border-amber-700/35 bg-black/35 p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-red-400/50 hover:shadow-[0_22px_70px_rgba(185,28,28,0.22)]"
+          >
+            <div className="relative mx-auto h-36 w-36 overflow-hidden rounded-full border-2 border-amber-300/45 transition-colors duration-300 group-hover:border-red-300/55">
+              <Image src={member.image} alt={member.name} fill className="object-cover" />
             </div>
 
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="WhatsApp Image 2025-03-21 at 15.32.27_ce70aa96.jpg"
-                  alt="Ronak Verma"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Ronak Verma</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a
-                    href="https://github.com/Techkidd24"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/ronak-verma/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/awesome_techkidd"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
+            <div className="mt-5 text-center">
+              <h3 className="text-lg font-semibold text-slate-100">{member.name}</h3>
+              <p className="text-sm uppercase tracking-[0.14em] text-amber-200">{member.role}</p>
             </div>
 
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="WhatsApp Image 2025-03-21 at 15.32.26_c672c12c.jpg"
-                  alt="Vedant Pisal"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Vedant Pisal Deshmukh</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a
-                    href="https://github.com/vedant20082004"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/vedant-pisal"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/_.vedant20"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
+            <div className="mt-4 flex items-center justify-center gap-3">
+              {member.socials.map((social) => (
+                <a
+                  key={`${member.name}-${social.label}`}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${member.name} ${social.label}`}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-400/35 bg-amber-500/10 text-amber-100 transition-all hover:border-red-300/55 hover:bg-red-500/15 hover:text-red-100"
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
-          </div> */}
-
-          <div className="team-row">
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="WhatsApp Image 2025-03-21 at 15.34.21_000b1ee1.jpg"
-                  alt="Atharva Bhargava"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Atharva Bhargava</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/atharva-bhargava-684617276"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/atharva__bhargava"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="WhatsApp Image 2025-03-14 at 11.26.25_42aaba9c[1].jpg"
-                  alt="Kartik Sharma"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Kartik Sharma</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a
-                    href="https://github.com/sharmaxkartik"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/sharmaxkartik"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/wickedkartik"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className="team-member">
-              <div className="member-photo-container">
-                <img
-                  src="WhatsApp Image 2025-03-21 at 15.34.16_9d399998.jpg"
-                  alt="Kuldeep Singh Bhadouriya"
-                  className="member-photo"
-                />
-              </div>
-              <div className="member-info">
-                <h3 className="member-name">Kuldeep Singh Bhadouriya</h3>
-                <p className="member-role">Developer</p>
-                <div className="social-links">
-                  <a
-                    href="https://github.com/Kuldeep-bhadouriya"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/kuldeep-singh-bhadouriya-68a748311"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaLinkedinIn />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/wtf.kuldeepz"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bottom-content">
-          <h2 className="bottom-title">Turning Chaos Into Code Since 2022</h2>
-        </div>
+          </article>
+        ))}
       </div>
-    </>
+
+      <p className="mt-10 text-center text-sm uppercase tracking-[0.2em] text-slate-300">
+        Turning Chaos Into Code Since 2022
+      </p>
+    </section>
   );
 };
 

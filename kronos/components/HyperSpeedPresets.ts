@@ -1,4 +1,6 @@
-export const hyperspeedPresets = {
+import type { HyperspeedOptions } from '@/components/Hyperspeed';
+
+export const hyperspeedPresets: Record<string, Partial<HyperspeedOptions>> = {
   one: {
     onSpeedUp: () => {},
     onSlowDown: () => {},
@@ -220,6 +222,43 @@ export const hyperspeedPresets = {
       leftCars: [0xff322f, 0xa33010, 0xa81508],
       rightCars: [0xfdfdf0, 0xf3dea0, 0xe2bb88],
       sticks: 0xfdfdf0
+    }
+  },
+  golden: {
+    onSpeedUp: () => {},
+    onSlowDown: () => {},
+    distortion: 'turbulentDistortion',
+    length: 400,
+    roadWidth: 10,
+    islandWidth: 2,
+    lanesPerRoad: 3,
+    fov: 94,
+    fovSpeedUp: 150,
+    speedUp: 3,
+    carLightsFade: 0.4,
+    totalSideLightSticks: 40,
+    lightPairsPerRoadWay: 50,
+    shoulderLinesWidthPercentage: 0.05,
+    brokenLinesWidthPercentage: 0.1,
+    brokenLinesLengthPercentage: 0.5,
+    lightStickWidth: [0.12, 0.5],
+    lightStickHeight: [1.3, 1.7],
+    movingAwaySpeed: [95, 125],
+    movingCloserSpeed: [-185, -245],
+    carLightsLength: [400 * 0.04, 400 * 0.18],
+    carLightsRadius: [0.05, 0.14],
+    carWidthPercentage: [0.3, 0.5],
+    carShiftX: [-0.6, 0.6],
+    carFloorSeparation: [0.02, 1.8],
+    colors: {
+      roadColor: 0x080808,
+      islandColor: 0x0a0a0a,
+      background: 0x04030a,
+      shoulderLines: 0x4f3a0f,
+      brokenLines: 0x4f3a0f,
+      leftCars: [0xffd166, 0xffb703, 0xfb8500],
+      rightCars: [0xfff3b0, 0xfde68a, 0xf59e0b],
+      sticks: 0xfcd34d
     }
   }
 };
