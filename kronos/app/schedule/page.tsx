@@ -33,7 +33,7 @@ const events = [
     date: event.date,
     description: event.description,
     category: "main",
-    gradient: gradients[index % gradients.length],
+    gradient: gradients[(index + preEvents.length) % gradients.length],
   })),
 ]
 
