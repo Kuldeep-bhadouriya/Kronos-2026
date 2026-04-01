@@ -263,6 +263,15 @@ export default function TeamPage() {
       ],
     },
     {
+      name: "Documentation",
+      coordinator: {
+        name: "Mayank Kumar",
+        role: "Documentation Coordinator",
+        image: "/2026 Team/Mayank_Kumar_Kunwar_documentation_Coordinator.jpeg",
+      },
+      coCoordinators: [],
+    },
+    {
       name: "Sponsorship",
       coordinator: {
         name: "Arun Rajawat",
