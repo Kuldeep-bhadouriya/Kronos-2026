@@ -21,9 +21,23 @@ type DeveloperProfile = {
 
 const developers: DeveloperProfile[] = [
   {
-    name: "Atharva Bhargava",
+    name: "Kuldeep Singh Bhadouriya",
+    role: "Full Stack Developer",
+    image: "/WhatsApp Image 2025-03-21 at 15.34.16_9d399998.jpg",
+    blurb: "Building reliable product flows across frontend, backend, and deployment.",
+    socials: [
+      { label: "GitHub", href: "https://github.com/Kuldeep-bhadouriya", icon: <FaGithub /> },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/kuldeep-singh-bhadouriya-68a748311",
+        icon: <FaLinkedinIn />,
+      },
+    ],
+  },
+  {
+    name: "Naman Jain",
     role: "Frontend Developer",
-    image: "/WhatsApp Image 2025-03-21 at 15.34.21_000b1ee1.jpg",
+    image: "/2026 Team/Naman_Jain_Tech_Co-coordiantor.jpg",
     blurb: "Crafting immersive interfaces with speed, polish, and attention to detail.",
     socials: [
       { label: "GitHub", href: "#", icon: <FaGithub /> },
@@ -39,20 +53,7 @@ const developers: DeveloperProfile[] = [
       },
     ],
   },
-  {
-    name: "Kuldeep Singh Bhadouriya",
-    role: "Full Stack Developer",
-    image: "/WhatsApp Image 2025-03-21 at 15.34.16_9d399998.jpg",
-    blurb: "Building reliable product flows across frontend, backend, and deployment.",
-    socials: [
-      { label: "GitHub", href: "https://github.com/Kuldeep-bhadouriya", icon: <FaGithub /> },
-      {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/in/kuldeep-singh-bhadouriya-68a748311",
-        icon: <FaLinkedinIn />,
-      },
-    ],
-  },
+  
 ];
 
 const DeveloperTeam: React.FC = () => {

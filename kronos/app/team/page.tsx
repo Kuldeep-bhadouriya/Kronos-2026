@@ -513,11 +513,7 @@ export default function TeamPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div
-                    className={`flex flex-col ${
-                      department.coCoordinators.length > 0 ? "gap-6" : "gap-0"
-                    }`}
-                  >
+                  <div className="flex flex-col">
                     {/* Coordinators */}
                     {coordinators.length === 1 ? (
                       <div className="flex flex-col items-center">
@@ -571,43 +567,6 @@ export default function TeamPage() {
                             </p>
                           </div>
                         ))}
-                      </div>
-                    )}
-
-                    {/* Co-coordinators */}
-                    {department.coCoordinators.length > 0 && (
-                      <div
-                        className={`grid gap-4 ${
-                          department.coCoordinators.length === 1
-                            ? "grid-cols-1 place-items-center"
-                            : "grid-cols-2"
-                        }`}
-                      >
-                        {department.coCoordinators.map(
-                          (coCoordinator, coIndex) => (
-                            <div
-                              key={coIndex}
-                              className="flex flex-col items-center"
-                            >
-                              <div className="w-28 h-28 rounded-full overflow-hidden mb-2 border-2 border-amber-500/50 group-hover:border-red-500/50 transition-colors relative hover:scale-105 transition-transform duration-300">
-                                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-red-500/20 z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
-                                <Image
-                                  src={coCoordinator.image || "/placeholder.svg"}
-                                  alt={coCoordinator.name}
-                                  width={112}
-                                  height={112}
-                                  className="object-cover"
-                                />
-                              </div>
-                              <h3 className="text-base font-semibold text-center text-white">
-                                {coCoordinator.name}
-                              </h3>
-                              <p className="text-xs text-amber-300 text-center">
-                                {coCoordinator.role}
-                              </p>
-                            </div>
-                          )
-                        )}
                       </div>
                     )}
                   </div>
