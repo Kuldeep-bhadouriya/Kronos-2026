@@ -7,225 +7,40 @@ import { Card } from "@/components/ui/card"
 import Navbar from "@/components/Navbar"
 import Hyperspeed from "@/components/Hyperspeed"
 import PageHeading from "@/components/page-heading"
+import { preEvents, mainEvents } from "@/lib/data"
+
+const gradients = [
+  "from-[#FF6B6B] to-[#4ECDC4]",
+  "from-[#A8E6CF] to-[#3D84A8]",
+  "from-[#FFD93D] to-[#FF6B6B]",
+  "from-[#0093E9] to-[#80D0C7]",
+  "from-[#FF61D2] to-[#FE9090]",
+  "from-[#4158D0] to-[#C850C0]",
+]
 
 const events = [
-  {
-    id: 1,
-    title: "RANG RUSH",
-    date: "09-MAR-25",
-    description: "Celebrate the festival of colors with music and joy",
+  ...preEvents.map((event, index) => ({
+    id: event.id,
+    title: event.title,
+    date: event.date,
+    description: event.description,
     category: "pre",
-    gradient: "from-[#FF6B6B] to-[#4ECDC4]",
-  },
-  {
-    id: 2,
-    title: "FLASH MOB",
-    date: "25-MAR-25",
-    description: "A flash mob is a surprise group performance in public.",
-    category: "pre",
-    gradient: "from-[#A8E6CF] to-[#3D84A8]",
-  },
-
-  {
-    id: 3,
-    title: "WORKSHOPS",
-    date: "07-APR-25 - 20-APR-24",
-    description: "Various skill development workshops",
-    category: "pre",
-    gradient: "from-[#FFD93D] to-[#FF6B6B]",
-  },
-  {
-    id: 4,
-    title: "CRICKET",
-    date: "09-APR-25",
-    description: "Cricket is a bat-and-ball game of runs and wickets.",
-    category: "pre",
-    gradient: "from-[#0093E9] to-[#80D0C7]",
-  },
-
-  {
-    id: 5,
-    title: "ARM WRESTLING",
-    date: "09-APR-25",
-    description: "Arm wrestling is a strength duel of locked hands.",
-    category: "pre",
-    gradient: "from-[#0093E9] to-[#80D0C7]",
-  },
-  {
-    id: 6,
-    title: "BEYOND THE LENS",
-    date: "09-APR-25",
-    description: "Photography competition screening round",
-    category: "pre",
-    gradient: "from-[#FF61D2] to-[#FE9090]",
-  },
-  {
-    id: 7,
-    title: "FOOTBALL",
-    date: "15-17-APR-25",
-    description: "Football is a team sport of goals and passes.",
-    category: "pre",
-    gradient: "from-[#0093E9] to-[#80D0C7]",
-  },
-  {
-    id: 8,
-    title: "AD-MAD",
-    date: "17-APR-25",
-    description: "Creative advertising competition",
-    category: "pre",
-    gradient: "from-[#FFD93D] to-[#FF6B6B]",
-  },
-  {
-    id: 9,
-    title: "TUG OF WAR",
-    date: "17-APR-25",
-    description: " Ultimate Test of Strength and Teamwork!",
-    category: "pre",
-    gradient: "from-[#0093E9] to-[#80D0C7]",
-  },
-  {
-    id: 10,
-    title: "E-SPORTS",
-    date: "18-APR-25 - 20-APR-25",
-    description: "Gaming tournaments and competitions",
-    category: "pre",
-    gradient: "from-[#4158D0] to-[#C850C0]",
-  },
-  {
-    id: 11,
-    title: "ITM GOT TALENT",
-    date: "21-APR-25 - 22-APR-25",
-    description: "Talent showcase competition",
-    category: "pre",
-    gradient: "from-[#FF6B6B] to-[#4ECDC4]",
-  },
-  {
-    id: 12,
-    title: "LAUGHATHON",
-    date: "23-APR-25",
-    description: "Stand-up comedy is live humor on stage.",
-    category: "pre",
-    gradient: "from-[#FF6B6B] to-[#4ECDC4]",
-  },
-
-  {
-    id: 13,
-    title: "ROADIES",
-    date: "25-APR-25",
-    description: "Adventure and challenge based competition",
+    gradient: gradients[index % gradients.length],
+  })),
+  ...mainEvents.map((event, index) => ({
+    id: event.id,
+    title: event.title,
+    date: event.date,
+    description: event.description,
     category: "main",
-    gradient: "from-[#FF61D2] to-[#FE9090]",
-  },
-  {
-    id: 14,
-    title: "ESCAPE ROOM",
-    date: "25-APR-25",
-    description: "Interactive puzzle solving challenge",
-    category: "main",
-    gradient: "from-[#4158D0] to-[#C850C0]",
-  },
-  {
-    id: 15,
-    title: "FIESTA",
-    date: "25-APR-25",
-    description: "Cultural celebration and performances",
-    category: "main",
-    gradient: "from-[#FF6B6B] to-[#4ECDC4]",
-  },
-  {
-    id: 16,
-    title: "COSPLAY",
-    date: "25-APR-25",
-    description: "Costume play and character portrayal competition",
-    category: "main",
-    gradient: "from-[#A8E6CF] to-[#3D84A8]",
-  },
-  {
-    id: 17,
-    title: "GOONJ",
-    date: "25-APR-25 - 26-APR-25",
-    description: "First day of band performances",
-    category: "main",
-    gradient: "from-[#FFD93D] to-[#FF6B6B]",
-  },
-  {
-    id: 18,
-    title: "FASHION RUNWAY",
-    date: "26-APR-25",
-    description: "Style and fashion showcase",
-    category: "main",
-    gradient: "from-[#4158D0] to-[#C850C0]",
-  },
-  {
-    id: 19,
-    title: "CHROMAVERSE",
-    date: "26-APR-25",
-    description: "Creative arts and design exhibition",
-    category: "main",
-    gradient: "from-[#0093E9] to-[#80D0C7]",
-  },
-  {
-    id: 20,
-    title: "TREASURE HUNT",
-    date: "26-APR-25",
-    description: "Adventure quest with clues and prizes",
-    category: "main",
-    gradient: "from-[#A8E6CF] to-[#3D84A8]",
-  },
-  {
-    id: 21,
-    title: "INNOVATIVE-X",
-    date: "26-APR-25",
-    description: "Discussions and debates on artificial intelligence",
-    category: "main",
-    gradient: "from-[#FFD93D] to-[#FF6B6B]",
-  },
-  {
-    id: 22,
-    title: "TECH-BLITZ",
-    date: "26-APR-25 - 27-APR-25",
-    description: "24-36 hour coding competition",
-    category: "main",
-    gradient: "from-[#FF61D2] to-[#FE9090]",
-  },
-  {
-    id: 23,
-    title: "INTERSTELLAR TALK",
-    date: "27-APR-25",
-    description: "Technology and innovation discussions",
-    category: "main",
-    gradient: "from-[#4158D0] to-[#C850C0]",
-  },
-  {
-    id: 24,
-    title: "TECH TALK",
-    date: "27-APR-25",
-    description: "Technology and innovation discussions",
-    category: "main",
-    gradient: "from-[#4158D0] to-[#C850C0]",
-  },
-  {
-    id: 25,
-    title: "STARTUP SHOWCASE",
-    date: "27-APR-25",
-    description: "Presentation of innovative business ideas",
-    category: "main",
-    gradient: "from-[#0093E9] to-[#80D0C7]",
-  },
-  {
-    id: 26,
-    title: "DJ NIGHT",
-    date: "27-APR-25",
-    description: "Music and dance celebration",
-    category: "main",
-    gradient: "from-[#FF6B6B] to-[#4ECDC4]",
-  },
+    gradient: gradients[index % gradients.length],
+  })),
 ]
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("pre")
   const [isChangingCategory, setIsChangingCategory] = useState(false)
-  const [animatedEvents, setAnimatedEvents] = useState<number[]>([])
+  const [animatedEvents, setAnimatedEvents] = useState<string[]>([])
   const timelineRef = useRef<HTMLDivElement>(null)
 
   // Handle category change with animation
@@ -264,7 +79,7 @@ export default function Home() {
   }, [activeCategory, isChangingCategory])
 
   // Add event to animated list when it appears
-  const handleEventAppear = (id: number) => {
+  const handleEventAppear = (id: string) => {
     if (!animatedEvents.includes(id)) {
       setAnimatedEvents((prev) => [...prev, id])
     }
