@@ -185,6 +185,11 @@ export default function TeamPage() {
         image: `/2026 Team/Yash_Chaturvedi_Logistics.jpeg`,
       },
       coCoordinators: [
+        {
+          name: "Rahul Bhadouria",
+          role: "Co-coordinator ",
+          image: `/2026 Team/rahul_bhadouria_Logistics_co-coordinator.jpeg`,
+        },
       ],
     },
     {
@@ -227,7 +232,7 @@ export default function TeamPage() {
       coordinator: {
         name: "Rahul Sharma",
         role: "Coordinator",
-        image: "",
+        image: "/2026 Team/Rahul_Sharma.jpeg",
       },
       coCoordinators: [
         {

@@ -230,6 +230,7 @@
 .mobilePanel {
   background: rgb(3 4 8 / 0.65);
   display: flex;
+  align-items: flex-start;
   justify-content: center;
   inset: 0;
   opacity: 0;
@@ -260,10 +261,21 @@
   max-height: calc(100dvh - 6rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   max-width: min(26rem, calc(100vw - 1rem));
   min-width: 18rem;
+  opacity: 0;
   overflow-y: auto;
   padding: 0.75rem;
-  transform: translateY(-6px);
+  transform: translateY(-14px) scale(0.98);
+  transform-origin: top center;
+  transition:
+    opacity var(--nav-duration-medium) var(--nav-ease),
+    transform var(--nav-duration-medium) var(--nav-ease),
+    box-shadow var(--nav-duration-medium) var(--nav-ease);
   width: 100%;
+}
+
+.mobilePanelOpen .mobileMenu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .mobileItem {
@@ -341,6 +353,8 @@
 
   .toggle {
     display: inline-flex;
+    grid-column: 3;
+    justify-self: end;
   }
 }
 
@@ -380,6 +394,7 @@
   .toggleIcon::before,
   .toggleIcon::after,
   .mobilePanel,
+  .mobileMenu,
   .mobileItem,
   .mobileLink {
     transition-duration: 1ms !important;
