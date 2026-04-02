@@ -22,7 +22,7 @@ const contactChannels = [
 const contactMeta = [
   {
     label: "Campus",
-    value: "ITM Gwalior",
+    value: "ITM Sithouli Campus",
   },
   {
     label: "Response Window",
@@ -52,7 +52,7 @@ export default function ContactUs() {
           <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/45 px-4 py-4">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-amber-200">Venue</p>
-              <h2 className="mt-1 text-xl font-semibold text-slate-100">ITM Gwalior Campus</h2>
+              <h2 className="mt-1 text-xl font-semibold text-slate-100">ITM Sithouli Campus</h2>
               <p className="mt-1 text-sm text-slate-400">Sithouli Railway Station Road, NH-75, Gwalior</p>
             </div>
 

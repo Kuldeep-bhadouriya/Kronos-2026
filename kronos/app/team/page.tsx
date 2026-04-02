@@ -59,7 +59,7 @@ export default function TeamPage() {
     name: "Harsh Singh Sengar",
     role: "President",
     image: "/2026 Team/Harsh_Singh_Sengar_President.jpeg",
-    bio: "As the President of Kronos Tech Fest 2025, Harsh Singh Sengar stands at the forefront of innovation, leadership, and student-driven excellence. A final-year student with a deep passion for technology and event management, he has played a pivotal role in transforming Kronos into one of the most dynamic and impactful tech festivals.",
+    bio: "As the President of Kronos Tech Fest 2026, Harsh Singh Sengar stands at the forefront of innovation, leadership, and student-driven excellence. A final-year student with a deep passion for technology and event management, he has played a pivotal role in transforming Kronos into one of the most dynamic and impactful tech festivals.",
     email: "kronos@itmgoi.in",
     achievements: [
       "Spearheaded the planning and execution of the largest edition of Kronos Tech Fest.",

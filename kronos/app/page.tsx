@@ -326,7 +326,7 @@ export default function KronosTechFest() {
                 <div className="flex flex-wrap gap-3 text-sm text-slate-200/90">
                   <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/35 bg-amber-500/10 px-4 py-2 backdrop-blur-xl">
                     <CalendarDays className="h-4 w-4 text-amber-200" />
-                    <span>April 25-27, 2026</span>
+                    <span>April 21-23, 2026</span>
                   </div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-red-400/35 bg-red-500/10 px-4 py-2 backdrop-blur-xl">
                     <MapPin className="h-4 w-4 text-red-200" />
