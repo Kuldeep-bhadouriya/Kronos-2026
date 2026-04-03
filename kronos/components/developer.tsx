@@ -43,12 +43,12 @@ const developers: DeveloperProfile[] = [
       { label: "GitHub", href: "#", icon: <FaGithub /> },
       {
         label: "LinkedIn",
-        href: "https://www.linkedin.com/in/atharva-bhargava-684617276",
+        href: "https://www.linkedin.com/in/naman-jain-b05aa8373/",
         icon: <FaLinkedinIn />,
       },
       {
         label: "Instagram",
-        href: "https://www.instagram.com/atharva__bhargava",
+        href: "https://www.instagram.com/namann005",
         icon: <FaInstagram />,
       },
     ],
