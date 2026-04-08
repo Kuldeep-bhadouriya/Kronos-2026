@@ -274,9 +274,9 @@ export default function TeamPage() {
     {
       name: "Sponsorship",
       coordinator: {
-        name: "Arun Rajawat",
+        name: "Arman Patel",
         role: "Coordinator ",
-        image: `/2026 Team/Arun_Rajawat_Sponsership.png`,
+        image: `/2026 Team/Arman_patel.jpg`,
       },
       coCoordinators: [
 
