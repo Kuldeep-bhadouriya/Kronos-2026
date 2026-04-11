@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Aperture, CalendarDays, Scan, Swords } from "lucide-react";
+import { Aperture, CalendarDays, Swords } from "lucide-react";
 import EventList from "./event-list";
 import EventDetail from "./event-detail";
 import Navbar from "@/components/Navbar";
@@ -16,15 +16,6 @@ type EventSection = "pre-event" | "main-event";
 export default function EventPage() {
   const [activeSection, setActiveSection] = useState<EventSection>("pre-event");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1300);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const eventsToShow = activeSection === "pre-event" ? preEvents : mainEvents;
 
@@ -81,17 +72,13 @@ export default function EventPage() {
       </div>
 
       <div
-        className={`relative z-30 transition-opacity duration-300 ${
-          loading ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
+        className="relative z-30"
       >
         <Navbar />
       </div>
 
       <main
-        className={`container relative z-20 mx-auto px-4 pb-16 pt-28 transition-opacity duration-300 sm:pt-32 ${
-          loading ? "pointer-events-none select-none opacity-0" : "opacity-100"
-        }`}
+        className="container relative z-20 mx-auto px-4 pb-16 pt-28 sm:pt-32"
       >
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -210,43 +197,6 @@ export default function EventPage() {
               )}
             </AnimatePresence>
       </main>
-
-      <AnimatePresence>
-        {loading && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 flex items-center justify-center"
-          >
-            <div className="text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="relative"
-              >
-                <Scan className="mx-auto h-16 w-16 text-amber-300" />
-                <motion.div
-                  className="absolute inset-0 rounded-full border-2 border-amber-400/70"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1.5, opacity: 0 }}
-                  transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-                />
-              </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.35, duration: 0.5 }}
-                className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-amber-100"
-              >
-                Calibrating Event Interface
-              </motion.p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
