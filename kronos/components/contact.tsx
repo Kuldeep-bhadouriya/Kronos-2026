@@ -13,8 +13,8 @@ const contactChannels = [
   },
   {
     label: "Phone",
-    value: "+91 74711 68868",
-    href: "tel:+917471168868",
+    value: "+91 91311 60239",
+    href: "tel:+919131160239",
     icon: Phone,
   },
 ] as const;

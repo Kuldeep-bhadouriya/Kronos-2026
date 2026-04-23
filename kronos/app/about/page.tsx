@@ -365,7 +365,7 @@ export default function AboutPage() {
                 <p className="mt-3 text-sm sm:text-base text-slate-200">
                   GDSC Office, Nuemman Block, ITM Gwalior, Madhya Pradesh, India
                 </p>
-                <p className="mt-2 text-sm sm:text-base text-slate-200">+91 7471168868</p>
+                <p className="mt-2 text-sm sm:text-base text-slate-200">+91 91311 60239</p>
                 <a href="mailto:kronos@itmgoi.in" className="mt-2 inline-block text-sm sm:text-base text-amber-200 hover:text-red-200">
                   kronos@itmgoi.in
                 </a>
